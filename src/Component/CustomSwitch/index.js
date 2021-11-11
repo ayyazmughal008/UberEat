@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image';
+import { textBlack } from '../../Colors';
 
 const CustomSwitch = ({
     navigation,
@@ -29,10 +30,11 @@ const CustomSwitch = ({
                     backgroundColor: 'white',
                     borderRadius: getRoundCorner ? widthPercentageToDP(10) : widthPercentageToDP(10),
                     borderWidth: 1,
-                    borderColor: selectionColor,
+                    borderColor: textBlack,
                     flexDirection: 'row',
                     justifyContent: 'center',
                     padding: 2,
+                    alignSelf:"center"
                 }}>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -52,13 +54,13 @@ const CustomSwitch = ({
                             width: widthPercentageToDP(10),
                             height: widthPercentageToDP(10)
                         }}
-                        tintColor={getSelectionMode == 1 ? 'white' : selectionColor}
+                        tintColor={getSelectionMode == 1 ? 'white' : textBlack}
                     />
                     <Text
                         style={{
                             fontSize: widthPercentageToDP(4.5),
-                            fontFamily: "OpenSans-Bold",
-                            color: getSelectionMode == 1 ? 'white' : selectionColor,
+                            fontFamily: "Montserrat-Bold",
+                            color: getSelectionMode == 1 ? 'white' : textBlack,
                         }}>
                         {option1}
                     </Text>
@@ -82,13 +84,13 @@ const CustomSwitch = ({
                             width: widthPercentageToDP(10),
                             height: widthPercentageToDP(10)
                         }}
-                        tintColor={getSelectionMode == 2 ? 'white' : selectionColor}
+                        tintColor={getSelectionMode == 2 ? 'white' : textBlack}
                     />
                     <Text
                         style={{
                             fontSize: widthPercentageToDP(4.5),
-                            fontFamily: "OpenSans-Bold",
-                            color: getSelectionMode == 2 ? 'white' : selectionColor,
+                            fontFamily: "Montserrat-Bold",
+                            color: getSelectionMode == 2 ? 'white' : textBlack,
                         }}>
                         {option2}
                     </Text>

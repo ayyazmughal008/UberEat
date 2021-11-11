@@ -67,7 +67,7 @@ const Login = (props) => {
                 />
                 <Text style={[styles.bigTxtBold, {
                     fontSize: widthPercentageToDP(6),
-                    fontWeight: "bold"
+                    fontFamily: "Montserrat-Bold",
                 }]}>
                     {item.title}
                 </Text>
@@ -94,27 +94,36 @@ const Login = (props) => {
         return (
             <View style={styles.container}>
                 <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <FastImage
-                        source={require('../../Images/logo.png')}
-                        resizeMode={FastImage.resizeMode.contain}
-                        style={{
-                            width: widthPercentageToDP(70),
-                            height: widthPercentageToDP(70),
-                            marginTop: heightPercentageToDP(7),
-                            alignSelf: "center"
-                        }}
-                        tintColor={darkBlue}
-                    />
-                    <Text style={{
-                        fontSize: widthPercentageToDP(7),
-                        color: black,
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        marginTop: heightPercentageToDP(3)
-                    }}>
-                        {"BIENVENIDO"}
-                    </Text>
-                    <View style={styles.bottomLoginView}>
+                    <Animatable.View
+                        duration={5000}
+                        animation="fadeInDown"
+                    >
+                        <FastImage
+                            source={require('../../Images/logo.png')}
+                            resizeMode={FastImage.resizeMode.contain}
+                            style={{
+                                width: widthPercentageToDP(70),
+                                height: widthPercentageToDP(70),
+                                marginTop: heightPercentageToDP(7),
+                                alignSelf: "center"
+                            }}
+                            tintColor={darkBlue}
+                        />
+                        <Text style={{
+                            fontSize: widthPercentageToDP(7),
+                            color: black,
+                            fontFamily:"Montserrat-Bold",
+                            textAlign: "center",
+                            marginTop: heightPercentageToDP(3)
+                        }}>
+                            {"BIENVENIDO"}
+                        </Text>
+                    </Animatable.View>
+
+                    <Animatable.View
+                        duration={5000}
+                        animation="fadeInUp"
+                        style={styles.bottomLoginView}>
                         <View style={styles.inputView}>
                             <TextInput
                                 placeholder="Email"
@@ -137,7 +146,7 @@ const Login = (props) => {
                             onPress={() => props.navigation.navigate('Dashboard')}
                             style={styles.btn}
                         >
-                            <Text style={[styles.btnTxt, { fontWeight: "bold" }]}>
+                            <Text style={[styles.btnTxt, {  }]}>
                                 {"LOGIN"}
                             </Text>
                         </TouchableOpacity>
@@ -149,7 +158,7 @@ const Login = (props) => {
                                 {"Sign Up"}
                             </Text>
                         </Text>
-                    </View>
+                    </Animatable.View>
                 </KeyboardAwareScrollView>
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>

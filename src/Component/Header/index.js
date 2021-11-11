@@ -24,7 +24,7 @@ const MyHeader = (props) => {
                 text: props.title, style: {
                     color: black,
                     fontSize: widthPercentageToDP(5.5),
-                    fontWeight: "bold"
+                    fontFamily: "Montserrat-Bold",
                 }
             }}
             rightComponent={

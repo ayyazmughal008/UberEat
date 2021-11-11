@@ -26,12 +26,13 @@ export const styles = StyleSheet.create({
     inputTxt: {
         fontSize: widthPercentageToDP(4),
         color: textBlack,
+        fontFamily:"Montserrat-Light",
         paddingLeft: widthPercentageToDP(5)
     },
     forgetPassTxt: {
         fontSize: widthPercentageToDP(4.5),
         color: lightBlue,
-        fontWeight: "300",
+        fontFamily:"Montserrat-Light",
         paddingTop: heightPercentageToDP(1)
     },
     btn: {
@@ -47,10 +48,12 @@ export const styles = StyleSheet.create({
     btnTxt: {
         fontSize: widthPercentageToDP(4.5),
         color: white,
+        fontFamily:"Montserrat-Bold",
     },
     smallTxt: {
         fontSize: widthPercentageToDP(3.8),
         color: black,
+        fontFamily:"Montserrat-Light",
         marginTop: heightPercentageToDP(1),
         textAlign: "center"
     },
@@ -76,13 +79,13 @@ export const styles = StyleSheet.create({
     bigTxtBold: {
         fontSize: widthPercentageToDP(8),
         color: textBlack,
-        fontWeight: "500",
+        fontFamily: "Montserrat-Bold",
         marginTop: heightPercentageToDP(3)
     },
     TxtLight: {
         fontSize: widthPercentageToDP(4.5),
         color: lightBlue,
-        fontWeight: "500",
+        fontFamily: "Montserrat-SemiBold",
     },
     dashboardMainView: {
         width: widthPercentageToDP(90),
@@ -92,13 +95,13 @@ export const styles = StyleSheet.create({
     greetingTxt:{
         fontSize: widthPercentageToDP(4),
         color: textBlack,
-        fontWeight: "300",
+        fontFamily: "Montserrat-Light",
         marginTop: heightPercentageToDP(2)
     },
     findTxt:{
         fontSize: widthPercentageToDP(7),
         color: textBlack,
-        fontWeight: "bold",
+        fontFamily: "Montserrat-Bold",
         marginTop: heightPercentageToDP(1)
     },
     vectorIcon:{
@@ -108,7 +111,7 @@ export const styles = StyleSheet.create({
     searchTxt:{
         fontSize: widthPercentageToDP(6),
         color: textBlack,
-        fontWeight: "500",
+        fontFamily: "Montserrat-SemiBold",
         marginTop: heightPercentageToDP(2)
     }
 })

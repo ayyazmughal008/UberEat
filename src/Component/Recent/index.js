@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: widthPercentageToDP(4),
-        fontWeight: "bold",
+        fontFamily: "Montserrat-Bold",
         color: textBlack,
         marginTop: heightPercentageToDP(0.5),
         textAlign: "center"
     },
     normalTxt: {
         fontSize: widthPercentageToDP(3.5),
-        fontWeight: "300",
+        fontFamily: "Montserrat-Light",
         color: textBlack,
         textAlign: "center"
     }
