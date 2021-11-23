@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { lightGrey, offWhite, textBlack } from '../../Colors'
+import { darkBlue, lightGrey, offWhite, textBlack } from '../../Colors'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import StarRating from 'react-native-star-rating';
 
 const Recent = (props) => {
     return (
@@ -17,12 +18,18 @@ const Recent = (props) => {
             <Text style={styles.title}>
                 {props.title}
             </Text>
-            <Text style={styles.normalTxt}>
-                {props.date}
-            </Text>
-            <Text style={styles.normalTxt}>
-                {props.adult}
-            </Text>
+            <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(2) }}>
+                <StarRating
+                    disabled={false}
+                    maxStars={5}
+                    emptyStarColor={darkBlue}
+                    fullStarColor={darkBlue}
+                    rating={3}
+                    starSize={20}
+                    containerStyle={{ width: "30%", marginLeft: 10 }}
+                //selectedStar={(rating) => setStars(rating)}
+                />
+            </View>
         </TouchableOpacity>
     )
 }
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: widthPercentageToDP(4),
-        fontFamily: "Montserrat-Bold",
+        fontFamily: "Montserrat-SemiBold",
         color: textBlack,
         marginTop: heightPercentageToDP(0.5),
         textAlign: "center"

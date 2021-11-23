@@ -17,24 +17,36 @@ const Recent = (props) => {
             <Text style={styles.title}>
                 {props.title}
             </Text>
-            <Text style={styles.normalTxt}>
-                {props.date}
-            </Text>
-            <Text style={styles.normalTxt}>
-                {props.adult}
-            </Text>
+            <View style={styles.row}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <FastImage
+                        source={props.profile}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.roundImg}
+                    />
+                    <Text style={styles.semiBoldTxt}>
+                        {props.name}
+                    </Text>
+                </View>
+
+                <Text style={styles.normalTxt}>
+                    {props.date}
+                </Text>
+            </View>
+            {/* 
+             */}
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: widthPercentageToDP(33),
-        height: heightPercentageToDP(23),
+        width: widthPercentageToDP(90),
+        height: heightPercentageToDP(45),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
-        alignItems: "center",
-        marginRight: widthPercentageToDP(2),
+        //alignItems: "center",
+        marginTop: heightPercentageToDP(2),
         padding: 2,
         //alignSelf: "center",
         shadowColor: '#000000',
@@ -48,7 +60,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: "100%",
-        height: heightPercentageToDP(13),
+        height: heightPercentageToDP(32),
         borderTopLeftRadius: widthPercentageToDP(3),
         borderTopRightRadius: widthPercentageToDP(3)
     },
@@ -56,14 +68,34 @@ const styles = StyleSheet.create({
         fontSize: widthPercentageToDP(4),
         fontFamily: "Montserrat-Bold",
         color: textBlack,
-        marginTop: heightPercentageToDP(0.5),
-        textAlign: "center"
+        marginTop: heightPercentageToDP(1),
+        textAlign: "left",
+        paddingLeft: widthPercentageToDP(5)
     },
     normalTxt: {
         fontSize: widthPercentageToDP(3.5),
         fontFamily: "Montserrat-Light",
         color: textBlack,
         textAlign: "center"
+    },
+    semiBoldTxt: {
+        fontSize: widthPercentageToDP(4),
+        fontFamily: "Montserrat-SemiBold",
+        color: textBlack,
+        textAlign: "left",
+        paddingLeft: widthPercentageToDP(5)
+    },
+    row: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        marginTop: heightPercentageToDP(1)
+    },
+    roundImg: {
+        width: widthPercentageToDP(8),
+        height: widthPercentageToDP(8),
+        borderRadius: widthPercentageToDP(8) / 2
     }
 })
 

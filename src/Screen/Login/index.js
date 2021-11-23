@@ -95,7 +95,7 @@ const Login = (props) => {
             <View style={styles.container}>
                 <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <Animatable.View
-                        duration={5000}
+                        duration={2000}
                         animation="fadeInDown"
                     >
                         <FastImage
@@ -121,7 +121,7 @@ const Login = (props) => {
                     </Animatable.View>
 
                     <Animatable.View
-                        duration={5000}
+                        duration={2000}
                         animation="fadeInUp"
                         style={styles.bottomLoginView}>
                         <View style={styles.inputView}>

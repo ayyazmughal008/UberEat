@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, SafeAreaView, Text, FlatList } from 'react-native'
+import { View, SafeAreaView, Text, FlatList, TouchableOpacity } from 'react-native'
 import { styles } from '../../Stylesheet'
 import Header from '../../Component/Header'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { black, darkBlue, lightBlue, lightGrey, offWhite, white } from '../../Colors'
+import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
-import AppIntroSlider from 'react-native-app-intro-slider';
-import Toggle from 'react-native-toggle-element';
 import FastImage from 'react-native-fast-image'
 import { Input } from 'react-native-elements';
 import { data } from './data'
 import Rececnt from '../../Component/Recent'
+import Trending from '../../Component/Trending'
 import CustomSwitch from '../../Component/CustomSwitch'
 import * as Animatable from 'react-native-animatable';
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -18,113 +17,162 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 
 const Dashboard = (props) => {
-    const [toggleValue, setToggleValue] = useState(false);
+    const [toggleValue, setToggleValue] = useState(1);
     const [isHide, setHide] = useState(false)
+    useEffect(() => {
+        console.log(toggleValue)
+    }, [toggleValue])
     return (
         <SafeAreaView style={styles.container}>
             <Header
                 userImg={require('../../Images/profile.png')}
                 title={"MYHOOKAH"}
+                isProfile={true}
+                leftClick={() => props.navigation.navigate('Profile')}
                 iconName={"notifications-outline"}
             />
-            <View style={styles.dashboardMainView}>
-                <Text style={styles.greetingTxt}>
-                    {"Hello John"}
-                </Text>
-                <Text style={styles.findTxt}>
-                    {"Find Your Restaurant"}
-                </Text>
-                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, width: "100%" }}>
-                    <FastImage
-                        source={require('../../Images/Location.png')}
-                        resizeMode={FastImage.resizeMode.contain}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
-                        {"Berlin, Germany"}
+            {toggleValue == 1 ?
+                <View style={styles.dashboardMainView}>
+                    <Text style={styles.greetingTxt}>
+                        {"Hello John"}
                     </Text>
+                    <Text style={styles.findTxt}>
+                        {"Find Your Restaurant"}
+                    </Text>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, width: "100%" }}>
+                        <FastImage
+                            source={require('../../Images/Location.png')}
+                            resizeMode={FastImage.resizeMode.contain}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
+                            {"Berlin, Germany"}
+                        </Text>
+                    </View>
+                    <View style={[styles.inputView, {
+                        width: widthPercentageToDP(90)
+                    }]}>
+                        <Input
+                            placeholder="Search"
+                            placeholderTextColor={lightGrey}
+                            inputContainerStyle={{
+                                borderBottomWidth: 0,
+                            }}
+                            //editable = {false}
+                            onFocus={() => setHide(true)}
+                            onBlur={() => setHide(false)}
+                            leftIcon={{ type: 'ant-design', name: 'search1', color: lightGrey }}
+                        />
+                    </View>
+                    {isHide &&
+                        <Animatable.View
+                            duration={500}
+                            animation="slideInDown"
+                        >
+                            <View style={[styles.inputView, {
+                                width: widthPercentageToDP(90),
+                                marginTop: 0,
+                                //justifyContent: "center",
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }]}>
+                                <Fontisto
+                                    name="date"
+                                    size={20}
+                                    color={lightGrey}
+                                    style={{ marginLeft: widthPercentageToDP(3) }}
+                                />
+                                <Text style={[styles.greetingTxt, {
+                                    marginTop: 0,
+                                    marginLeft: widthPercentageToDP(3),
+                                    color: lightGrey
+                                }]}>
+                                    {"Lunch , 25 Oct"}
+                                </Text>
+                            </View>
+                            <View style={[styles.inputView, {
+                                width: widthPercentageToDP(90),
+                                marginTop: 0,
+                                //justifyContent: "center",
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }]}>
+                                <Ionicons
+                                    name="person"
+                                    size={20}
+                                    color={lightGrey}
+                                    style={{ marginLeft: widthPercentageToDP(3) }}
+                                />
+                                <Text style={[styles.greetingTxt, {
+                                    marginTop: 0,
+                                    marginLeft: widthPercentageToDP(3),
+                                    color: lightGrey
+                                }]}>
+                                    {"2 person"}
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => props.navigation.navigate('HotelList')}
+                                style={[styles.btn2]}
+                            >
+                                <Text style={[styles.btnTxt, {}]}>
+                                    {"Search"}
+                                </Text>
+                            </TouchableOpacity>
+                        </Animatable.View>
+
+                    }
+                    <Text style={styles.searchTxt}>
+                        {"Recent Search"}
+                    </Text>
+                    <FlatList
+                        data={data.recent}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ marginTop: heightPercentageToDP(2), }}
+                        keyExtractor={(item, index) => 'key' + index}
+                        renderItem={({ item }) => (
+                            <Rececnt
+                                dishImg={item.img}
+                                title={item.country}
+                                date={item.date}
+                                adult={item.adult}
+                                clickHandler={() => { props.navigation.navigate('HotelDetail') }}
+                            />
+                        )}
+                    />
+
                 </View>
-                <View style={[styles.inputView, {
-                    width: widthPercentageToDP(90)
-                }]}>
-                    <Input
-                        placeholder="Search"
-                        placeholderTextColor={lightGrey}
-                        inputContainerStyle={{
-                            borderBottomWidth: 0,
-                        }}
-                        onFocus={() => setHide(true)}
-                        onBlur={() => setHide(false)}
-                        leftIcon={{ type: 'ant-design', name: 'search1', color: lightGrey }}
+                : <View style={styles.dashboardMainView}>
+                    <Text style={styles.findTxt}>
+                        {"Trending"}
+                    </Text>
+                    <Text style={[styles.greetingTxt, {
+                        color: black,
+                        fontFamily: "Montserrat-SemiBold"
+                    }]}>
+                        {"Recent Posts"}
+                    </Text>
+                    <FlatList
+                        data={data.trending}
+                        showsVerticalScrollIndicator={false}
+                        style={{ marginTop: heightPercentageToDP(2), }}
+                        keyExtractor={(item, index) => 'key' + index}
+                        renderItem={({ item }) => (
+                            <Trending
+                                dishImg={item.img}
+                                title={item.country}
+                                date={item.date}
+                                name={item.name}
+                                profile={item.profile}
+                                clickHandler={() => { props.navigation.navigate('HotelDetail') }}
+                            />
+                        )}
                     />
                 </View>
-                {isHide &&
-                    <Animatable.View
-                        duration={3000}
-                        animation="slideInDown"
-                    >
-                        <View style={[styles.inputView, {
-                            width: widthPercentageToDP(90),
-                            marginTop: 0,
-                            //justifyContent: "center",
-                            flexDirection: "row",
-                            alignItems: "center"
-                        }]}>
-                            <Fontisto
-                                name="date"
-                                size={20}
-                                color={lightGrey}
-                                style={{ marginLeft: widthPercentageToDP(3) }}
-                            />
-                            <Text style={[styles.greetingTxt, {
-                                marginTop: 0,
-                                marginLeft: widthPercentageToDP(3),
-                                color: lightGrey
-                            }]}>
-                                {"Lunch , 25 Oct"}
-                            </Text>
-                        </View>
-                        <View style={[styles.inputView, {
-                            width: widthPercentageToDP(90),
-                            marginTop: 0,
-                            //justifyContent: "center",
-                            flexDirection: "row",
-                            alignItems: "center"
-                        }]}>
-                            <Ionicons
-                                name="person"
-                                size={20}
-                                color={lightGrey}
-                                style={{ marginLeft: widthPercentageToDP(3) }}
-                            />
-                            <Text style={[styles.greetingTxt, {
-                                marginTop: 0,
-                                marginLeft: widthPercentageToDP(3),
-                                color: lightGrey
-                            }]}>
-                                {"2 person"}
-                            </Text>
-                        </View>
-                    </Animatable.View>
 
-                }
-                <Text style={styles.searchTxt}>
-                    {"Recent Search"}
-                </Text>
-                <FlatList
-                    data={data}
-                    horizontal
-                    style={{ marginTop: heightPercentageToDP(2), }}
-                    keyExtractor={(item, index) => 'key' + index}
-                    renderItem={({ item }) => (
-                        <Rececnt
-                            dishImg={item.img}
-                            title={item.country}
-                            date={item.date}
-                            adult={item.adult}
-                        />
-                    )}
-                />
+            }
+            <View style={styles.bottomToggle}>
                 <CustomSwitch
                     selectionMode={1}
                     roundCorner={true}
@@ -133,9 +181,9 @@ const Dashboard = (props) => {
                     onSelectSwitch={(newState) => setToggleValue(newState)}
                     selectionColor={darkBlue}
                 />
-                <View style={{ height: heightPercentageToDP(4) }} />
-
             </View>
+
+
         </SafeAreaView>
     )
 }

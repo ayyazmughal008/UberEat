@@ -26,9 +26,9 @@ const CustomSwitch = ({
             <View
                 style={{
                     width: "90%",
-                    height: heightPercentageToDP(10),
+                    height: heightPercentageToDP(8),
                     backgroundColor: 'white',
-                    borderRadius: getRoundCorner ? widthPercentageToDP(10) : widthPercentageToDP(10),
+                    borderRadius: getRoundCorner ? widthPercentageToDP(8) : widthPercentageToDP(8),
                     borderWidth: 1,
                     borderColor: lightGrey,
                     flexDirection: 'row',
@@ -50,19 +50,10 @@ const CustomSwitch = ({
                     style={{
                         flex: 1,
                         backgroundColor: getSelectionMode == 1 ? selectionColor : 'white',
-                        borderRadius: getRoundCorner ? widthPercentageToDP(10) : widthPercentageToDP(10),
+                        borderRadius: getRoundCorner ? widthPercentageToDP(8) : widthPercentageToDP(8),
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <FastImage
-                        source={require('../../Images/Search.png')}
-                        resizeMode={FastImage.resizeMode.contain}
-                        style={{
-                            width: widthPercentageToDP(10),
-                            height: widthPercentageToDP(10)
-                        }}
-                        tintColor={getSelectionMode == 1 ? 'white' : textBlack}
-                    />
                     <Text
                         style={{
                             fontSize: widthPercentageToDP(4.5),
@@ -79,19 +70,10 @@ const CustomSwitch = ({
                     style={{
                         flex: 1,
                         backgroundColor: getSelectionMode == 2 ? selectionColor : 'white',
-                        borderRadius: getRoundCorner ? widthPercentageToDP(10) : widthPercentageToDP(10),
+                        borderRadius: getRoundCorner ? widthPercentageToDP(8) : widthPercentageToDP(8),
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <FastImage
-                        source={require('../../Images/Social.png')}
-                        resizeMode={FastImage.resizeMode.contain}
-                        style={{
-                            width: widthPercentageToDP(10),
-                            height: widthPercentageToDP(10)
-                        }}
-                        tintColor={getSelectionMode == 2 ? 'white' : textBlack}
-                    />
                     <Text
                         style={{
                             fontSize: widthPercentageToDP(4.5),

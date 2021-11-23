@@ -26,13 +26,13 @@ export const styles = StyleSheet.create({
     inputTxt: {
         fontSize: widthPercentageToDP(4),
         color: textBlack,
-        fontFamily:"Montserrat-Light",
+        fontFamily: "Montserrat-Light",
         paddingLeft: widthPercentageToDP(5)
     },
     forgetPassTxt: {
         fontSize: widthPercentageToDP(4.5),
         color: lightBlue,
-        fontFamily:"Montserrat-Light",
+        fontFamily: "Montserrat-Light",
         paddingTop: heightPercentageToDP(1)
     },
     btn: {
@@ -45,15 +45,25 @@ export const styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: heightPercentageToDP(4)
     },
+    btn2: {
+        width: widthPercentageToDP("90%"),
+        height: heightPercentageToDP(7.5),
+        borderRadius: widthPercentageToDP(2),
+        backgroundColor: darkBlue,
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+        marginTop: heightPercentageToDP(1)
+    },
     btnTxt: {
         fontSize: widthPercentageToDP(4.5),
         color: white,
-        fontFamily:"Montserrat-Bold",
+        fontFamily: "Montserrat-Bold",
     },
     smallTxt: {
         fontSize: widthPercentageToDP(3.8),
         color: black,
-        fontFamily:"Montserrat-Light",
+        fontFamily: "Montserrat-Light",
         marginTop: heightPercentageToDP(1),
         textAlign: "center"
     },
@@ -91,27 +101,93 @@ export const styles = StyleSheet.create({
         width: widthPercentageToDP(90),
         flex: 1,
         alignSelf: "center",
+        //backgroundColor:"red"
     },
-    greetingTxt:{
+    greetingTxt: {
         fontSize: widthPercentageToDP(4),
         color: textBlack,
         fontFamily: "Montserrat-Light",
         marginTop: heightPercentageToDP(2)
     },
-    findTxt:{
+    findTxt: {
         fontSize: widthPercentageToDP(7),
         color: textBlack,
         fontFamily: "Montserrat-Bold",
         marginTop: heightPercentageToDP(1)
     },
-    vectorIcon:{
+    vectorIcon: {
         width: widthPercentageToDP(7),
         height: widthPercentageToDP(7)
     },
-    searchTxt:{
+    searchTxt: {
         fontSize: widthPercentageToDP(6),
         color: textBlack,
         fontFamily: "Montserrat-SemiBold",
         marginTop: heightPercentageToDP(2)
+    },
+    bottomToggle: {
+        position: "absolute",
+        bottom: "4%",
+        width: "100%"
+    },
+    banner: {
+        width: widthPercentageToDP(100),
+        height: heightPercentageToDP(35)
+    },
+    profileHeader: {
+        width: widthPercentageToDP(100),
+        height: heightPercentageToDP(25),
+        backgroundColor: darkBlue,
+        alignItems: "center"
+    },
+    profileRound: {
+        width: widthPercentageToDP(25),
+        height: widthPercentageToDP(25),
+        borderRadius: widthPercentageToDP(25) / 2,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: white,
+        marginTop: heightPercentageToDP(1)
+    },
+    roundImg: {
+        width: widthPercentageToDP(23),
+        height: widthPercentageToDP(23),
+        borderRadius: widthPercentageToDP(23) / 2,
+    },
+    profileName: {
+        fontSize: widthPercentageToDP(5),
+        color: textBlack,
+        fontFamily: "Montserrat-SemiBold",
+        textAlign: "center",
+        marginTop: heightPercentageToDP(8)
+    },
+    memberTxt: {
+        fontSize: widthPercentageToDP(5),
+        color: lightGrey,
+        fontFamily: "Montserrat-SemiBold",
+        textAlign: "center",
+        marginTop: heightPercentageToDP(1)
+    },
+    profileOptionView: {
+        width: widthPercentageToDP(85),
+        flex: 0,
+        alignSelf: "center",
+        marginTop: heightPercentageToDP(3)
+
+    },
+    blockView: {
+        width: "100%",
+        height: heightPercentageToDP(8),
+        borderBottomWidth: 1,
+        borderBottomColor: black,
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    blockTxt: {
+        fontSize: widthPercentageToDP(5),
+        color: black,
+        fontFamily: "Montserrat-Medium",
+        textAlign: "center",
+        marginLeft: widthPercentageToDP(5)
     }
 })
