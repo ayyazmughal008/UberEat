@@ -14,19 +14,21 @@ const Signup = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.topViewHeader}>
-                <FastImage
-                    source={require('../../Images/logo.png')}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                        width: widthPercentageToDP(30),
-                        height: "75%",
-                        alignSelf: "center"
-                    }}
-                />
-            </View>
             <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center" }}>
+                <View style={[styles.topViewHeader, {
+                    height: heightPercentageToDP(20),
+                }]}>
+                    <FastImage
+                        source={require('../../Images/logo.png')}
+                        resizeMode={FastImage.resizeMode.contain}
+                        style={{
+                            width: widthPercentageToDP(30),
+                            height: "65%",
+                            alignSelf: "center"
+                        }}
+                    />
+                </View>
+                <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center", }}>
                     <Text style={styles.bigTxtBold}>
                         {"Sign Up"}
                     </Text>
@@ -35,35 +37,35 @@ const Signup = (props) => {
                     </Text>
                     <Input
                         placeholder='Name'
-                        placeholderTextColor={textBlack}
+                        placeholderTextColor={lightGrey}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
-                        containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
+                        containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black, }}
                     //style = {styles.inputTxt}
                     />
                     <Input
                         placeholder='Email'
-                        placeholderTextColor={textBlack}
+                        placeholderTextColor={lightGrey}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
                         placeholder='Phone Number'
-                        placeholderTextColor={textBlack}
+                        placeholderTextColor={lightGrey}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
                         placeholder='Password'
-                        placeholderTextColor={textBlack}
+                        placeholderTextColor={lightGrey}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
                         placeholder='Confirm Password'
-                        placeholderTextColor={textBlack}
+                        placeholderTextColor={lightGrey}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
@@ -73,6 +75,9 @@ const Signup = (props) => {
                             name="checkbox-passive"
                             color={black}
                             size={20}
+                            style={{
+                                marginLeft: widthPercentageToDP(2.5)
+                            }}
                         />
                         <Text style={[styles.smallTxt, { paddingLeft: widthPercentageToDP(3), marginTop: 0 }]}>
                             {"I agree to the term & conditions"}
@@ -80,17 +85,22 @@ const Signup = (props) => {
                     </View>
 
                     <TouchableOpacity
-                        style={[styles.btn, { borderRadius: widthPercentageToDP(3) }]}
+                        style={[styles.btn, {
+                            borderRadius: widthPercentageToDP(10),
+                            width: widthPercentageToDP("87%"),
+                        }]}
                     >
                         <Text style={[styles.btnTxt, { fontWeight: "bold" }]}>
                             {"SIGN UP"}
                         </Text>
                     </TouchableOpacity>
-                    <Text style={styles.smallTxt}>
+                    <Text style={[styles.smallTxt,{
+                        marginBottom: heightPercentageToDP(5)
+                    }]}>
                         {"Already have an account? "}
                         <Text
                             onPress={() => props.navigation.navigate('Login')}
-                            style={[styles.smallTxt, { color: lightBlue, marginTop: 0 }]}>
+                            style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
                             {"Sign In"}
                         </Text>
                     </Text>

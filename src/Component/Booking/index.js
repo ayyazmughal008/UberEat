@@ -7,7 +7,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const Booking = (props) => {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity 
+        onPress = {props.clickHandler}
+        style={styles.container}>
             <FastImage
                 source={props.image}
                 resizeMode={FastImage.resizeMode.cover}

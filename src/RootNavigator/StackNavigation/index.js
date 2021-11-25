@@ -12,6 +12,9 @@ import MyBooking from '../../Screen/MyBooking'
 import Language from '../../Screen/Language'
 import Settings from '../../Screen/Settings'
 import ChangePassword from '../../Screen/ChangePassword'
+import Table from '../../Screen/Table'
+import OverView from '../../Screen/OverView'
+import Congratulation from '../../Screen/Congratulation'
 
 const Stack = createStackNavigator();
 
@@ -72,6 +75,21 @@ export const NavStack = () => {
             <Stack.Screen
                 name="ChangePassword"
                 component={ChangePassword}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Table"
+                component={Table}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="OverView"
+                component={OverView}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Congratulation"
+                component={Congratulation}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

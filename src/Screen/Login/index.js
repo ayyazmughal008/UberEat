@@ -71,7 +71,10 @@ const Login = (props) => {
                 }]}>
                     {item.title}
                 </Text>
-                <Text style={styles.smallTxt}>
+                <Text style={[styles.smallTxt, {
+                    paddingLeft: widthPercentageToDP(3),
+                    paddingRight: widthPercentageToDP(3)
+                }]}>
                     {item.description}
                 </Text>
             </View>
@@ -99,11 +102,11 @@ const Login = (props) => {
                         animation="fadeInDown"
                     >
                         <FastImage
-                            source={require('../../Images/logo.png')}
+                            source={require('../../Images/logo2.png')}
                             resizeMode={FastImage.resizeMode.contain}
                             style={{
-                                width: widthPercentageToDP(70),
-                                height: widthPercentageToDP(70),
+                                width: widthPercentageToDP(65),
+                                height: widthPercentageToDP(65),
                                 marginTop: heightPercentageToDP(7),
                                 alignSelf: "center"
                             }}
@@ -112,7 +115,7 @@ const Login = (props) => {
                         <Text style={{
                             fontSize: widthPercentageToDP(7),
                             color: black,
-                            fontFamily:"Montserrat-Bold",
+                            fontFamily: "Montserrat-Bold",
                             textAlign: "center",
                             marginTop: heightPercentageToDP(3)
                         }}>
@@ -146,7 +149,7 @@ const Login = (props) => {
                             onPress={() => props.navigation.navigate('Dashboard')}
                             style={styles.btn}
                         >
-                            <Text style={[styles.btnTxt, {  }]}>
+                            <Text style={[styles.btnTxt, {}]}>
                                 {"LOGIN"}
                             </Text>
                         </TouchableOpacity>
@@ -154,7 +157,7 @@ const Login = (props) => {
                             {"Don't have an account? "}
                             <Text
                                 onPress={() => props.navigation.navigate('Signup')}
-                                style={[styles.smallTxt, { color: lightBlue, marginTop: 0 }]}>
+                                style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
                                 {"Sign Up"}
                             </Text>
                         </Text>
@@ -162,7 +165,7 @@ const Login = (props) => {
                 </KeyboardAwareScrollView>
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: lightBlue }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
                                     source={require('../../Images/logo.png')}
@@ -172,7 +175,7 @@ const Login = (props) => {
                                         height: widthPercentageToDP(50)
                                     }}
                                     animation="slideOutDown"
-                                    duration={5000}
+                                    duration={3000}
                                 />
                                 <View
                                     style={{ height: heightPercentageToDP(27) }}
@@ -180,14 +183,14 @@ const Login = (props) => {
                                 <Animatable.Text style={{
                                     fontSize: widthPercentageToDP(7),
                                     color: white,
-                                    fontWeight: "bold",
+                                    fontFamily: "Montserrat-Bold",
                                     textAlign: "center",
                                     marginTop: heightPercentageToDP(3)
                                 }}
                                     animation="slideOutUp"
-                                    duration={5000}
+                                    duration={3000}
                                 >
-                                    {"MyHookah"}
+                                    {"MYHOOKAH"}
                                 </Animatable.Text>
                             </View>
                         </View>
@@ -217,7 +220,7 @@ const Login = (props) => {
                 />
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: lightBlue }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
                                     source={require('../../Images/logo.png')}
@@ -227,7 +230,7 @@ const Login = (props) => {
                                         height: widthPercentageToDP(50)
                                     }}
                                     animation="slideOutDown"
-                                    duration={5000}
+                                    duration={3000}
                                 />
                                 <View
                                     style={{ height: heightPercentageToDP(27) }}
@@ -235,14 +238,14 @@ const Login = (props) => {
                                 <Animatable.Text style={{
                                     fontSize: widthPercentageToDP(7),
                                     color: white,
-                                    fontWeight: "bold",
+                                    fontFamily: "Montserrat-Bold",
                                     textAlign: "center",
                                     marginTop: heightPercentageToDP(3)
                                 }}
                                     animation="slideOutUp"
-                                    duration={5000}
+                                    duration={3000}
                                 >
-                                    {"MyHookah"}
+                                    {"MYHOOKAH"}
                                 </Animatable.Text>
                             </View>
                         </View>

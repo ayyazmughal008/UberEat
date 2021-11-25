@@ -27,7 +27,7 @@ const Settings = (props) => {
                 centerComponent={{
                     text: "SETTINGS", style: {
                         color: black,
-                        fontSize: widthPercentageToDP(5),
+                        fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
                     }
                 }}

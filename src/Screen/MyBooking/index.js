@@ -29,7 +29,7 @@ const MyBooking = (props) => {
                 centerComponent={{
                     text: "MY BOOKINGS", style: {
                         color: black,
-                        fontSize: widthPercentageToDP(5),
+                        fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
                     }
                 }}
@@ -59,6 +59,9 @@ const MyBooking = (props) => {
                 keyExtractor={(item, index) => 'key' + index}
                 renderItem={({ item }) => (
                     <Booking
+                        clickHandler={() => props.navigation.navigate('OverView', {
+                            type: 'checking'
+                        })}
                         name={item.name}
                         image={item.image}
                     />

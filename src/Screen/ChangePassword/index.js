@@ -6,6 +6,7 @@ import { styles } from '../../Stylesheet'
 import { Header, Input } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import FastImage from 'react-native-fast-image'
 
 const Settings = (props) => {
 
@@ -26,7 +27,7 @@ const Settings = (props) => {
                 centerComponent={{
                     text: "CHANGE PASSWORD", style: {
                         color: black,
-                        fontSize: widthPercentageToDP(5),
+                        fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
                     }
                 }}
@@ -41,12 +42,18 @@ const Settings = (props) => {
                 barStyle="dark-content"
             />
             <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center" }}>
+                <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center", marginTop: heightPercentageToDP(10) }}>
                     <Input
                         placeholder='Current Password'
                         placeholderTextColor={textBlack}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
-                        leftIcon={{ type: 'ant-design', name: 'lock', color: lightGrey }}
+                        leftIcon={
+                            <FastImage
+                                source={require('../../Images/Group_5459.png')}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={styles.vectorIcon}
+                            />
+                        }
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
@@ -54,7 +61,13 @@ const Settings = (props) => {
                         placeholder='New Password'
                         placeholderTextColor={textBlack}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
-                        leftIcon={{ type: 'ant-design', name: 'lock', color: lightGrey }}
+                        leftIcon={
+                            <FastImage
+                                source={require('../../Images/Group_5459.png')}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={styles.vectorIcon}
+                            />
+                        }
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
@@ -62,7 +75,13 @@ const Settings = (props) => {
                         placeholder='Confirm New Password'
                         placeholderTextColor={textBlack}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
-                        leftIcon={{ type: 'ant-design', name: 'lock', color: lightGrey }}
+                        leftIcon={
+                            <FastImage
+                                source={require('../../Images/Group_5459.png')}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={styles.vectorIcon}
+                            />
+                        }
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />

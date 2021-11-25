@@ -25,28 +25,28 @@ export const data = {
             country: "Famillio's Mexican Grill",
             date: "32 min ago",
             name: "John Micheal",
-            profile: require('../../Images/profile.png')
+            profile: require('../../Images/profile2.png')
         },
         {
             img: require('../../Images/dish1.jpg'),
             country: "Famillio's Mexican Grill",
             date: "32 min ago",
             name: "John Micheal",
-            profile: require('../../Images/profile.png')
+            profile: require('../../Images/profile2.png')
         },
         {
             img: require('../../Images/dish1.jpg'),
             country: "Famillio's Mexican Grill",
             date: "32 min ago",
             name: "John Micheal",
-            profile: require('../../Images/profile.png')
+            profile: require('../../Images/profile2.png')
         },
         {
             img: require('../../Images/dish1.jpg'),
             country: "Famillio's Mexican Grill",
             date: "32 min ago",
             name: "John Micheal",
-            profile: require('../../Images/profile.png')
+            profile: require('../../Images/profile2.png')
         },
     ],
 

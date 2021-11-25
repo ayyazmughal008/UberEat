@@ -23,6 +23,7 @@ const Recent = (props) => {
             <Text style={styles.normalTxt}>
                 {props.adult}
             </Text>
+            {/* <View style={{marginTop: heightPercentageToDP(1)}} /> */}
         </TouchableOpacity>
     )
 }
@@ -30,10 +31,10 @@ const Recent = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: widthPercentageToDP(33),
-        height: heightPercentageToDP(23),
+        height: heightPercentageToDP(23.5),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
-        alignItems: "center",
+        //alignItems: "center",
         marginRight: widthPercentageToDP(2),
         padding: 2,
         //alignSelf: "center",
@@ -56,14 +57,16 @@ const styles = StyleSheet.create({
         fontSize: widthPercentageToDP(4),
         fontFamily: "Montserrat-Bold",
         color: textBlack,
-        marginTop: heightPercentageToDP(0.5),
-        textAlign: "center"
+        marginTop: heightPercentageToDP(1),
+        textAlign: "left",
+        marginLeft: widthPercentageToDP(4)
     },
     normalTxt: {
         fontSize: widthPercentageToDP(3.5),
         fontFamily: "Montserrat-Light",
         color: textBlack,
-        textAlign: "center"
+        textAlign: "left",
+        marginLeft: widthPercentageToDP(4),
     }
 })
 

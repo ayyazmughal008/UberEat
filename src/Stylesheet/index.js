@@ -8,16 +8,17 @@ export const styles = StyleSheet.create({
     },
     bottomLoginView: {
         width: widthPercentageToDP(80),
-        height: heightPercentageToDP(40),
+        height: heightPercentageToDP(45),
         position: "absolute",
         bottom: "0%",
-        alignSelf: "center"
+        alignSelf: "center",
+        //backgroundColor:"red"
     },
     inputView: {
         width: widthPercentageToDP(80),
         height: heightPercentageToDP(6.5),
         borderWidth: widthPercentageToDP(0.1),
-        borderColor: black,
+        borderColor: lightGrey,
         backgroundColor: offWhite,
         alignSelf: "center",
         borderRadius: widthPercentageToDP(2),
@@ -25,20 +26,20 @@ export const styles = StyleSheet.create({
     },
     inputTxt: {
         fontSize: widthPercentageToDP(4),
-        color: textBlack,
-        fontFamily: "Montserrat-Light",
-        paddingLeft: widthPercentageToDP(5)
+        color: black,
+        fontFamily: "Montserrat-Medium",
+        paddingLeft: widthPercentageToDP(5),
     },
     forgetPassTxt: {
         fontSize: widthPercentageToDP(4.5),
         color: lightBlue,
-        fontFamily: "Montserrat-Light",
+        fontFamily: "Montserrat-Medium",
         paddingTop: heightPercentageToDP(1)
     },
     btn: {
-        width: widthPercentageToDP("80%"),
+        width: widthPercentageToDP("86%"),
         height: heightPercentageToDP(7.5),
-        borderRadius: widthPercentageToDP(7),
+        borderRadius: widthPercentageToDP(10),
         backgroundColor: darkBlue,
         justifyContent: "center",
         alignItems: "center",
@@ -48,7 +49,7 @@ export const styles = StyleSheet.create({
     btn2: {
         width: widthPercentageToDP("90%"),
         height: heightPercentageToDP(7.5),
-        borderRadius: widthPercentageToDP(2),
+        borderRadius: widthPercentageToDP(10),
         backgroundColor: darkBlue,
         justifyContent: "center",
         alignItems: "center",
@@ -90,12 +91,14 @@ export const styles = StyleSheet.create({
         fontSize: widthPercentageToDP(8),
         color: textBlack,
         fontFamily: "Montserrat-Bold",
-        marginTop: heightPercentageToDP(3)
+        marginTop: heightPercentageToDP(5),
+        marginLeft: widthPercentageToDP(2)
     },
     TxtLight: {
         fontSize: widthPercentageToDP(4.5),
         color: lightBlue,
         fontFamily: "Montserrat-SemiBold",
+        marginLeft: widthPercentageToDP(2)
     },
     dashboardMainView: {
         width: widthPercentageToDP(90),
@@ -106,7 +109,7 @@ export const styles = StyleSheet.create({
     greetingTxt: {
         fontSize: widthPercentageToDP(4),
         color: textBlack,
-        fontFamily: "Montserrat-Light",
+        fontFamily: "Montserrat-Medium",
         marginTop: heightPercentageToDP(2)
     },
     findTxt: {
@@ -132,7 +135,8 @@ export const styles = StyleSheet.create({
     },
     banner: {
         width: widthPercentageToDP(100),
-        height: heightPercentageToDP(35)
+        height: heightPercentageToDP(35),
+        //opacity: "rgba(0,0,0,0.8)"
     },
     profileHeader: {
         width: widthPercentageToDP(100),
@@ -162,7 +166,7 @@ export const styles = StyleSheet.create({
         marginTop: heightPercentageToDP(8)
     },
     memberTxt: {
-        fontSize: widthPercentageToDP(5),
+        fontSize: widthPercentageToDP(4.5),
         color: lightGrey,
         fontFamily: "Montserrat-SemiBold",
         textAlign: "center",
@@ -189,5 +193,132 @@ export const styles = StyleSheet.create({
         fontFamily: "Montserrat-Medium",
         textAlign: "center",
         marginLeft: widthPercentageToDP(5)
+    },
+    sticker: {
+        width: widthPercentageToDP(20),
+        height: widthPercentageToDP(20),
+        borderRadius: widthPercentageToDP(3),
+        position: "absolute",
+        bottom: "3%",
+        left: "5%"
+    },
+    row: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: heightPercentageToDP(2),
+        flex: 0
+    },
+    row2: {
+        width: "90%",
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: heightPercentageToDP(2),
+        height: heightPercentageToDP(5),
+        borderBottomWidth: widthPercentageToDP(0.1),
+        borderBottomColor: black,
+        alignSelf: "center",
+        justifyContent: "space-between"
+    },
+    mediumText: {
+        fontSize: widthPercentageToDP(4.5),
+        color: black,
+        fontFamily: "Montserrat-Medium",
+        textAlign: "left",
+        marginLeft: widthPercentageToDP(4)
+    },
+    title: {
+        fontSize: widthPercentageToDP(4.5),
+        color: black,
+        fontFamily: "Montserrat-SemiBold",
+        textAlign: "left",
+        marginTop: heightPercentageToDP(4)
+    },
+    modalView: {
+        flex: 1,
+        alignItems: "center"
+    },
+    modalBottom: {
+        width: widthPercentageToDP(100),
+        height: heightPercentageToDP(35),
+        position: "absolute",
+        bottom: "0%",
+        backgroundColor: offWhite,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 5,
+        shadowOpacity: 1.0,
+        elevation: 4,
+        borderTopLeftRadius: widthPercentageToDP(15),
+        borderTopRightRadius: widthPercentageToDP(15)
+    },
+    line: {
+        width: widthPercentageToDP(15),
+        height: heightPercentageToDP(0.5),
+        backgroundColor: black,
+        alignSelf: "center",
+        marginTop: heightPercentageToDP(2),
+        borderRadius: widthPercentageToDP(4)
+    },
+    priceTxt: {
+        fontSize: widthPercentageToDP(4),
+        color: black,
+        fontFamily: "Montserrat-Medium",
+    },
+    price: {
+        fontSize: widthPercentageToDP(4),
+        color: black,
+        fontFamily: "Montserrat-SemiBold",
+    },
+    rectangle: {
+        width: widthPercentageToDP(45),
+        height: heightPercentageToDP(22),
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: widthPercentageToDP(0.3),
+        borderColor: black,
+        borderRadius: widthPercentageToDP(4),
+    },
+    innerModal: {
+        width: widthPercentageToDP(90),
+        height: heightPercentageToDP(60),
+        borderRadius: widthPercentageToDP(5),
+        backgroundColor: white,
+        alignItems: "center"
+    },
+    line2: {
+        marginTop: heightPercentageToDP(2),
+        width: "100%",
+        height: widthPercentageToDP(0.1),
+        backgroundColor: black
+    },
+    row3: {
+        width: "80%",
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: heightPercentageToDP(7),
+        alignSelf: "center"
+    },
+    row4: {
+        width: "50%",
+        height: heightPercentageToDP(6),
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: offWhite,
+        justifyContent:"space-between",
+        marginTop: heightPercentageToDP(1),
+        marginLeft: widthPercentageToDP(2)
+    },
+    blueCircle: {
+        width: widthPercentageToDP(9),
+        height: widthPercentageToDP(9),
+        borderRadius: widthPercentageToDP(9) / 2,
+        backgroundColor: darkBlue,
+        justifyContent:"center",
+        alignItems:"center"
     }
+
 })

@@ -29,7 +29,7 @@ const Profile = (props) => {
                     centerComponent={{
                         text: "MY PROFILE", style: {
                             color: white,
-                            fontSize: widthPercentageToDP(5),
+                            fontSize: widthPercentageToDP(4),
                             fontFamily: "Montserrat-Bold",
                         }
                     }}
@@ -64,10 +64,10 @@ const Profile = (props) => {
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate('PersonalInfo')}
                     style={styles.blockView}>
-                    <Ionicons
-                        name='ios-person-circle-outline'
-                        color={black}
-                        size={35}
+                    <FastImage
+                        source={require('../../Images/Group_5443.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"Personal Info"}
@@ -86,10 +86,10 @@ const Profile = (props) => {
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate('MyBooking')}
                     style={styles.blockView}>
-                    <FontAwesome
-                        name='calendar-check-o'
-                        color={black}
-                        size={30}
+                    <FastImage
+                        source={require('../../Images/Group_5434.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"My Booking"}
@@ -106,10 +106,10 @@ const Profile = (props) => {
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.blockView}>
-                    <AntDesign
-                        name='wallet'
-                        color={black}
-                        size={30}
+                    <FastImage
+                        source={require('../../Images/Group_5170.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"Payment Method"}
@@ -128,10 +128,10 @@ const Profile = (props) => {
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate('Language')}
                     style={styles.blockView}>
-                    <Fontisto
-                        name='world-o'
-                        color={black}
-                        size={30}
+                    <FastImage
+                        source={require('../../Images/Group_5436.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"Change Language"}
@@ -150,10 +150,10 @@ const Profile = (props) => {
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate('Settings')}
                     style={styles.blockView}>
-                    <AntDesign
-                        name='setting'
-                        color={black}
-                        size={30}
+                    <FastImage
+                        source={require('../../Images/settings.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"Settings"}
@@ -170,10 +170,10 @@ const Profile = (props) => {
                     />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.blockView}>
-                    <MaterialIcons
-                        name='logout'
-                        color={black}
-                        size={30}
+                    <FastImage
+                        source={require('../../Images/Group_4090.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
                         {"Logout"}

@@ -32,7 +32,8 @@ const MyHeader = (props) => {
                                 style={{
                                     width: widthPercentageToDP(10),
                                     height: widthPercentageToDP(10),
-                                    borderRadius: widthPercentageToDP(10) / 2
+                                    borderRadius: widthPercentageToDP(10) / 2,
+                                    marginLeft: widthPercentageToDP(2)
                                 }}
                             />
                         </TouchableOpacity>
@@ -50,7 +51,7 @@ const MyHeader = (props) => {
                 <Icon
                     name={props.iconName}
                     color={black}
-                    size={35}
+                    size={30}
                 />
             }
             containerStyle={{

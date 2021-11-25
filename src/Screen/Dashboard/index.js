@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, SafeAreaView, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, SafeAreaView, Text, FlatList, TouchableOpacity, Modal } from 'react-native'
 import { styles } from '../../Stylesheet'
 import Header from '../../Component/Header'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -12,20 +12,23 @@ import Rececnt from '../../Component/Recent'
 import Trending from '../../Component/Trending'
 import CustomSwitch from '../../Component/CustomSwitch'
 import * as Animatable from 'react-native-animatable';
-import Fontisto from 'react-native-vector-icons/Fontisto'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import DatePicker from 'react-native-date-picker'
 
 const Dashboard = (props) => {
     const [toggleValue, setToggleValue] = useState(1);
     const [isHide, setHide] = useState(false)
+    const [isPopUp, setPopUp] = useState(false)
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(true)
+
     useEffect(() => {
         console.log(toggleValue)
     }, [toggleValue])
     return (
         <SafeAreaView style={styles.container}>
             <Header
-                userImg={require('../../Images/profile.png')}
+                userImg={require('../../Images/profile2.png')}
                 title={"MYHOOKAH"}
                 isProfile={true}
                 leftClick={() => props.navigation.navigate('Profile')}
@@ -49,38 +52,50 @@ const Dashboard = (props) => {
                             {"Berlin, Germany"}
                         </Text>
                     </View>
-                    <View style={[styles.inputView, {
-                        width: widthPercentageToDP(90)
-                    }]}>
-                        <Input
-                            placeholder="Search"
-                            placeholderTextColor={lightGrey}
-                            inputContainerStyle={{
-                                borderBottomWidth: 0,
-                            }}
-                            //editable = {false}
-                            onFocus={() => setHide(true)}
-                            onBlur={() => setHide(false)}
-                            leftIcon={{ type: 'ant-design', name: 'search1', color: lightGrey }}
+                    <TouchableOpacity
+                        onPress={() => setHide(!isHide)}
+                        style={[styles.inputView, {
+                            width: widthPercentageToDP(90),
+                            marginTop: heightPercentageToDP(3),
+                            //justifyContent: "center",
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }]}>
+                        <FastImage
+                            source={require('../../Images/Search-1.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={[styles.vectorIcon, {
+                                marginLeft: widthPercentageToDP(3)
+                            }]}
                         />
-                    </View>
+                        <Text style={[styles.greetingTxt, {
+                            marginTop: 0,
+                            marginLeft: widthPercentageToDP(3),
+                            color: lightGrey
+                        }]}>
+                            {"Barcelona, Spain"}
+                        </Text>
+                    </TouchableOpacity>
                     {isHide &&
                         <Animatable.View
                             duration={500}
                             animation="slideInDown"
                         >
-                            <View style={[styles.inputView, {
-                                width: widthPercentageToDP(90),
-                                marginTop: 0,
-                                //justifyContent: "center",
-                                flexDirection: "row",
-                                alignItems: "center"
-                            }]}>
-                                <Fontisto
-                                    name="date"
-                                    size={20}
-                                    color={lightGrey}
-                                    style={{ marginLeft: widthPercentageToDP(3) }}
+                            <TouchableOpacity
+                                onPress={() => setPopUp(true)}
+                                style={[styles.inputView, {
+                                    width: widthPercentageToDP(90),
+                                    marginTop: 0,
+                                    //justifyContent: "center",
+                                    flexDirection: "row",
+                                    alignItems: "center"
+                                }]}>
+                                <FastImage
+                                    source={require('../../Images/Calender.png')}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                    style={[styles.vectorIcon, {
+                                        marginLeft: widthPercentageToDP(3)
+                                    }]}
                                 />
                                 <Text style={[styles.greetingTxt, {
                                     marginTop: 0,
@@ -89,7 +104,7 @@ const Dashboard = (props) => {
                                 }]}>
                                     {"Lunch , 25 Oct"}
                                 </Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={[styles.inputView, {
                                 width: widthPercentageToDP(90),
                                 marginTop: 0,
@@ -97,11 +112,12 @@ const Dashboard = (props) => {
                                 flexDirection: "row",
                                 alignItems: "center"
                             }]}>
-                                <Ionicons
-                                    name="person"
-                                    size={20}
-                                    color={lightGrey}
-                                    style={{ marginLeft: widthPercentageToDP(3) }}
+                                <FastImage
+                                    source={require('../../Images/Person.png')}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                    style={[styles.vectorIcon, {
+                                        marginLeft: widthPercentageToDP(3)
+                                    }]}
                                 />
                                 <Text style={[styles.greetingTxt, {
                                     marginTop: 0,
@@ -142,14 +158,96 @@ const Dashboard = (props) => {
                         )}
                     />
 
+                    {isPopUp &&
+                        <Modal
+                            transparent={true}
+                            visible={isPopUp}
+                            animationType="slide"
+                            onRequestClose={() => console.log('close')}
+                        >
+                            <View style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flex: 1,
+                                backgroundColor: 'rgba(0,0,0,0.6)',
+                                opacity: 1
+                            }}>
+                                <View style={styles.innerModal}>
+
+                                    <Text style={[styles.findTxt, {
+                                        textAlign: "center",
+                                        fontSize: widthPercentageToDP(6)
+                                    }]}>
+                                        {"Date, Time and Persons"}
+                                    </Text>
+                                    <View style={styles.line2} />
+
+                                    <DatePicker
+                                        //modal
+                                        mode="date"
+                                        androidVariant="iosClone"
+                                        open={open}
+                                        date={date}
+                                        onConfirm={(date) => {
+                                            //setOpen(false)
+                                            setDate(date)
+                                        }}
+                                        onCancel={() => {
+                                            //setOpen(false)
+                                        }}
+                                    />
+                                    <View style={styles.row3}>
+                                        <Text style={[styles.smallTxt, {
+                                            fontFamily: "Montserrat-Medium",
+                                            fontSize: widthPercentageToDP(4.5)
+                                        }]}>
+                                            {"Total Persons :"}
+                                        </Text>
+                                        <View style={styles.row4}>
+                                            <TouchableOpacity style={styles.blueCircle}>
+                                                <Text style={styles.btnTxt}>
+                                                    {"-"}
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <Text style={[styles.smallTxt, {
+                                                fontFamily: "Montserrat-Medium",
+                                                marginTop: 0
+                                            }]}>
+                                                {"2"}
+                                            </Text>
+                                            <TouchableOpacity style={styles.blueCircle}>
+                                                <Text style={styles.btnTxt}>
+                                                    {"+"}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => setPopUp(false)}
+                                        style={[styles.btn, {
+                                            position: "absolute",
+                                            bottom: "4%"
+                                        }]}>
+                                        <Text style={styles.btnTxt}>
+                                            {"Select"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
+                    }
+
                 </View>
                 : <View style={styles.dashboardMainView}>
-                    <Text style={styles.findTxt}>
+                    <Text style={[styles.findTxt, {
+                        marginTop: heightPercentageToDP(2)
+                    }]}>
                         {"Trending"}
                     </Text>
                     <Text style={[styles.greetingTxt, {
                         color: black,
-                        fontFamily: "Montserrat-SemiBold"
+                        fontFamily: "Montserrat-SemiBold",
+                        marginTop: heightPercentageToDP(1)
                     }]}>
                         {"Recent Posts"}
                     </Text>

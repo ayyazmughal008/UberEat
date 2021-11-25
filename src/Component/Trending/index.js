@@ -42,7 +42,7 @@ const Recent = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: widthPercentageToDP(90),
-        height: heightPercentageToDP(45),
+        height: heightPercentageToDP(48),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
         //alignItems: "center",
@@ -70,13 +70,15 @@ const styles = StyleSheet.create({
         color: textBlack,
         marginTop: heightPercentageToDP(1),
         textAlign: "left",
+        marginTop: heightPercentageToDP(2.5),
         paddingLeft: widthPercentageToDP(5)
     },
     normalTxt: {
         fontSize: widthPercentageToDP(3.5),
         fontFamily: "Montserrat-Light",
         color: textBlack,
-        textAlign: "center"
+        textAlign: "center",
+        marginLeft: widthPercentageToDP(17)
     },
     semiBoldTxt: {
         fontSize: widthPercentageToDP(4),
@@ -89,13 +91,14 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-around",
-        marginTop: heightPercentageToDP(1)
+        //justifyContent: "space-around",
+        marginTop: heightPercentageToDP(2)
     },
     roundImg: {
-        width: widthPercentageToDP(8),
-        height: widthPercentageToDP(8),
-        borderRadius: widthPercentageToDP(8) / 2
+        width: widthPercentageToDP(10),
+        height: widthPercentageToDP(10),
+        borderRadius: widthPercentageToDP(10) / 2,
+        marginLeft: widthPercentageToDP(4)
     }
 })
 

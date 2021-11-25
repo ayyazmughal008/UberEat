@@ -5,4 +5,5 @@ export const lightBlue = '#5277ff',
     white = '#ffffff',
     darkGrey = '#35414f',
     lightGrey = '#9f9e9e',
+    grey2 = '#9F9E9E',
     darkBlue = '#3056ff';

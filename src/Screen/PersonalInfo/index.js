@@ -28,7 +28,7 @@ const PersonalInfo = (props) => {
                 centerComponent={{
                     text: "PERSONAL INFO", style: {
                         color: black,
-                        fontSize: widthPercentageToDP(5),
+                        fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
                     }
                 }}
