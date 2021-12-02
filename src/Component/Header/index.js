@@ -26,16 +26,28 @@ const MyHeader = (props) => {
                         <TouchableOpacity
                             onPress={props.leftClick}
                         >
-                            <FastImage
-                                source={props.userImg}
-                                resizeMode={FastImage.resizeMode.cover}
-                                style={{
-                                    width: widthPercentageToDP(10),
-                                    height: widthPercentageToDP(10),
-                                    borderRadius: widthPercentageToDP(10) / 2,
-                                    marginLeft: widthPercentageToDP(2)
-                                }}
-                            />
+                            {props.isProfile ?
+                                <FastImage
+                                    source={{ uri: 'http://108.61.209.20/' + props.profileImage }}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                    style={{
+                                        width: widthPercentageToDP(10),
+                                        height: widthPercentageToDP(10),
+                                        borderRadius: widthPercentageToDP(10) / 2,
+                                        marginLeft: widthPercentageToDP(2)
+                                    }}
+                                />
+                                : <FastImage
+                                    source={props.userImg}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                    style={{
+                                        width: widthPercentageToDP(10),
+                                        height: widthPercentageToDP(10),
+                                        borderRadius: widthPercentageToDP(10) / 2,
+                                        marginLeft: widthPercentageToDP(2)
+                                    }}
+                                />
+                            }
                         </TouchableOpacity>
                         : <View />
 
@@ -52,6 +64,7 @@ const MyHeader = (props) => {
                     name={props.iconName}
                     color={black}
                     size={30}
+                    onPress = {props.rightClick}
                 />
             }
             containerStyle={{

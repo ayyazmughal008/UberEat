@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
 import {
   AUTH_LOADING,
-  IS_FIRST
+  IS_FIRST,
+  LOGIN_DATA
 } from "./action";
 
 const initialUserState = {
   AuthLoading: false,
-  isFirst: false
+  isFirst: false,
+  login: ""
 };
 
 const userReducer = (state = initialUserState, action) => {
@@ -21,6 +23,12 @@ const userReducer = (state = initialUserState, action) => {
     return {
       ...state,
       isFirst: action.payload.isFirst
+    };
+  }
+  if (action.type === LOGIN_DATA) {
+    return {
+      ...state,
+      login: action.payload.login
     };
   }
 

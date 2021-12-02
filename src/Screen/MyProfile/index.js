@@ -1,17 +1,86 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, PermissionsAndroid, Platform, ActivityIndicator } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Fontisto from 'react-native-vector-icons/Fontisto'
+import Feather from 'react-native-vector-icons/Feather'
 import { Header } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
+import Picker from '../../Component/Picker'
+import ImagePicker from 'react-native-image-crop-picker';
+import { uploadUserImage } from '../../Redux/action'
+import { useDispatch, useSelector } from 'react-redux';
 
 const Profile = (props) => {
+    const dispatch = useDispatch()
+    const login = useSelector((state) => state.user.login);
+    const AuthLoading = useSelector((state) => state.user.AuthLoading);
+    const [pickerOption, setOption] = useState(false)
+
+    const requestCameraPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    'title': 'Myhookah',
+                    'message': 'Myhookah App needs access to your camera ' +
+                        'so you can take pictures.'
+                }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                _onLunchCamera();
+            } else {
+                console.log("Camera permission denied")
+            }
+        } catch (err) {
+            console.warn(err)
+        }
+    }
+    const _onLunchCamera = () => {
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+            cropping: true,
+        }).then(response => {
+            let data = "";
+            data = {
+                'uri': response.path,
+                'type': response.mime,
+                'name': Date.now() + '_Pecedex.png',
+            }
+            dispatch(uploadUserImage(data, login.data.id));
+            setOption(false);
+        })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    const _onLunchGallery = () => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+        }).then(image => {
+            let data = "";
+            data = {
+                'uri': image.path,
+                'type': image.mime,
+                'name': Date.now() + '_Pecedex.png',
+            }
+            console.log(data);
+            dispatch(uploadUserImage(data, login.data.id));
+            setOption(false);
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+    const toggleOption = () => {
+        setOption(!pickerOption)
+    }
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
@@ -44,19 +113,37 @@ const Profile = (props) => {
                     barStyle="dark-content"
                 />
                 <View style={styles.profileRound}>
-                    <FastImage
-                        source={require('../../Images/profile2.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.roundImg}
+                    {!login || !login.data.image ?
+                        <FastImage
+                            source={require('../../Images/profile.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.roundImg}
+                        />
+                        : <FastImage
+                            source={{ uri: 'http://108.61.209.20/' + login.data.image }}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.roundImg}
+                        />
+                    }
+                    <Feather
+                        name="edit"
+                        color={darkBlue}
+                        size={30}
+                        style={{
+                            position: "absolute",
+                            bottom: "10%",
+                            right: "5%"
+                        }}
+                        onPress={() => setOption(true)}
                     />
                 </View>
             </View>
             {/* name info */}
             <Text style={styles.profileName}>
-                {"John Martin"}
+                {login.data.name}
             </Text>
             <Text style={styles.memberTxt}>
-                {"Member since  November 2021"}
+                {login.data.member_since}
             </Text>
             {/* profile options */}
 
@@ -190,6 +277,40 @@ const Profile = (props) => {
                     />
                 </TouchableOpacity>
             </View>
+            {pickerOption &&
+                <Picker
+                    isDialogOpen={pickerOption}
+                    cancelClick={() => {
+                        if (Platform.OS === 'ios') {
+                            _onLunchCamera();
+                            //toggleOption()
+
+                        } else {
+                            toggleOption(),
+                                requestCameraPermission()
+                        }
+                    }}
+                    okClick={() => {
+                        if (Platform.OS === 'ios') {
+                            _onLunchGallery();
+                            //toggleOption()
+
+                        } else {
+                            toggleOption(),
+                                _onLunchGallery()
+                        }
+                    }}
+                    title={"Please choose an image from Camera OR Gallery "}
+                    closeBox={() => toggleOption()}
+                />
+            }
+            {AuthLoading &&
+                <ActivityIndicator
+                    size="large"
+                    color={darkBlue}
+                    style={styles.loading}
+                />
+            }
         </View>
     )
 }

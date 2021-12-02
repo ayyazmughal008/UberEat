@@ -72,9 +72,11 @@ const Settings = (props) => {
                         size={30}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.blockView, {
-                    justifyContent: "space-between"
-                }]}>
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate('PrivacyPolicy')}
+                    style={[styles.blockView, {
+                        justifyContent: "space-between"
+                    }]}>
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
@@ -86,9 +88,11 @@ const Settings = (props) => {
                         size={30}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.blockView, {
-                    justifyContent: "space-between"
-                }]}>
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate('TermCondition')}
+                    style={[styles.blockView, {
+                        justifyContent: "space-between"
+                    }]}>
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
@@ -100,9 +104,11 @@ const Settings = (props) => {
                         size={30}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.blockView, {
-                    justifyContent: "space-between"
-                }]}>
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate('AboutUs')}
+                    style={[styles.blockView, {
+                        justifyContent: "space-between"
+                    }]}>
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>

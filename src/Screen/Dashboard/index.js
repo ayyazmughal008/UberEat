@@ -16,6 +16,8 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import DatePicker from 'react-native-date-picker'
 
 const Dashboard = (props) => {
+    const dispatch = useDispatch()
+    const login = useSelector((state) => state.user.login);
     const [toggleValue, setToggleValue] = useState(1);
     const [isHide, setHide] = useState(false)
     const [isPopUp, setPopUp] = useState(false)
@@ -33,13 +35,18 @@ const Dashboard = (props) => {
                 isProfile={true}
                 leftClick={() => props.navigation.navigate('Profile')}
                 iconName={"notifications-outline"}
+                isProfile={!login.data.image ? false : true}
+                profileImage={login.data.image}
+                rightClick={() => props.navigation.navigate('Notification')}
             />
             {toggleValue == 1 ?
                 <View style={styles.dashboardMainView}>
                     <Text style={styles.greetingTxt}>
-                        {"Hello John"}
+                        {"Hello "}{login.data.name}
                     </Text>
-                    <Text style={styles.findTxt}>
+                    <Text style={[styles.findTxt, {
+                        color: darkBlue
+                    }]}>
                         {"Find Your Restaurant"}
                     </Text>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, width: "100%" }}>
@@ -138,7 +145,9 @@ const Dashboard = (props) => {
                         </Animatable.View>
 
                     }
-                    <Text style={styles.searchTxt}>
+                    <Text style={[styles.searchTxt, {
+                        color: darkBlue
+                    }]}>
                         {"Recent Search"}
                     </Text>
                     <FlatList

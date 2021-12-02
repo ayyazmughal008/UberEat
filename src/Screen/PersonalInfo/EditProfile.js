@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity , ActivityIndicator, Alert } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
@@ -12,10 +12,54 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
 
-const PersonalInfo = (props) => {
+const EditProfile = (props) => {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
     const AuthLoading = useSelector((state) => state.user.AuthLoading);
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [password, setPassword] = useState('')
+    const [ConfirmPassword, setConPassword] = useState('')
+    const [isLoading, setLoading] = useState(false)
+
+
+    const _onSubmit = () => {
+        if (!name) {
+            Alert.alert('Name Error', 'Please enter a valid name')
+            return;
+        }
+        if (!phone) {
+            Alert.alert('Name Error', 'Please enter a valid Phone no')
+            return;
+        }
+        if (!password || password.length < 8) {
+            Alert.alert('Password Error', 'Please enter password, should be 8 characters long')
+            return;
+        }
+        if (!ConfirmPassword || ConfirmPassword.length < 8) {
+            Alert.alert('Password Error', 'Please enter confirm password, should be 8 characters long')
+            return;
+        }
+        if (password !== ConfirmPassword) {
+            Alert.alert('Password Mismatch', 'Password and Confirm password should be same ')
+            return;
+        }
+
+        //registerApi()
+
+    }
+    const registerApi = async () => {
+        setLoading(true)
+        const result = await userRegister(name, email, password, phone)
+        if (result.status == 200) {
+            setLoading(false)
+            props.navigation.navigate('Login')
+        }
+    }
+
+
+
+
     return (
         <View style={styles.container}>
             <Header
@@ -30,7 +74,7 @@ const PersonalInfo = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "PERSONAL INFO", style: {
+                    text: "EDIT INFO", style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -66,13 +110,13 @@ const PersonalInfo = (props) => {
 
             <View style={[styles.profileOptionView, { marginTop: heightPercentageToDP(8) }]}>
                 <View style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Person.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
+                    <Ionicons
+                        name='person-outline'
+                        color={black}
+                        size={30}
                     />
                     <Text style={styles.blockTxt}>
-                        {login.data.name}
+                        {"John Martin"}
                     </Text>
                 </View>
                 <View style={styles.blockView}>
@@ -82,27 +126,27 @@ const PersonalInfo = (props) => {
                         size={30}
                     />
                     <Text style={styles.blockTxt}>
-                        {login.data.phone}
+                        {"+1 883 345 2321"}
                     </Text>
                 </View>
                 <View style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/mail.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
+                    <Fontisto
+                        name='email'
+                        color={black}
+                        size={30}
                     />
                     <Text style={styles.blockTxt}>
-                        {login.data.email}
+                        {"johnmartin@gmail.com"}
                     </Text>
                 </View>
                 <View style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Location.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
+                    <MaterialCommunityIcons
+                        name='map-marker-radius'
+                        color={black}
+                        size={30}
                     />
                     <Text style={styles.blockTxt}>
-                        {!login.data.country ? "" : login.data.country + ", " + !login.data.city ? "" : login.data.city}
+                        {"Barcilona, Spain"}
                     </Text>
                 </View>
             </View>
@@ -121,4 +165,4 @@ const PersonalInfo = (props) => {
     )
 }
 
-export default PersonalInfo;
+export default EditProfile;

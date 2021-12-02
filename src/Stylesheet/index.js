@@ -308,7 +308,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: offWhite,
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         marginTop: heightPercentageToDP(1),
         marginLeft: widthPercentageToDP(2)
     },
@@ -317,8 +317,30 @@ export const styles = StyleSheet.create({
         height: widthPercentageToDP(9),
         borderRadius: widthPercentageToDP(9) / 2,
         backgroundColor: darkBlue,
-        justifyContent:"center",
-        alignItems:"center"
-    }
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    topIntro: {
+        width: widthPercentageToDP(100),
+        height: heightPercentageToDP(40),
+        backgroundColor: darkBlue,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    aboutTxt: {
+        fontSize: widthPercentageToDP(6),
+        fontFamily: "Montserrat-SemiBold",
+        color: black,
+        marginTop: heightPercentageToDP(3)
+    },
 
 })

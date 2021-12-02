@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { lightGrey, offWhite, textBlack } from '../../Colors'
+import { darkBlue, lightGrey, offWhite, textBlack } from '../../Colors'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: widthPercentageToDP(4),
         fontFamily: "Montserrat-Bold",
-        color: textBlack,
+        color: darkBlue,
         marginTop: heightPercentageToDP(1),
         textAlign: "left",
         marginLeft: widthPercentageToDP(4)
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     normalTxt: {
         fontSize: widthPercentageToDP(3.5),
         fontFamily: "Montserrat-Light",
-        color: textBlack,
+        color: darkBlue,
         textAlign: "left",
         marginLeft: widthPercentageToDP(4),
     }

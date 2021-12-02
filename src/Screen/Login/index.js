@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Modal, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator } from 'react-native'
 import { styles } from '../../Stylesheet'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { black, darkBlue, lightBlue, lightGrey, white } from '../../Colors'
@@ -11,12 +11,17 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import FastImage from 'react-native-fast-image'
 import * as Animatable from 'react-native-animatable';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { userLogin } from '../../Redux/action'
 
 const Login = (props) => {
     const dispatch = useDispatch()
     const isFirst = useSelector((state) => state.user.isFirst);
+    const login = useSelector((state) => state.user.login);
+    const AuthLoading = useSelector((state) => state.user.AuthLoading);
     const [currentIndex, setIndex] = useState(0)
     const [isAnimate, setAnimate] = useState(true)
+    const [email, setEMail] = useState('')
+    const [password, setPassword] = useState('')
 
 
     useEffect(() => {
@@ -91,7 +96,18 @@ const Login = (props) => {
         }, 5000);
     }, [])
 
-
+    const _onSubmit = () => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (!reg.test(email)) {
+            Alert.alert('Email Validation', 'Please enter a valid email id')
+            return;
+        }
+        if (!password || password.length < 8) {
+            Alert.alert('Password Error', 'Please enter password, should be 8 characters long')
+            return;
+        }
+        dispatch(userLogin(email, password))
+    }
 
     if (isFirst) {
         return (
@@ -114,7 +130,7 @@ const Login = (props) => {
                         />
                         <Text style={{
                             fontSize: widthPercentageToDP(7),
-                            color: black,
+                            color: darkBlue,
                             fontFamily: "Montserrat-Bold",
                             textAlign: "center",
                             marginTop: heightPercentageToDP(3)
@@ -132,6 +148,7 @@ const Login = (props) => {
                                 placeholder="Email"
                                 placeholderTextColor={lightGrey}
                                 style={styles.inputTxt}
+                                onChangeText={(text) => setEMail(text)}
                             />
                         </View>
                         <View style={styles.inputView}>
@@ -139,6 +156,8 @@ const Login = (props) => {
                                 placeholder="Password"
                                 placeholderTextColor={lightGrey}
                                 style={styles.inputTxt}
+                                secureTextEntry={true}
+                                onChangeText={(text) => setPassword(text)}
                             />
                         </View>
                         <Text style={[styles.forgetPassTxt, { textAlign: "right" }]}>
@@ -146,7 +165,7 @@ const Login = (props) => {
                         </Text>
 
                         <TouchableOpacity
-                            onPress={() => props.navigation.navigate('Dashboard')}
+                            onPress={() => _onSubmit()}
                             style={styles.btn}
                         >
                             <Text style={[styles.btnTxt, {}]}>
@@ -162,13 +181,20 @@ const Login = (props) => {
                             </Text>
                         </Text>
                     </Animatable.View>
+                    {AuthLoading &&
+                        <ActivityIndicator
+                            size="large"
+                            color={darkBlue}
+                            style={styles.loading}
+                        />
+                    }
                 </KeyboardAwareScrollView>
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
-                                    source={require('../../Images/logo.png')}
+                                    source={require('../../Images/Goldenlogo.png')}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={{
                                         width: widthPercentageToDP(50),
@@ -223,7 +249,7 @@ const Login = (props) => {
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
-                                    source={require('../../Images/logo.png')}
+                                    source={require('../../Images/Goldenlogo.png')}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={{
                                         width: widthPercentageToDP(50),
