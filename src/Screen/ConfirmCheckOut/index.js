@@ -13,26 +13,9 @@ const OverView = (props) => {
     const dispatch = useDispatch();
     const login = useSelector((state) => state.user.login);
     const [isLoading, setLoading] = useState(false)
-    const [response, setResponse] = useState('')
     const type = props.route.params.type
-    const total_person = props.route.params.total_person
-    const date = props.route.params.date
-    const time = props.route.params.time
-    const senTime = props.route.params.senTime
-    const rest_id = props.route.params.rest_id
-    const large_image = props.route.params.large_image
-    const small_image = props.route.params.small_image
+    const response = props.route.params.response
 
-    useEffect(() => {
-        getAddUserItemApi();
-    }, [])
-
-    const getAddUserItemApi = async () => {
-        setLoading(true)
-        const result = await getUseraddUserItem(login.data.id, rest_id)
-        await setResponse(result)
-        await setLoading(false)
-    }
     const checkoutApi = async () => {
         setLoading(true)
         console.log(
@@ -62,13 +45,13 @@ const OverView = (props) => {
         <View style={styles.container}>
             <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <FastImage
-                    source={{ uri: 'http://108.61.209.20/' + large_image }}
+                    source={require('../../Images/dish1.jpg')}
                     resizeMode={FastImage.resizeMode.cover}
                     style={styles.banner}
                 >
                     <View style={{ width: "100%", height: "100%", backgroundColor: 'rgba(0,0,0,0.9)', opacity: 0.7 }} />
                     <FastImage
-                        source={{ uri: 'http://108.61.209.20/' + small_image }}
+                        source={require('../../Images/grill.jpg')}
                         resizeMode={FastImage.resizeMode.cover}
                         style={styles.sticker}
                     />
@@ -96,7 +79,7 @@ const OverView = (props) => {
                             position: "absolute",
                             right: "0%"
                         }]}>
-                            {total_person}
+                            {response.total_person}
                         </Text>
                     </View>
                     <View style={styles.row}>
@@ -112,7 +95,7 @@ const OverView = (props) => {
                             position: "absolute",
                             right: "0%"
                         }]}>
-                            {date}
+                            {response.booking_date}
                         </Text>
                     </View>
                     <View style={styles.row}>
@@ -128,7 +111,7 @@ const OverView = (props) => {
                             position: "absolute",
                             right: "0%"
                         }]}>
-                            {time}
+                            {response.booking_time}
                         </Text>
                     </View>
                     <Text style={[styles.findTxt, {
@@ -141,29 +124,10 @@ const OverView = (props) => {
                     </Text>
                     {!response ?
                         <View />
-                        : !response.items_array.length ?
-                            <View style={{
-                                width: "100%",
-                                height: heightPercentageToDP(25),
-                                alignItems: "center"
-                            }}>
-                                <FastImage
-                                    source={require('../../Images/disablehookah.png')}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%"
-                                    }}
-                                />
-                                <Text style={[styles.mediumText, {
-                                    color: lightGrey,
-                                    marginTop: heightPercentageToDP(1)
-                                }]}>
-                                    {"No Menu Item Selected"}
-                                </Text>
-                            </View>
+                        : !response.items.length ?
+                            <View />
                             : <FlatList
-                                data={response.items_array}
+                                data={response.items}
                                 contentContainerStyle={{ flexGrow: 1, }}
                                 keyExtractor={(item, index) => 'key' + index}
                                 renderItem={({ item, index }) => (
@@ -180,33 +144,31 @@ const OverView = (props) => {
                                 )}
                             />}
 
-                    {!response || !response.items_array.length ?
-                        <View />
-                        : <View style={[styles.row2, {
-                            width: "100%",
-                            marginTop: heightPercentageToDP(7)
+                    <View style={[styles.row2, {
+                        width: "100%",
+                        marginTop: heightPercentageToDP(7)
 
+                    }]}>
+                        <Text style={[styles.priceTxt, {
+                            fontSize: widthPercentageToDP(5)
                         }]}>
-                            <Text style={[styles.priceTxt, {
-                                fontSize: widthPercentageToDP(5)
-                            }]}>
-                                {"Total Price"}
-                            </Text>
-                            <Text style={[styles.price, {
-                                fontSize: widthPercentageToDP(5),
-                                color: darkBlue
-                            }]}>
-                                {response.total_price}
-                            </Text>
-                        </View>
-                    }
+                            {"Total Price"}
+                        </Text>
+                        <Text style={[styles.price, {
+                            fontSize: widthPercentageToDP(5),
+                            color: darkBlue
+                        }]}>
+                            {response.total_price}
+                        </Text>
+                    </View>
 
                     <TouchableOpacity
                         onPress={() => {
-                            checkoutApi()
+                            props.navigation.navigate('Congratulation', {
+                                type: type
+                            })
                         }}
                         style={[styles.btn, {
-                            marginTop: heightPercentageToDP(6),
                             marginBottom: heightPercentageToDP(2)
                         }]}
                     >

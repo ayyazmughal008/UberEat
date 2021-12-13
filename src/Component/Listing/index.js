@@ -11,7 +11,7 @@ const Recent = (props) => {
             onPress={props.clickHandler}
             style={styles.container}>
             <FastImage
-                source={props.dishImg}
+                source={{ uri: props.dishImg }}
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.img}
             />
@@ -24,7 +24,7 @@ const Recent = (props) => {
                     maxStars={5}
                     emptyStarColor={darkBlue}
                     fullStarColor={darkBlue}
-                    rating={3}
+                    rating={props.rating}
                     starSize={20}
                     containerStyle={{ width: "30%", marginLeft: 10 }}
                 //selectedStar={(rating) => setStars(rating)}
@@ -36,8 +36,8 @@ const Recent = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: widthPercentageToDP(33),
-        height: heightPercentageToDP(23),
+        width: widthPercentageToDP(35),
+        height: heightPercentageToDP(25),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
         alignItems: "center",

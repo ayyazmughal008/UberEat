@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, textBlack, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
@@ -7,9 +7,47 @@ import { Header, Input } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FastImage from 'react-native-fast-image'
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePassword } from '../../Redux/action'
 
 const Settings = (props) => {
+    const dispatch = useDispatch()
+    const login = useSelector((state) => state.user.login);
+    const [isLoading, setLoading] = useState(false)
+    const [oldPass, setOldPass] = useState('')
+    const [newPass, setnewPass] = useState('')
+    const [confPass, setConfPass] = useState('')
 
+    const _onSubmit = () => {
+        if (!oldPass) {
+            Alert.alert('', "please enter your old password")
+            return
+        }
+        if (!newPass) {
+            Alert.alert('', "please enter your new password")
+            return
+        }
+        if (!confPass) {
+            Alert.alert('', "please re enter your password")
+            return
+        }
+
+        if (newPass !== confPass) {
+            Alert.alert('', "New password and confirm password should be match")
+            return
+        }
+
+        updatePassApi()
+    }
+
+    const updatePassApi = async () => {
+        setLoading(true)
+        const result = await updatePassword(login.data.id, newPass, oldPass)
+        await setLoading(false)
+        if (result.status == 200) {
+            props.navigation.navigate('Profile')
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -54,6 +92,8 @@ const Settings = (props) => {
                                 style={styles.vectorIcon}
                             />
                         }
+                        secureTextEntry={true}
+                        onChangeText={text => setOldPass(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
@@ -68,6 +108,8 @@ const Settings = (props) => {
                                 style={styles.vectorIcon}
                             />
                         }
+                        secureTextEntry={true}
+                        onChangeText={text => setnewPass(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
@@ -82,11 +124,14 @@ const Settings = (props) => {
                                 style={styles.vectorIcon}
                             />
                         }
+                        secureTextEntry={true}
+                        onChangeText={text => setConfPass(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
 
                     <TouchableOpacity
+                        onPress={() => _onSubmit()}
                         style={[styles.btn, {
                             marginTop: heightPercentageToDP(4)
                         }]}
@@ -96,6 +141,13 @@ const Settings = (props) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
+                {isLoading &&
+                    <ActivityIndicator
+                        size="large"
+                        color={darkBlue}
+                        style={styles.loading}
+                    />
+                }
             </KeyboardAwareScrollView>
 
         </View>

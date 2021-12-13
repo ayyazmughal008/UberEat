@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator, Platform, ScrollView , PermissionsAndroid} from 'react-native'
 import { styles } from '../../Stylesheet'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { black, darkBlue, lightBlue, lightGrey, white } from '../../Colors'
@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image'
 import * as Animatable from 'react-native-animatable';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { userLogin } from '../../Redux/action'
+import { KeyboardAwareView } from 'react-native-keyboard-aware-view'
 
 const Login = (props) => {
     const dispatch = useDispatch()
@@ -108,87 +109,122 @@ const Login = (props) => {
         }
         dispatch(userLogin(email, password))
     }
+    useEffect(()=>{
+        askPermission()
+    },[])
+    const askPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    'title': 'Myhookah App',
+                    'message': 'Myhookah App access to your location '
+                }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+               console.log('permission granted')
+                //alert("You can use the location");
+            } else {
+                console.log("location permission denied")
+                alert("Location permission denied");
+            }
+        } catch (err) {
+            console.warn(err)
+        }
+    }
 
     if (isFirst) {
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <Animatable.View
-                        duration={2000}
-                        animation="fadeInDown"
-                    >
-                        <FastImage
-                            source={require('../../Images/logo2.png')}
-                            resizeMode={FastImage.resizeMode.contain}
-                            style={{
-                                width: widthPercentageToDP(65),
-                                height: widthPercentageToDP(65),
-                                marginTop: heightPercentageToDP(7),
-                                alignSelf: "center"
-                            }}
-                            tintColor={darkBlue}
-                        />
-                        <Text style={{
-                            fontSize: widthPercentageToDP(7),
-                            color: darkBlue,
-                            fontFamily: "Montserrat-Bold",
-                            textAlign: "center",
-                            marginTop: heightPercentageToDP(3)
-                        }}>
-                            {"BIENVENIDO"}
-                        </Text>
-                    </Animatable.View>
-
-                    <Animatable.View
-                        duration={2000}
-                        animation="fadeInUp"
-                        style={styles.bottomLoginView}>
-                        <View style={styles.inputView}>
-                            <TextInput
-                                placeholder="Email"
-                                placeholderTextColor={lightGrey}
-                                style={styles.inputTxt}
-                                onChangeText={(text) => setEMail(text)}
-                            />
-                        </View>
-                        <View style={styles.inputView}>
-                            <TextInput
-                                placeholder="Password"
-                                placeholderTextColor={lightGrey}
-                                style={styles.inputTxt}
-                                secureTextEntry={true}
-                                onChangeText={(text) => setPassword(text)}
-                            />
-                        </View>
-                        <Text style={[styles.forgetPassTxt, { textAlign: "right" }]}>
-                            {"Forgot Password?"}
-                        </Text>
-
-                        <TouchableOpacity
-                            onPress={() => _onSubmit()}
-                            style={styles.btn}
+                <KeyboardAwareView animated={true}>
+                    <ScrollView
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        //ref={(view) => { this.scrollView = view; }}
+                        style={{ flex: 0, alignSelf: 'stretch' }}
+                        keyboardShouldPersistTaps={true}
+                        automaticallyAdjustContentInsets={false}
+                        //onScroll={this.onScroll.bind(this)}
+                        scrollEventThrottle={50}
+                        onLayout={(e) => { var { x, y, width, height } = e.nativeEvent.layout; console.log(height); }}>
+                        <Animatable.View
+                            duration={2000}
+                            animation="fadeInDown"
                         >
-                            <Text style={[styles.btnTxt, {}]}>
-                                {"LOGIN"}
+                            <FastImage
+                                source={require('../../Images/logo2.png')}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{
+                                    width: widthPercentageToDP(65),
+                                    height: widthPercentageToDP(65),
+                                    marginTop: heightPercentageToDP(7),
+                                    alignSelf: "center"
+                                }}
+                                tintColor={darkBlue}
+                            />
+                            <Text style={{
+                                fontSize: widthPercentageToDP(7),
+                                color: darkBlue,
+                                fontFamily: "Montserrat-Bold",
+                                textAlign: "center",
+                                marginTop: heightPercentageToDP(3)
+                            }}>
+                                {"BIENVENIDO"}
                             </Text>
-                        </TouchableOpacity>
-                        <Text style={styles.smallTxt}>
-                            {"Don't have an account? "}
-                            <Text
-                                onPress={() => props.navigation.navigate('Signup')}
-                                style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
-                                {"Sign Up"}
+                        </Animatable.View>
+
+                        <Animatable.View
+                            duration={2000}
+                            animation="fadeInUp"
+                            style={styles.bottomLoginView}>
+                            <View style={styles.inputView}>
+                                <TextInput
+                                    placeholder="Email"
+                                    placeholderTextColor={lightGrey}
+                                    style={styles.inputTxt}
+                                    onChangeText={(text) => setEMail(text)}
+                                />
+                            </View>
+                            <View style={styles.inputView}>
+                                <TextInput
+                                    placeholder="Password"
+                                    placeholderTextColor={lightGrey}
+                                    style={styles.inputTxt}
+                                    secureTextEntry={true}
+                                    onChangeText={(text) => setPassword(text)}
+                                />
+                            </View>
+                            <Text style={[styles.forgetPassTxt, { textAlign: "right" }]}>
+                                {"Forgot Password?"}
                             </Text>
-                        </Text>
-                    </Animatable.View>
-                    {AuthLoading &&
-                        <ActivityIndicator
-                            size="large"
-                            color={darkBlue}
-                            style={styles.loading}
-                        />
-                    }
-                </KeyboardAwareScrollView>
+
+                            <TouchableOpacity
+                                onPress={() => _onSubmit()}
+                                style={styles.btn}
+                            >
+                                <Text style={[styles.btnTxt, {}]}>
+                                    {"LOGIN"}
+                                </Text>
+                            </TouchableOpacity>
+                            <Text style={styles.smallTxt}>
+                                {"Don't have an account? "}
+                                <Text
+                                    onPress={() => props.navigation.navigate('Signup')}
+                                    style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
+                                    {"Sign Up"}
+                                </Text>
+                            </Text>
+                        </Animatable.View>
+                    </ScrollView>
+
+                </KeyboardAwareView>
+                {AuthLoading &&
+                    <ActivityIndicator
+                        size="large"
+                        color={darkBlue}
+                        style={styles.loading}
+                    />
+                }
+
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>

@@ -17,6 +17,9 @@ import PrivacyPolicy from '../../Screen/PrivacyPolicy'
 import TermCondition from '../../Screen/TermCondition'
 import AboutUs from '../../Screen/AboutUs'
 import Notification from '../../Screen/Notification'
+import Favourites from '../../Screen/Favourites'
+import EditProfile from '../../Screen/PersonalInfo/EditProfile'
+import ConfirmBooking from '../../Screen/ConfirmCheckOut'
 // import navigationService from "./NavigationService";
 // export { navigationService };
 
@@ -104,6 +107,21 @@ export const NavStack2 = () => {
             <Stack.Screen
                 name="Notification"
                 component={Notification}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Favourites"
+                component={Favourites}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="EditProfile"
+                component={EditProfile}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="ConfirmBooking"
+                component={ConfirmBooking}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

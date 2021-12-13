@@ -5,27 +5,26 @@ import { black, darkBlue, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
 import { Header } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Toggle from '../../Component/Toggle'
 import { data } from './data'
-import Booking from '../../Component/Booking'
-import { getBookings } from '../../Redux/action'
+import Items from '../../Component/FavouriteItems'
 import { useDispatch, useSelector } from 'react-redux';
+import { getUserFav } from '../../Redux/action'
 
 const MyBooking = (props) => {
     const dispatch = useDispatch();
     const login = useSelector((state) => state.user.login);
+    const AuthLoading = useSelector((state) => state.user.AuthLoading);
+    const [toggleValue, setToggleValue] = useState(1);
     const [isLoading, setLoading] = useState(false)
     const [response, setResponse] = useState('')
-    const [toggleValue, setToggleValue] = useState(1);
 
     useEffect(() => {
-        bookingApi()
+        getFavApi()
     }, [])
 
-    const bookingApi = async () => {
+    const getFavApi = async () => {
         setLoading(true)
-        const result = await getBookings(login.data.id)
+        const result = await getUserFav(login.data.id)
         await setResponse(result)
         await setLoading(false)
     }
@@ -46,7 +45,7 @@ const MyBooking = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "MY BOOKINGS", style: {
+                    text: "FAVOURITES", style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -62,42 +61,23 @@ const MyBooking = (props) => {
                 }}
                 barStyle="dark-content"
             />
-            <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(4), width: widthPercentageToDP(95) }}>
-                <Toggle
-                    selectionMode={1}
-                    roundCorner={true}
-                    option1={'Upcoming'}
-                    option2={'Previous'}
-                    onSelectSwitch={(newState) => setToggleValue(newState)}
-                    selectionColor={darkBlue}
-                />
-            </View>
-            {!response ?
+            {!response || !response.data.length ?
                 <View />
                 : <FlatList
-                    data={toggleValue == 1 ?
-                        response['upcoming-bookings']
-                        : response['previous-bookings']}
+                    data={response.data}
                     style={{ marginTop: heightPercentageToDP(5) }}
                     keyExtractor={(item, index) => 'key' + index}
                     renderItem={({ item }) => (
-                        <Booking
-                            clickHandler={() => {
-                                if (toggleValue == 1) {
-                                    props.navigation.navigate('ConfirmBooking', {
-                                        type: 'checking',
-                                        response: item
-                                    })
-                                } else {
-                                    return
-                                }
-
-                            }}
+                        <Items
+                            // clickHandler={() => props.navigation.navigate('OverView', {
+                            //     type: 'checking'
+                            // })}
                             name={item.name}
-                            image={'http://108.61.209.20/' + item.small_image}
+                            image={'http://108.61.209.20/' + item['small-image']}
                         />
                     )}
-                />}
+                />
+            }
             {isLoading &&
                 <ActivityIndicator
                     size="large"

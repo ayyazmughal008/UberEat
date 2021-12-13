@@ -78,14 +78,14 @@ const PersonalInfo = (props) => {
                 <View style={styles.blockView}>
                     <Ionicons
                         name='call-outline'
-                        color={black}
+                        color={darkBlue}
                         size={30}
                     />
                     <Text style={styles.blockTxt}>
                         {login.data.phone}
                     </Text>
                 </View>
-                <View style={styles.blockView}>
+                {/* <View style={styles.blockView}>
                     <FastImage
                         source={require('../../Images/mail.png')}
                         resizeMode={FastImage.resizeMode.cover}
@@ -104,10 +104,11 @@ const PersonalInfo = (props) => {
                     <Text style={styles.blockTxt}>
                         {!login.data.country ? "" : login.data.country + ", " + !login.data.city ? "" : login.data.city}
                     </Text>
-                </View>
+                </View> */}
             </View>
 
             <TouchableOpacity
+                onPress={() => props.navigation.navigate('EditProfile')}
                 style={[styles.btn, {
                     marginTop: heightPercentageToDP(10)
                 }]}

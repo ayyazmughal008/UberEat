@@ -1,14 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Modal, BackHandler } from 'react-native'
 import { styles } from '../../Stylesheet'
 import FastImage from 'react-native-fast-image'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, white } from '../../Colors'
+import { CommonActions } from '@react-navigation/native';
 
 
 const Congratulation = (props) => {
     const type = props.route.params.type
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+    }, []);
+    const handleBackButtonClick = () => {
+        props.navigation.dispatch(CommonActions.reset({
+            index: 1,
+            routes: [
+                { name: 'Dashboard' },
+            ],
+        }));
+        return true;
+    }
+
+
+
+
+
+
     return (
         <View style={[styles.container, {
             justifyContent: "center",

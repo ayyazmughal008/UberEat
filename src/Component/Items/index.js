@@ -8,7 +8,7 @@ const Item = (props) => {
     return (
         <View style={styles.container}>
             <FastImage
-                source={props.dishImg}
+                source={{ uri: props.dishImg }}
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.img}
             />
@@ -16,27 +16,31 @@ const Item = (props) => {
                 {props.title}
             </Text>
             <View style={styles.row}>
-                <View style={[styles.circle, {
-                    marginLeft: widthPercentageToDP(2)
-                }]}>
+                <TouchableOpacity
+                    onPress={props.plusClick}
+                    style={[styles.circle, {
+                        marginLeft: widthPercentageToDP(2)
+                    }]}>
                     <Text style={[styles.operator, {
                         fontSize: widthPercentageToDP(4.7)
                     }]}>
                         {"+"}
                     </Text>
-                </View>
+                </TouchableOpacity>
                 <Text style={[styles.operator, { marginLeft: 5, marginRight: 5, color: black }]}>
-                    {"1"}
+                    {props.quantity}
                 </Text>
-                <View style={styles.circle}>
+                <TouchableOpacity
+                    onPress={props.minusClick}
+                    style={styles.circle}>
                     <Text style={[styles.operator, {
                         fontSize: widthPercentageToDP(4.7)
                     }]}>
                         {"-"}
                     </Text>
-                </View>
+                </TouchableOpacity>
                 <Text style={[styles.operator, { marginLeft: 7, color: black }]}>
-                    {"6.00 $"}
+                    {props.price}{".0 $"}
                 </Text>
             </View>
             <TouchableOpacity
@@ -58,9 +62,10 @@ const styles = StyleSheet.create({
         borderRadius: widthPercentageToDP(3),
         //alignItems: "center",
         padding: 2,
-        marginRight: widthPercentageToDP(3),
-        marginLeft: widthPercentageToDP(3),
-        marginTop: heightPercentageToDP(3),
+        marginRight: widthPercentageToDP(1),
+        marginLeft: widthPercentageToDP(1),
+        marginTop: heightPercentageToDP(2),
+        marginBottom: heightPercentageToDP(1),
         //alignSelf: "center",
         shadowColor: '#000000',
         shadowOffset: {

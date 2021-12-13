@@ -26,7 +26,7 @@ const MyHeader = (props) => {
                         <TouchableOpacity
                             onPress={props.leftClick}
                         >
-                            {props.isProfile ?
+                            {props.profileImage ?
                                 <FastImage
                                     source={{ uri: 'http://108.61.209.20/' + props.profileImage }}
                                     resizeMode={FastImage.resizeMode.cover}
@@ -60,12 +60,17 @@ const MyHeader = (props) => {
                 }
             }}
             rightComponent={
-                <Icon
-                    name={props.iconName}
-                    color={black}
-                    size={30}
-                    onPress = {props.rightClick}
-                />
+                <TouchableOpacity onPress={props.rightClick}>
+                    <FastImage
+                        source={require('../../Images/Notification.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={{
+                            width: widthPercentageToDP(10),
+                            height: widthPercentageToDP(10)
+                        }}
+                    />
+                </TouchableOpacity>
+
             }
             containerStyle={{
                 backgroundColor: white,

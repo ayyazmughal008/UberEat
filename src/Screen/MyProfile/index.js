@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, PermissionsAndroid, Platform, ActivityIndicator } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
-import { black, darkBlue, white } from '../../Colors'
+import { black, darkBlue, gold1, gold2, gold3, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Feather from 'react-native-vector-icons/Feather'
@@ -11,6 +11,9 @@ import Picker from '../../Component/Picker'
 import ImagePicker from 'react-native-image-crop-picker';
 import { uploadUserImage } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '../../Redux/action'
+import Fontisto from 'react-native-vector-icons/Fontisto'
+import LinearGradient from 'react-native-linear-gradient'
 
 const Profile = (props) => {
     const dispatch = useDispatch()
@@ -79,8 +82,6 @@ const Profile = (props) => {
         setOption(!pickerOption)
     }
 
-
-
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
@@ -112,7 +113,11 @@ const Profile = (props) => {
                     }}
                     barStyle="dark-content"
                 />
-                <View style={styles.profileRound}>
+                <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    colors={[gold1, gold2, gold3]}
+                    style={styles.profileRound}>
                     {!login || !login.data.image ?
                         <FastImage
                             source={require('../../Images/profile.png')}
@@ -136,7 +141,7 @@ const Profile = (props) => {
                         }}
                         onPress={() => setOption(true)}
                     />
-                </View>
+                </LinearGradient>
             </View>
             {/* name info */}
             <Text style={styles.profileName}>
@@ -192,6 +197,29 @@ const Profile = (props) => {
                         }}
                     />
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate('Favourites')}
+                    style={styles.blockView}>
+                    <FastImage
+                        source={require('../../Images/heart_blue.png')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={styles.vectorIcon}
+                    />
+                    <Text style={styles.blockTxt}>
+                        {"Favourites Restaurant"}
+                    </Text>
+                    <MaterialIcons
+                        name="keyboard-arrow-right"
+                        color={black}
+                        size={30}
+                        style={{
+                            position: "absolute",
+                            right: "0%",
+                            top: "25%"
+                        }}
+                    />
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.blockView}>
                     <FastImage
                         source={require('../../Images/Group_5170.png')}
@@ -256,7 +284,9 @@ const Profile = (props) => {
                         }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.blockView}>
+                <TouchableOpacity
+                    onPress={() => dispatch(logOut())}
+                    style={styles.blockView}>
                     <FastImage
                         source={require('../../Images/Group_4090.png')}
                         resizeMode={FastImage.resizeMode.cover}

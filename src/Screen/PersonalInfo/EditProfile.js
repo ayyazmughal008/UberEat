@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity , ActivityIndicator, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
-import { black, darkBlue, white } from '../../Colors'
+import { black, darkBlue, textBlack, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
-import { Header } from 'react-native-elements'
+import { Header, Input } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Fontisto from 'react-native-vector-icons/Fontisto'
 import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
+import { updateUserInfo } from '../../Redux/action'
 
 const EditProfile = (props) => {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
     const AuthLoading = useSelector((state) => state.user.AuthLoading);
-    const [name, setName] = useState('')
-    const [phone, setPhone] = useState('')
-    const [password, setPassword] = useState('')
-    const [ConfirmPassword, setConPassword] = useState('')
+    const [name, setName] = useState(login.data.name)
+    const [phone, setPhone] = useState(login.data.phone)
     const [isLoading, setLoading] = useState(false)
-
 
     const _onSubmit = () => {
         if (!name) {
@@ -32,30 +27,9 @@ const EditProfile = (props) => {
             Alert.alert('Name Error', 'Please enter a valid Phone no')
             return;
         }
-        if (!password || password.length < 8) {
-            Alert.alert('Password Error', 'Please enter password, should be 8 characters long')
-            return;
-        }
-        if (!ConfirmPassword || ConfirmPassword.length < 8) {
-            Alert.alert('Password Error', 'Please enter confirm password, should be 8 characters long')
-            return;
-        }
-        if (password !== ConfirmPassword) {
-            Alert.alert('Password Mismatch', 'Password and Confirm password should be same ')
-            return;
-        }
-
-        //registerApi()
-
+        dispatch(updateUserInfo(login.data.id, name, phone))
     }
-    const registerApi = async () => {
-        setLoading(true)
-        const result = await userRegister(name, email, password, phone)
-        if (result.status == 200) {
-            setLoading(false)
-            props.navigation.navigate('Login')
-        }
-    }
+
 
 
 
@@ -109,49 +83,42 @@ const EditProfile = (props) => {
             </View>
 
             <View style={[styles.profileOptionView, { marginTop: heightPercentageToDP(8) }]}>
-                <View style={styles.blockView}>
-                    <Ionicons
-                        name='person-outline'
-                        color={black}
-                        size={30}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"John Martin"}
-                    </Text>
-                </View>
-                <View style={styles.blockView}>
-                    <Ionicons
-                        name='call-outline'
-                        color={black}
-                        size={30}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"+1 883 345 2321"}
-                    </Text>
-                </View>
-                <View style={styles.blockView}>
-                    <Fontisto
-                        name='email'
-                        color={black}
-                        size={30}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"johnmartin@gmail.com"}
-                    </Text>
-                </View>
-                <View style={styles.blockView}>
-                    <MaterialCommunityIcons
-                        name='map-marker-radius'
-                        color={black}
-                        size={30}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Barcilona, Spain"}
-                    </Text>
-                </View>
+                <Input
+                    placeholder='Name'
+                    placeholderTextColor={textBlack}
+                    inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                    leftIcon={
+                        <FastImage
+                            source={require('../../Images/Person.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                    }
+                    value={name}
+                    onChangeText={text => setName(text)}
+                    containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
+                //style = {styles.inputTxt}
+                />
+                <Input
+                    placeholder='Phone no'
+                    placeholderTextColor={textBlack}
+                    inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                    leftIcon={
+                        <Ionicons
+                            name='call-outline'
+                            color={darkBlue}
+                            size={30}
+                        />
+                    }
+                    value={phone}
+                    onChangeText={text => setPhone(text)}
+                    containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black }}
+                //style = {styles.inputTxt}
+                />
             </View>
 
             <TouchableOpacity
+                onPress={() => _onSubmit()}
                 style={[styles.btn, {
                     marginTop: heightPercentageToDP(10)
                 }]}
@@ -160,6 +127,14 @@ const EditProfile = (props) => {
                     {"Edit Info"}
                 </Text>
             </TouchableOpacity>
+
+            {AuthLoading &&
+                <ActivityIndicator
+                    size="large"
+                    color={darkBlue}
+                    style={styles.loading}
+                />
+            }
 
         </View>
     )

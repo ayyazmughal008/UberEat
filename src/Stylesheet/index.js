@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
     bottomLoginView: {
         width: widthPercentageToDP(80),
         height: heightPercentageToDP(45),
-        position: "absolute",
-        bottom: "0%",
+        // position: "absolute",
+        // bottom: "0%",
         alignSelf: "center",
+        marginTop: heightPercentageToDP(5)
         //backgroundColor:"red"
     },
     inputView: {
@@ -130,7 +131,7 @@ export const styles = StyleSheet.create({
     },
     bottomToggle: {
         position: "absolute",
-        bottom: "4%",
+        bottom: "1%",
         width: "100%"
     },
     banner: {
@@ -255,6 +256,23 @@ export const styles = StyleSheet.create({
         borderTopLeftRadius: widthPercentageToDP(15),
         borderTopRightRadius: widthPercentageToDP(15)
     },
+    modalBottom3: {
+        width: widthPercentageToDP(100),
+        flex: 0,
+        position: "absolute",
+        bottom: "0%",
+        backgroundColor: offWhite,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 5,
+        shadowOpacity: 1.0,
+        elevation: 4,
+        borderTopLeftRadius: widthPercentageToDP(15),
+        borderTopRightRadius: widthPercentageToDP(15)
+    },
     line: {
         width: widthPercentageToDP(15),
         height: heightPercentageToDP(0.5),
@@ -274,7 +292,7 @@ export const styles = StyleSheet.create({
         fontFamily: "Montserrat-SemiBold",
     },
     rectangle: {
-        width: widthPercentageToDP(45),
+        width: widthPercentageToDP(43),
         height: heightPercentageToDP(22),
         justifyContent: "center",
         alignItems: "center",
@@ -284,7 +302,7 @@ export const styles = StyleSheet.create({
     },
     innerModal: {
         width: widthPercentageToDP(90),
-        height: heightPercentageToDP(60),
+        height: heightPercentageToDP(70),
         borderRadius: widthPercentageToDP(5),
         backgroundColor: white,
         alignItems: "center"
@@ -299,7 +317,7 @@ export const styles = StyleSheet.create({
         width: "80%",
         flexDirection: "row",
         alignItems: "center",
-        marginTop: heightPercentageToDP(7),
+        marginTop: heightPercentageToDP(2),
         alignSelf: "center"
     },
     row4: {
@@ -342,5 +360,36 @@ export const styles = StyleSheet.create({
         color: black,
         marginTop: heightPercentageToDP(3)
     },
+    row5: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 10,
+        width: "100%",
+    },
+    modalBottom2: {
+        width: widthPercentageToDP(100),
+        height: heightPercentageToDP(35),
+        backgroundColor: white,
+        borderTopRightRadius: widthPercentageToDP(4),
+        borderTopLeftRadius: widthPercentageToDP(4),
+        position: "absolute",
+        bottom: "0%"
+    },
+    timeBox: {
+        width: widthPercentageToDP(24),
+        height: heightPercentageToDP(8),
+        borderWidth: widthPercentageToDP(0.1),
+        borderTopColor: black,
+        marginLeft: widthPercentageToDP(0.5),
+        marginRight: widthPercentageToDP(0.5),
+        marginTop: heightPercentageToDP(1)
+    },
+    topBox: {
+        width: widthPercentageToDP(24),
+        height: heightPercentageToDP(4),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: darkBlue
+    }
 
 })

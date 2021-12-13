@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { black } from '../../Colors'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 
 const Booking = (props) => {
     return (
@@ -18,14 +18,15 @@ const Booking = (props) => {
             <Text style={styles.blockTxt}>
                 {props.name}
             </Text>
-            <MaterialIcons
-                name="keyboard-arrow-right"
-                color={black}
-                size={30}
+            <FastImage
+                source={require('../../Images/heart.png')}
+                resizeMode={FastImage.resizeMode.cover}
                 style={{
+                    width: widthPercentageToDP(13),
+                    height: widthPercentageToDP(13),
                     position: "absolute",
                     right: "0%",
-                    top: "37%"
+                    top: "25%"
                 }}
             />
         </TouchableOpacity>
