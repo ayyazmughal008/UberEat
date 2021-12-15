@@ -5,7 +5,9 @@ import {
   LOGIN_DATA,
   LOG_OUT,
   COUNTRY_NAME,
-  MAKE_FAV
+  MAKE_FAV,
+  POPUP,
+  ERROR_MESSAGE
 } from "./action";
 
 const initialUserState = {
@@ -13,7 +15,9 @@ const initialUserState = {
   isFirst: false,
   login: "",
   countryData: [],
-  makeFav: ""
+  makeFav: "",
+  popUp: false,
+  errorMessage: ""
 };
 
 const userReducer = (state = initialUserState, action) => {
@@ -23,13 +27,27 @@ const userReducer = (state = initialUserState, action) => {
       AuthLoading: false,
       login: "",
       countryData: [],
-      makeFav: ""
+      makeFav: "",
+      popUp: false,
+      errorMessage: ""
     };
   }
   if (action.type === AUTH_LOADING) {
     return {
       ...state,
       AuthLoading: action.payload
+    };
+  }
+  if (action.type === POPUP) {
+    return {
+      ...state,
+      popUp: action.payload
+    };
+  }
+  if (action.type === ERROR_MESSAGE) {
+    return {
+      ...state,
+      errorMessage: action.payload.errorMessage
     };
   }
   if (action.type === IS_FIRST) {

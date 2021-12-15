@@ -8,10 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import { userRegister } from '../../Redux/action'
+import { userRegister, dispatchFunc, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
 
 
 const Signup = (props) => {
+    const dispatch = useDispatch()
+    const popUp = useSelector((state) => state.user.popUp);
+    const errorMessage = useSelector((state) => state.user.errorMessage);
     const [name, setName] = useState('')
     const [email, setEMail] = useState('')
     const [phone, setPhone] = useState('')
@@ -56,9 +59,15 @@ const Signup = (props) => {
     const registerApi = async () => {
         setLoading(true)
         const result = await userRegister(name, email, password, phone)
+        await setLoading(false)
         if (result.status == 200) {
-            setLoading(false)
+            dispatch(dispatchFuncOn())
+            dispatch(dispatchErrorMessage(result.message))
             props.navigation.navigate('Login')
+        } else if (result.status == 401) {
+            console.log('hiii')
+            dispatch(dispatchFuncOn())
+            dispatch(dispatchErrorMessage(result.message))
         }
     }
 

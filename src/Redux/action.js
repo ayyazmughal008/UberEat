@@ -1,5 +1,7 @@
 import { Alert } from 'react-native'
 export const AUTH_LOADING = "AUTH_LOADING";
+export const POPUP = "POPUP";
+export const ERROR_MESSAGE = "ERROR_MESSAGE";
 export const IS_FIRST = "IS_FIRST";
 export const LOG_OUT = "LOG_OUT";
 export const LOGIN_DATA = "LOGIN_DATA";
@@ -25,6 +27,27 @@ const baseUrl = 'http://108.61.209.20/api/',
     userPassword = 'user-password',
     register = 'register';
 const country_url = "https://countriesnow.space/api/v0.1/countries/positions"
+
+export const dispatchFunc = () => {
+    return dispatch => {
+        dispatch({ type: POPUP, payload: false })
+    }
+}
+export const dispatchFuncOn = () => {
+    return dispatch => {
+        dispatch({ type: POPUP, payload: true })
+    }
+}
+export const dispatchErrorMessage = (value) => {
+    return dispatch => {
+        dispatch({
+            type: ERROR_MESSAGE,
+            payload: {
+                errorMessage: value
+            }
+        })
+    }
+}
 
 export const logOut = () => {
     return dispatch => {
@@ -67,9 +90,23 @@ export const userLogin = (email, password) => {
                         }
                     })
                 } else if (json.status == 401) {
-                    Alert.alert("", json.message)
+                    dispatch({ type: POPUP, payload: true });
+                    dispatch({
+                        type: ERROR_MESSAGE,
+                        payload: {
+                            errorMessage: json.message
+                        }
+                    });
+                    //Alert.alert("", json.message)
                 } else {
-                    Alert.alert("", json.message)
+                    dispatch({ type: POPUP, payload: true });
+                    dispatch({
+                        type: ERROR_MESSAGE,
+                        payload: {
+                            errorMessage: json.message
+                        }
+                    });
+                    //Alert.alert("", json.message)
                 }
 
             })
@@ -101,7 +138,7 @@ export const userRegister = async (name, email, password, phone) => {
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
-                    Alert.alert("", json.message)
+                    //Alert.alert("", json.message)
                     return json
                 }
             })
@@ -170,7 +207,7 @@ export const userPrivacyPolicy = async (user_id) => {
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
-                    Alert.alert("", json.message)
+                    //Alert.alert("", json.message)
                     return json
                 }
             })
@@ -201,7 +238,7 @@ export const userTermsCondition = async (user_id) => {
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
-                    Alert.alert("", json.message)
+                    //Alert.alert("", json.message)
                     return json
                 }
             })
@@ -232,7 +269,7 @@ export const userAboutUs = async (user_id) => {
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
-                    Alert.alert("", json.message)
+                    //Alert.alert("", json.message)
                     return json
                 }
             })
@@ -582,7 +619,7 @@ export const updatePassword = async (user_id, password, oldPassword) => {
             .then(json => {
                 console.log(json)
                 if (json.status == 200) {
-                    Alert.alert('',json.message)
+                    Alert.alert('', json.message)
                     return json
                 } else if (json.status == 401) {
                     Alert.alert("", json.message)

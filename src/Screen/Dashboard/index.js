@@ -75,7 +75,7 @@ const Dashboard = (props) => {
     const onRegionChangeComplete = async (region) => {
         setLoading(true)
         const data = await findPlaceFromLatLng(`${region.latitude},${region.longitude}`);
-        if (data.status === 'ZERO_RESULTS') {
+        if (data.status === 'ZERO_RESULTS' || data.status === 'OK' ) {
             let getStrings = await data.plus_code.compound_code.slice(9);
             let splitString = await getStrings.split(', ')
             await setCity(splitString[0])

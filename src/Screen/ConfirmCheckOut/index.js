@@ -15,6 +15,9 @@ const OverView = (props) => {
     const [isLoading, setLoading] = useState(false)
     const type = props.route.params.type
     const response = props.route.params.response
+    const showBtn = props.route.params.showBtn
+    const large_image = props.route.params.large_image
+    const small_image = props.route.params.small_image
 
     const checkoutApi = async () => {
         setLoading(true)
@@ -45,13 +48,13 @@ const OverView = (props) => {
         <View style={styles.container}>
             <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <FastImage
-                    source={require('../../Images/dish1.jpg')}
+                    source={{ uri: 'http://108.61.209.20/' + large_image }}
                     resizeMode={FastImage.resizeMode.cover}
                     style={styles.banner}
                 >
                     <View style={{ width: "100%", height: "100%", backgroundColor: 'rgba(0,0,0,0.9)', opacity: 0.7 }} />
                     <FastImage
-                        source={require('../../Images/grill.jpg')}
+                        source={{ uri: 'http://108.61.209.20/' + small_image }}
                         resizeMode={FastImage.resizeMode.cover}
                         style={styles.sticker}
                     />
@@ -162,20 +165,26 @@ const OverView = (props) => {
                         </Text>
                     </View>
 
-                    <TouchableOpacity
-                        onPress={() => {
-                            props.navigation.navigate('Congratulation', {
-                                type: type
-                            })
-                        }}
-                        style={[styles.btn, {
-                            marginBottom: heightPercentageToDP(2)
-                        }]}
-                    >
-                        <Text style={styles.btnTxt}>
-                            {type === 'checking' ? "I'M COMING" : "Checkout"}
-                        </Text>
-                    </TouchableOpacity>
+                    {!showBtn ?
+                        <View
+                            style={{
+                                marginTop: heightPercentageToDP(2)
+                            }}
+                        />
+                        : <TouchableOpacity
+                            onPress={() => {
+                                props.navigation.navigate('Congratulation', {
+                                    type: type
+                                })
+                            }}
+                            style={[styles.btn, {
+                                marginBottom: heightPercentageToDP(2)
+                            }]}
+                        >
+                            <Text style={styles.btnTxt}>
+                                {type === 'checking' ? "I'M COMING" : "Checkout"}
+                            </Text>
+                        </TouchableOpacity>}
                 </View>
                 {isLoading &&
                     <ActivityIndicator

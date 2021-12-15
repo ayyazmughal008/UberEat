@@ -86,10 +86,19 @@ const MyBooking = (props) => {
                                 if (toggleValue == 1) {
                                     props.navigation.navigate('ConfirmBooking', {
                                         type: 'checking',
-                                        response: item
+                                        response: item,
+                                        showBtn: true,
+                                        large_image: item.large_image,
+                                        small_image: item.small_image
                                     })
                                 } else {
-                                    return
+                                    props.navigation.navigate('ConfirmBooking', {
+                                        type: 'checking',
+                                        response: item,
+                                        showBtn: false,
+                                        large_image: item.large_image,
+                                        small_image: item.small_image
+                                    })
                                 }
 
                             }}

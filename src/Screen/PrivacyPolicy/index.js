@@ -6,13 +6,13 @@ import { styles } from '../../Stylesheet'
 import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
-import { userPrivacyPolicy } from '../../Redux/action'
+import { userPrivacyPolicy, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
 
 
-const Settings = (props) => {
+const PrivacyPolicy = (props) => {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(true)
     const [response, setResponse] = useState('')
 
     useEffect(() => {
@@ -21,9 +21,14 @@ const Settings = (props) => {
 
     const getPolicy = async () => {
         setLoading(true)
-        const result = userPrivacyPolicy(login.data.id)
+        const result = await userPrivacyPolicy(login.data.id)
         await setResponse(result)
         await setLoading(false)
+        if (result.status == 401) {
+            console.log('hi')
+            dispatch(dispatchFuncOn())
+            dispatch(dispatchErrorMessage(result.message))
+        }
     }
 
 
@@ -77,4 +82,4 @@ const Settings = (props) => {
     )
 }
 
-export default Settings
+export default PrivacyPolicy

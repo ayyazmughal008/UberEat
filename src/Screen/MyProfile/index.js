@@ -206,7 +206,7 @@ const Profile = (props) => {
                         style={styles.vectorIcon}
                     />
                     <Text style={styles.blockTxt}>
-                        {"Favourites Restaurant"}
+                        {"Favourites Restaurants"}
                     </Text>
                     <MaterialIcons
                         name="keyboard-arrow-right"

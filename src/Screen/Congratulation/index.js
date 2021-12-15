@@ -10,12 +10,12 @@ import { CommonActions } from '@react-navigation/native';
 
 const Congratulation = (props) => {
     const type = props.route.params.type
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-        };
-    }, []);
+    // useEffect(() => {
+    //     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    //     return () => {
+    //         BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+    //     };
+    // }, []);
     const handleBackButtonClick = () => {
         props.navigation.dispatch(CommonActions.reset({
             index: 1,
@@ -55,6 +55,19 @@ const Congratulation = (props) => {
             }]}>
                 {type === 'checking' ? "Thank you for notifying us. Your table and food will be ready before you come" : "Thank you for the reservation, Enjoy you time"}
             </Text>
+            <TouchableOpacity
+                onPress={() => {
+                    handleBackButtonClick()
+                }}
+                style={[styles.btn, {
+                    position: "absolute",
+                    bottom: "3%"
+                }]}
+            >
+                <Text style={styles.btnTxt}>
+                    {"Continue"}
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }

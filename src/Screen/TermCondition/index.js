@@ -6,7 +6,7 @@ import { styles } from '../../Stylesheet'
 import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
-import { userTermsCondition } from '../../Redux/action'
+import { userTermsCondition, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
 
 
 const Settings = (props) => {
@@ -21,9 +21,14 @@ const Settings = (props) => {
 
     const getPolicy = async () => {
         setLoading(true)
-        const result = userTermsCondition(login.data.id)
+        const result = await userTermsCondition(login.data.id)
         setResponse(result)
         setLoading(false)
+        if (result.status == 401) {
+            console.log('hi')
+            dispatch(dispatchFuncOn())
+            dispatch(dispatchErrorMessage(result.message))
+        }
     }
 
 
