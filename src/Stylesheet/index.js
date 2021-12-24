@@ -1,6 +1,13 @@
 import { StyleSheet } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { white, darkBlue, lightBlue, textBlack, lightGrey, black, offWhite } from '../Colors'
+
+export const CELL_SIZE = 50;
+export const CELL_BORDER_RADIUS = 15;
+export const DEFAULT_CELL_BG_COLOR = '#fff';
+export const NOT_EMPTY_CELL_BG_COLOR = '#000000';
+export const ACTIVE_CELL_BG_COLOR = '#f7fafe';
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -390,6 +397,36 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: darkBlue
-    }
+    },
+    codeFieldRoot: {
+        marginTop: 20
+    },
+    cell: {
+        marginHorizontal: 8,
+        height: CELL_SIZE,
+        width: CELL_SIZE,
+        lineHeight: CELL_SIZE - 5,
+        ...Platform.select({ web: { lineHeight: 65 } }),
+        fontSize: 30,
+        textAlign: 'center',
+        borderRadius: CELL_BORDER_RADIUS,
+        color: '#000',
+        backgroundColor: '#fff',
+
+        // IOS
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        // Android
+        elevation: 5,
+    },
+    focusCell: {
+        borderColor: '#000',
+    },
 
 })

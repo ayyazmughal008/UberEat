@@ -7,7 +7,8 @@ import {
   COUNTRY_NAME,
   MAKE_FAV,
   POPUP,
-  ERROR_MESSAGE
+  ERROR_MESSAGE,
+  OTP
 } from "./action";
 
 const initialUserState = {
@@ -17,7 +18,8 @@ const initialUserState = {
   countryData: [],
   makeFav: "",
   popUp: false,
-  errorMessage: ""
+  errorMessage: "",
+  otpData: ""
 };
 
 const userReducer = (state = initialUserState, action) => {
@@ -29,7 +31,7 @@ const userReducer = (state = initialUserState, action) => {
       countryData: [],
       makeFav: "",
       popUp: false,
-      errorMessage: ""
+      errorMessage: "",
     };
   }
   if (action.type === AUTH_LOADING) {
@@ -74,12 +76,21 @@ const userReducer = (state = initialUserState, action) => {
       makeFav: action.payload.makeFav
     };
   }
-
   return state;
 };
 
+const otpReducer = (state = initialUserState, action) => {
+  if (action.type === OTP) {
+    return {
+      ...state,
+      otpData: action.payload.otpData
+    };
+  }
+  return state
+}
 
 const reducer = combineReducers({
   user: userReducer,
+  otp: otpReducer
 });
 export default reducer;

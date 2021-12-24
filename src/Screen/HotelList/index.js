@@ -51,84 +51,106 @@ const HotelList = (props) => {
                             {!result.country ? "" : result.country + ", " + !result.city ? "" : result.city}
                         </Text>
 
-                        <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: heightPercentageToDP(3) }}>
-                            <Text style={[styles.findTxt, {
-                                textAlign: "left",
-                                fontFamily: "Montserrat-SemiBold",
-                                fontSize: widthPercentageToDP(4.5),
-                            }]}>
-                                {"Favorite Restaurants"}
-                            </Text>
-                            <Text style={[styles.findTxt, {
-                                textAlign: "left",
-                                fontFamily: "Montserrat-Light",
-                                fontSize: widthPercentageToDP(4),
-                                color: darkBlue
-                            }]}>
-                                {"See More"}
-                            </Text>
-                        </View>
+                        {!result.listing_favourite.length ?
+                            <View />
+                            : <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: heightPercentageToDP(3) }}>
+                                <Text style={[styles.findTxt, {
+                                    textAlign: "left",
+                                    fontFamily: "Montserrat-SemiBold",
+                                    fontSize: widthPercentageToDP(4.5),
+                                }]}>
+                                    {"Favorite Restaurants"}
+                                </Text>
+                                <Text style={[styles.findTxt, {
+                                    textAlign: "left",
+                                    fontFamily: "Montserrat-Light",
+                                    fontSize: widthPercentageToDP(4),
+                                    color: darkBlue
+                                }]}>
+                                    {"See More"}
+                                </Text>
+                            </View>
+                        }
 
-                        <FlatList
-                            data={result.listing}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            style={{ marginTop: heightPercentageToDP(2), }}
-                            keyExtractor={(item, index) => 'key' + index}
-                            renderItem={({ item }) => (
-                                <Listing
-                                    dishImg={'http://108.61.209.20/' + item.large_image}
-                                    title={item.name}
-                                    clickHandler={() => props.navigation.navigate('HotelDetail', {
-                                        contacts: item.contact,
-                                        menu: item.menu,
-                                        name: item.name,
-                                        country: item.country,
-                                        city: item.city,
-                                        rating: item.averageRating,
-                                        id: item.id,
-                                        large_image: item.large_image,
-                                        small_image: item.small_image,
-                                        total_person: result.total_person,
-                                        date: result.date,
-                                    })}
-                                    rating={item.averageRating}
-                                />
-                            )}
-                        />
+                        {!result.listing_favourite.length ?
+                            <View />
+                            : <FlatList
+                                data={result.listing_favourite}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                style={{ marginTop: heightPercentageToDP(1), }}
+                                keyExtractor={(item, index) => 'key' + index}
+                                renderItem={({ item }) => (
+                                    <Listing
+                                        dishImg={'http://108.61.209.20/' + item.large_image}
+                                        title={item.name}
+                                        clickHandler={() => props.navigation.navigate('HotelDetail', {
+                                            contacts: item.contact,
+                                            menu: item.menu,
+                                            name: item.name,
+                                            country: item.country,
+                                            city: item.city,
+                                            rating: item.averageRating,
+                                            id: item.id,
+                                            large_image: item.large_image,
+                                            small_image: item.small_image,
+                                            total_person: result.total_person,
+                                            date: result.date,
+                                        })}
+                                        rating={item.averageRating}
+                                    />
+                                )}
+                            />}
 
-                        {/* <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: heightPercentageToDP(3) }}>
-                            <Text style={[styles.findTxt, {
-                                textAlign: "left",
-                                fontFamily: "Montserrat-SemiBold",
-                                fontSize: widthPercentageToDP(4.5),
-                            }]}>
-                                {"Popular Restaurants"}
-                            </Text>
-                            <Text style={[styles.findTxt, {
-                                textAlign: "left",
-                                fontFamily: "Montserrat-Light",
-                                fontSize: widthPercentageToDP(4),
-                                color: darkBlue
-                            }]}>
-                                {"See More"}
-                            </Text>
-                        </View> */}
-                        {/* <FlatList
-                            data={data}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            style={{ marginTop: heightPercentageToDP(2), }}
-                            keyExtractor={(item, index) => 'key' + index}
-                            renderItem={({ item }) => (
-                                <Listing
-                                    dishImg={item.image}
-                                    title={item.country}
-                                    title={item.name}
-                                />
-                            )}
-                        /> */}
-
+                        {!result.listing.lenght ?
+                            <View />
+                            : <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: heightPercentageToDP(3) }}>
+                                <Text style={[styles.findTxt, {
+                                    textAlign: "left",
+                                    fontFamily: "Montserrat-SemiBold",
+                                    fontSize: widthPercentageToDP(4.5),
+                                }]}>
+                                    {"Popular Restaurants"}
+                                </Text>
+                                <Text style={[styles.findTxt, {
+                                    textAlign: "left",
+                                    fontFamily: "Montserrat-Light",
+                                    fontSize: widthPercentageToDP(4),
+                                    color: darkBlue
+                                }]}>
+                                    {"See More"}
+                                </Text>
+                            </View>}
+                        {!result.listing.lenght ?
+                            <View />
+                            : <FlatList
+                                data={result.listing}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                style={{ marginTop: heightPercentageToDP(2), }}
+                                keyExtractor={(item, index) => 'key' + index}
+                                renderItem={({ item }) => (
+                                    <Listing
+                                        dishImg={'http://108.61.209.20/' + item.large_image}
+                                        title={item.name}
+                                        clickHandler={() => props.navigation.navigate('HotelDetail', {
+                                            contacts: item.contact,
+                                            menu: item.menu,
+                                            name: item.name,
+                                            country: item.country,
+                                            city: item.city,
+                                            rating: item.averageRating,
+                                            id: item.id,
+                                            large_image: item.large_image,
+                                            small_image: item.small_image,
+                                            total_person: result.total_person,
+                                            date: result.date,
+                                        })}
+                                        rating={item.averageRating}
+                                    />
+                                )}
+                            />}
+                        <View style={{ marginTop: heightPercentageToDP(2) }} />
                     </View>
                     : <MapView
                         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
@@ -144,22 +166,24 @@ const HotelList = (props) => {
                         }}
                         customMapStyle={mapStyle}
                     >
-                        {result.map.map((item, index) => {
-                            return (
-                                <Marker
-                                    key={"unique" + index}
-                                    coordinate={{
-                                        latitude: parseFloat(item.latitude),
-                                        longitude: parseFloat(item.longitude),
-                                    }}
-                                    image={require('../../Images/MapLation.png')}
-                                    onPress={() => {
-                                        setPopUp(true),
-                                            setResponse(item)
-                                    }}
-                                />
-                            )
-                        })}
+                        {!result.map.length ?
+                            <View />
+                            : result.map.map((item, index) => {
+                                return (
+                                    <Marker
+                                        key={"unique" + index}
+                                        coordinate={{
+                                            latitude: parseFloat(item.latitude),
+                                            longitude: parseFloat(item.longitude),
+                                        }}
+                                        image={require('../../Images/MapLation.png')}
+                                        onPress={() => {
+                                            setPopUp(true),
+                                                setResponse(item)
+                                        }}
+                                    />
+                                )
+                            })}
                     </MapView>
                 }
                 {isPopUp &&

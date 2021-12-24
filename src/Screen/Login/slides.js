@@ -2,7 +2,7 @@ export const slides = [
     {
         image: require('../../Images/slide_1.png'),
         title: "¿Dónde Vamos?",
-        description: "Hacemos que sea sencillo de encontrar restaurants cerca de ti"
+        description: "Hacemos que sea sencillo encontrar el plan perfecto."
     },
     {
         image: require('../../Images/slide_2.png'),

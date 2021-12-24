@@ -10,7 +10,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['user'],
-  blacklist: ['login']
+  blacklist: ['otp']
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 const Store = createStore(persistedReducer, applyMiddleware(thunk));

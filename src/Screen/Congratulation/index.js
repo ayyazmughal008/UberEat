@@ -53,7 +53,7 @@ const Congratulation = (props) => {
                 fontFamily: "Montserrat-SemiBold",
                 fontSize: widthPercentageToDP(5.5)
             }]}>
-                {type === 'checking' ? "Thank you for notifying us. Your table and food will be ready before you come" : "Thank you for the reservation, Enjoy you time"}
+                {type === 'checking' ? "Thank you for notifying us. Your table and table will be ready before you come" : "Thank you for the reservation, Enjoy you time"}
             </Text>
             <TouchableOpacity
                 onPress={() => {

@@ -3,7 +3,7 @@ import { Header } from 'react-native-elements'
 import { Text, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
-import { black, white } from '../../Colors'
+import { black, darkBlue, white } from '../../Colors'
 import Icon from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { View } from 'react-native-animatable'
@@ -54,7 +54,7 @@ const MyHeader = (props) => {
             }
             centerComponent={{
                 text: props.title, style: {
-                    color: black,
+                    color: darkBlue,
                     fontSize: widthPercentageToDP(5.5),
                     fontFamily: "Montserrat-Bold",
                 }

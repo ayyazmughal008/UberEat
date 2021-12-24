@@ -7,6 +7,7 @@ export const LOG_OUT = "LOG_OUT";
 export const LOGIN_DATA = "LOGIN_DATA";
 export const COUNTRY_NAME = "COUNTRY_NAME";
 export const MAKE_FAV = "MAKE_FAV";
+export const OTP = "OTP";
 
 
 const baseUrl = 'http://108.61.209.20/api/',
@@ -25,6 +26,10 @@ const baseUrl = 'http://108.61.209.20/api/',
     getFavourites = 'get-favourites',
     myBookings = 'my-bookings',
     userPassword = 'user-password',
+    recentSearches = 'recent-searches',
+    getSocials = 'get-socials',
+    sendEmail = 'send-email',
+    changePassword = 'change-password',
     register = 'register';
 const country_url = "https://countriesnow.space/api/v0.1/countries/positions"
 
@@ -650,6 +655,131 @@ export const getBookings = async (user_id) => {
             .then(res => res.json())
             .then(json => {
                 console.log(json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getRecentData = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + recentSearches, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('recentSearches ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getSocialData = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + getSocials, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('getSocials ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const sendUserEmail = async (email) => {
+    let api
+    try {
+        api = await fetch(baseUrl + sendEmail, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('getSocials ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const changeUserPassword = async (user_id, password) => {
+    let api
+    try {
+        api = await fetch(baseUrl + changePassword, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                password: password,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('getSocials ===>', json)
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {

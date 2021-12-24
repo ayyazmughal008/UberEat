@@ -20,6 +20,7 @@ import Notification from '../../Screen/Notification'
 import Favourites from '../../Screen/Favourites'
 import EditProfile from '../../Screen/PersonalInfo/EditProfile'
 import ConfirmBooking from '../../Screen/ConfirmCheckOut'
+import Rating from '../../Screen/Rating'
 // import navigationService from "./NavigationService";
 // export { navigationService };
 
@@ -29,6 +30,11 @@ export const NavStack2 = () => {
 
     return (
         <Stack.Navigator>
+            {/* <Stack.Screen
+                name="Rating"
+                component={Rating}
+                options={{ headerShown: false }}
+            /> */}
             <Stack.Screen
                 name="Dashboard"
                 component={Dashboard}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator, Platform, ScrollView , PermissionsAndroid} from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator, Platform, ScrollView, PermissionsAndroid } from 'react-native'
 import { styles } from '../../Stylesheet'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { black, darkBlue, lightBlue, lightGrey, white } from '../../Colors'
+import { black, darkBlue, lightBlue, lightGrey, white,gold3 } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { isFirstTime } from '../../Redux/action'
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -109,9 +109,9 @@ const Login = (props) => {
         }
         dispatch(userLogin(email, password))
     }
-    useEffect(()=>{
+    useEffect(() => {
         askPermission()
-    },[])
+    }, [])
     const askPermission = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -122,7 +122,7 @@ const Login = (props) => {
                 }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-               console.log('permission granted')
+                console.log('permission granted')
                 //alert("You can use the location");
             } else {
                 console.log("location permission denied")
@@ -193,7 +193,9 @@ const Login = (props) => {
                                     onChangeText={(text) => setPassword(text)}
                                 />
                             </View>
-                            <Text style={[styles.forgetPassTxt, { textAlign: "right" }]}>
+                            <Text
+                                onPress={() => props.navigation.navigate('ForgetPassword')}
+                                style={[styles.forgetPassTxt, { textAlign: "right" }]}>
                                 {"Forgot Password?"}
                             </Text>
 
@@ -227,7 +229,10 @@ const Login = (props) => {
 
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
+                        <FastImage
+                            source={require('../../Images/splash.jpg')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
                                     source={require('../../Images/Goldenlogo.png')}
@@ -244,7 +249,7 @@ const Login = (props) => {
                                 />
                                 <Animatable.Text style={{
                                     fontSize: widthPercentageToDP(7),
-                                    color: white,
+                                    color: gold3,
                                     fontFamily: "Montserrat-Bold",
                                     textAlign: "center",
                                     marginTop: heightPercentageToDP(3)
@@ -255,7 +260,7 @@ const Login = (props) => {
                                     {"MYHOOKAH"}
                                 </Animatable.Text>
                             </View>
-                        </View>
+                        </FastImage>
                     </Modal>
                 }
             </View>
@@ -282,7 +287,10 @@ const Login = (props) => {
                 />
                 {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: darkBlue }}>
+                        <FastImage
+                            source={require('../../Images/splash.jpg')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
                             <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
                                 <Animatable.Image
                                     source={require('../../Images/Goldenlogo.png')}
@@ -299,7 +307,7 @@ const Login = (props) => {
                                 />
                                 <Animatable.Text style={{
                                     fontSize: widthPercentageToDP(7),
-                                    color: white,
+                                    color: gold3,
                                     fontFamily: "Montserrat-Bold",
                                     textAlign: "center",
                                     marginTop: heightPercentageToDP(3)
@@ -310,7 +318,7 @@ const Login = (props) => {
                                     {"MYHOOKAH"}
                                 </Animatable.Text>
                             </View>
-                        </View>
+                        </FastImage>
                     </Modal>
                 }
             </View>

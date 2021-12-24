@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { lightGrey, offWhite, textBlack } from '../../Colors'
+import { darkBlue, lightGrey, offWhite, textBlack } from '../../Colors'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Recent = (props) => {
     return (
@@ -10,17 +11,29 @@ const Recent = (props) => {
             onPress={props.clickHandler}
             style={styles.container}>
             <FastImage
-                source={props.dishImg}
+                source={{ uri: props.dishImg }}
                 resizeMode={FastImage.resizeMode.cover}
-                style={styles.img}
-            />
+                style={styles.img}>
+                <AntDesign
+                    name='download'
+                    color={darkBlue}
+                    size={30}
+                    style={{
+                        position: "absolute",
+                        bottom: "3%",
+                        right: "5%",
+                        zIndex: 3
+                    }}
+                    onPress={props.downloadClick}
+                />
+            </FastImage>
             <Text style={styles.title}>
                 {props.title}
             </Text>
             <View style={styles.row}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <FastImage
-                        source={props.profile}
+                        source={{ uri: props.profile }}
                         resizeMode={FastImage.resizeMode.cover}
                         style={styles.roundImg}
                     />
@@ -41,12 +54,14 @@ const Recent = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: widthPercentageToDP(90),
+        width: widthPercentageToDP(88),
         height: heightPercentageToDP(48),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
         //alignItems: "center",
         marginTop: heightPercentageToDP(2),
+        marginBottom: heightPercentageToDP(1),
+        alignSelf: "center",
         padding: 2,
         //alignSelf: "center",
         shadowColor: '#000000',
@@ -62,7 +77,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: heightPercentageToDP(32),
         borderTopLeftRadius: widthPercentageToDP(3),
-        borderTopRightRadius: widthPercentageToDP(3)
+        borderTopRightRadius: widthPercentageToDP(3),
     },
     title: {
         fontSize: widthPercentageToDP(4),

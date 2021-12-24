@@ -37,11 +37,12 @@ const Recent = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: widthPercentageToDP(35),
-        height: heightPercentageToDP(25),
+        height: heightPercentageToDP(24),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
         alignItems: "center",
         marginRight: widthPercentageToDP(2),
+        //marginBottom: heightPercentageToDP(2),
         padding: 2,
         //alignSelf: "center",
         shadowColor: '#000000',
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: "100%",
-        height: heightPercentageToDP(13),
+        height: heightPercentageToDP(12),
         borderTopLeftRadius: widthPercentageToDP(3),
         borderTopRightRadius: widthPercentageToDP(3)
     },

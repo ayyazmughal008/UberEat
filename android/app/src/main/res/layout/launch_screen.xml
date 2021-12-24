@@ -3,17 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212e97"
-    android:fitsSystemWindows="false"
-    android:orientation="vertical">
+    android:background="@drawable/splash"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:scaleType="centerCrop">
 
-    <!-- <ImageView
-        android:layout_width="272dp"
-        android:layout_height="534dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:maxWidth="100dp"
-        android:maxHeight="200dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/header_logo" /> -->
+
 </RelativeLayout>

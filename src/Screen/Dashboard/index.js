@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, SafeAreaView, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
+import { View, SafeAreaView, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native'
 import { styles } from '../../Stylesheet'
 import Headers from '../../Component/Header'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white } from '../../Colors'
+import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white, gold3 } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image'
 import { Input, Header } from 'react-native-elements';
@@ -17,9 +17,12 @@ import DatePicker from 'react-native-date-picker'
 import { RadioButton } from 'react-native-paper';
 import { findPlaceFromLatLng } from './google.service'
 import geolocation from 'react-native-geolocation-service'
-import { getCountryName, getAllRestaurant } from '../../Redux/action'
+import { getCountryName, getAllRestaurant, getRecentData, getSocialData } from '../../Redux/action'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
+import RNFetchBlob from 'rn-fetch-blob'
 
 const Dashboard = (props) => {
     const dispatch = useDispatch()
@@ -44,10 +47,15 @@ const Dashboard = (props) => {
     const [cityList, setCityList] = useState([])
     const [isLoading, setLoading] = useState(false)
     const [response, setResponse] = useState('')
+    const [recentResponse, setRecent] = useState('')
+    const [socialResponse, setSocial] = useState('')
+    const [isAnimate, setAnimate] = useState(true)
 
     useEffect(() => {
         getCurrentLocation()
         dispatch(getCountryName())
+        recentDataApi()
+        socialDataApi()
     }, [])
 
     useEffect(() => {
@@ -62,6 +70,11 @@ const Dashboard = (props) => {
     useEffect(() => {
         console.log(JSON.stringify(response))
     }, [response])
+    useEffect(() => {
+        setTimeout(() => {
+            setAnimate(false)
+        }, 5000);
+    }, [])
     const addCount = () => {
         setCounter(counter + 1)
     }
@@ -75,7 +88,7 @@ const Dashboard = (props) => {
     const onRegionChangeComplete = async (region) => {
         setLoading(true)
         const data = await findPlaceFromLatLng(`${region.latitude},${region.longitude}`);
-        if (data.status === 'ZERO_RESULTS' || data.status === 'OK' ) {
+        if (data.status === 'ZERO_RESULTS' || data.status === 'OK') {
             let getStrings = await data.plus_code.compound_code.slice(9);
             let splitString = await getStrings.split(', ')
             await setCity(splitString[0])
@@ -136,8 +149,8 @@ const Dashboard = (props) => {
         setLoading(true)
         const result = await getAllRestaurant(
             login.data.id,
-            null,
-            null,
+            country,
+            city,
             moment(date).format('YYYY-MM-DD'),
             counter,
             checked === 'first' ? "Bar"
@@ -153,6 +166,101 @@ const Dashboard = (props) => {
             })
         }
     }
+    const recentDataApi = async () => {
+        setLoading(true)
+        const result = await getRecentData(login.data.id)
+        await setRecent(result)
+        await setLoading(false)
+
+    }
+    const socialDataApi = async () => {
+        setLoading(true)
+        const result = await getSocialData(login.data.id)
+        await setSocial(result)
+        await setLoading(false)
+
+    }
+    const iosDownload = (fileUrl) => {
+        setLoading(true)
+        var date = new Date();
+        var url = fileUrl;
+        var encoded = encodeURI(url)
+        var ext = extention(encoded);
+        ext = "." + ext[0];
+        const localFile = RNFS.DocumentDirectoryPath + "/Myhookah_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext;
+
+        const options = {
+            fromUrl: encoded,
+            toFile: localFile
+        };
+        RNFS.downloadFile(options).promise
+            .then(() => FileViewer.open(localFile, { showOpenWithDialog: true }))
+            .then(susscess => {
+                console.log("Download Successfull => ", susscess)
+                setLoading(false)
+            })
+            .catch(error => {
+                setLoading(false)
+                console.log(error)
+            });
+    }
+    const download = (fileUrl) => {
+        setLoading(true)
+        var date = new Date();
+        var url = fileUrl;
+        var ext = extention(url);
+        ext = "." + ext[0];
+        const { config, fs } = RNFetchBlob
+        let DownloadDir = fs.dirs.DownloadDir
+        //this.setState({ isOpen: true })
+        let options = {
+            fileCache: true,
+            addAndroidDownloads: {
+                useDownloadManager: true,
+                notification: true,
+                path: DownloadDir + "/Myhookah_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext,
+                description: 'Myhookah'
+            }
+        }
+        config(options).fetch('GET', url)
+            .then((res) => {
+                console.log("my download response ==>", res)
+                setLoading(false)
+            })
+            .catch(error => {
+                console.log("my download response error ==>", error)
+                setLoading(false)
+            })
+    }
+    const extention = (filename) => {
+        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
+    }
+    const requestPermission = async (url) => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                {
+                    title: 'Agefred',
+                    message:
+                        'Agefred App needs access to your Storage ' +
+                        'so you can download and save any files.',
+                    //buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                download(url)
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+    
+
 
 
     return (
@@ -295,23 +403,35 @@ const Dashboard = (props) => {
                     }]}>
                         {"Recent Search"}
                     </Text>
-                    <FlatList
-                        data={data.recent}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        style={{ marginTop: heightPercentageToDP(2), }}
-                        keyExtractor={(item, index) => 'key' + index}
-                        renderItem={({ item }) => (
-                            <Rececnt
-                                dishImg={item.img}
-                                title={item.country}
-                                date={item.date}
-                                adult={item.adult}
-                            //clickHandler={() => { props.navigation.navigate('HotelDetail') }}
-                            />
-                        )}
-                    />
-
+                    {!recentResponse || !recentResponse.data.length ?
+                        <View />
+                        : <FlatList
+                            //contentContainerStyle={{ alignItems: "center" }}
+                            data={recentResponse.data}
+                            numColumns={2}
+                            showsVerticalScrollIndicator={false}
+                            style={{
+                                marginTop: heightPercentageToDP(2),
+                                height: heightPercentageToDP(20)
+                            }}
+                            keyExtractor={(item, index) => 'key' + index}
+                            renderItem={({ item }) => (
+                                <Rececnt
+                                    //dishImg={item.img}
+                                    title={item.type}
+                                    date={item.search_date}
+                                    adult={item.search_date}
+                                    person={item.total_person}
+                                    time={item.search_time}
+                                    clickHandler={() => {
+                                        props.navigation.navigate('HotelList', {
+                                            data: item
+                                        })
+                                    }}
+                                />
+                            )}
+                        />}
+                    <View style={{ height: heightPercentageToDP(10) }} />
                     {isPopUp &&
                         <Modal
                             transparent={true}
@@ -477,22 +597,25 @@ const Dashboard = (props) => {
                     }]}>
                         {"Recent Posts"}
                     </Text>
-                    <FlatList
-                        data={data.trending}
-                        showsVerticalScrollIndicator={false}
-                        style={{ marginTop: heightPercentageToDP(2), }}
-                        keyExtractor={(item, index) => 'key' + index}
-                        renderItem={({ item }) => (
-                            <Trending
-                                dishImg={item.img}
-                                title={item.country}
-                                date={item.date}
-                                name={item.name}
-                                profile={item.profile}
-                            //clickHandler={() => { props.navigation.navigate('HotelDetail') }}
-                            />
-                        )}
-                    />
+                    {!socialResponse || !socialResponse.data.length ?
+                        <View />
+                        : <FlatList
+                            data={socialResponse.data}
+                            showsVerticalScrollIndicator={false}
+                            style={{ marginTop: heightPercentageToDP(2), }}
+                            keyExtractor={(item, index) => 'key' + index}
+                            renderItem={({ item, index }) => (
+                                <Trending
+                                    dishImg={'http://108.61.209.20/' + item.large_image}
+                                    title={item.name}
+                                    date={item.date}
+                                    name={item.person_name}
+                                    profile={'http://108.61.209.20/' + item.small_image}
+                                    downloadClick={() => requestPermission('http://108.61.209.20/' + item.large_image)}
+                                //clickHandler={() => { props.navigation.navigate('HotelDetail') }}
+                                />
+                            )}
+                        />}
                 </View>
 
             }
@@ -743,6 +866,42 @@ const Dashboard = (props) => {
 
                         </View>
                     </View>
+                </Modal>
+            }
+            {isAnimate &&
+                <Modal visible={isAnimate} animationType="none" transparent={true}>
+                    <FastImage
+                        source={require('../../Images/splash.jpg')}
+                        resizeMode={FastImage.resizeMode.cover}
+                        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                        <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
+                            <Animatable.Image
+                                source={require('../../Images/Goldenlogo.png')}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{
+                                    width: widthPercentageToDP(50),
+                                    height: widthPercentageToDP(50)
+                                }}
+                                animation="slideOutDown"
+                                duration={3000}
+                            />
+                            <View
+                                style={{ height: heightPercentageToDP(27) }}
+                            />
+                            <Animatable.Text style={{
+                                fontSize: widthPercentageToDP(7),
+                                color: gold3,
+                                fontFamily: "Montserrat-Bold",
+                                textAlign: "center",
+                                marginTop: heightPercentageToDP(3)
+                            }}
+                                animation="slideOutUp"
+                                duration={3000}
+                            >
+                                {"MYHOOKAH"}
+                            </Animatable.Text>
+                        </View>
+                    </FastImage>
                 </Modal>
             }
         </SafeAreaView>
