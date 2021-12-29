@@ -99,7 +99,7 @@ const Signup = (props) => {
                     <Input
                         placeholder='Name'
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
                         onChangeText={(text) => setName(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black, }}
                     //style = {styles.inputTxt}
@@ -107,7 +107,7 @@ const Signup = (props) => {
                     <Input
                         placeholder='Email'
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0,paddingTop:0 }]}
                         onChangeText={(text) => setEMail(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
@@ -115,7 +115,7 @@ const Signup = (props) => {
                     <Input
                         placeholder='Phone Number'
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
                         onChangeText={(text) => setPhone(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
@@ -123,7 +123,7 @@ const Signup = (props) => {
                     <Input
                         placeholder='Password'
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
@@ -132,7 +132,7 @@ const Signup = (props) => {
                     <Input
                         placeholder='Confirm Password'
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
                         onChangeText={(text) => setConPassword(text)}
                         secureTextEntry={true}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}

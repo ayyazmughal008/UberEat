@@ -97,7 +97,8 @@ const Dashboard = (props) => {
             setLoading(false)
         }
     };
-    const getCurrentLocation = () => {
+    const getCurrentLocation = async () => {
+        await geolocation.requestAuthorization('whenInUse')
         geolocation.getCurrentPosition(
             (position) => {
                 //console.log('updated ==>', position)
@@ -259,12 +260,13 @@ const Dashboard = (props) => {
             console.warn(err);
         }
     }
-    
+
 
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView 
+        style={styles.container}>
             <Headers
                 userImg={require('../../Images/profile.png')}
                 title={"MYHOOKAH"}
@@ -467,11 +469,12 @@ const Dashboard = (props) => {
                                         width: "90%"
                                     }]}>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
-                                            <RadioButton
+                                            <RadioButton.Android
                                                 value="first"
                                                 status={checked === 'first' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('first')}
                                                 color={darkBlue}
+                                                uncheckedColor= {darkBlue}
                                             />
                                             <Text style={[styles.smallTxt, {
                                                 fontFamily: "Montserrat-Medium",
@@ -483,7 +486,7 @@ const Dashboard = (props) => {
                                             </Text>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
-                                            <RadioButton
+                                            <RadioButton.Android
                                                 value="second"
                                                 status={checked === 'second' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('second')}
@@ -505,7 +508,7 @@ const Dashboard = (props) => {
                                         width: "90%"
                                     }]}>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
-                                            <RadioButton
+                                            <RadioButton.Android
                                                 value="first"
                                                 status={checked === 'third' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('third')}
@@ -521,7 +524,7 @@ const Dashboard = (props) => {
                                             </Text>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
-                                            <RadioButton
+                                            <RadioButton.Android
                                                 value="second"
                                                 status={checked === 'fourth' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('fourth')}
@@ -611,7 +614,13 @@ const Dashboard = (props) => {
                                     date={item.date}
                                     name={item.person_name}
                                     profile={'http://108.61.209.20/' + item.small_image}
-                                    downloadClick={() => requestPermission('http://108.61.209.20/' + item.large_image)}
+                                    downloadClick={() => {
+                                        if (Platform.OS === 'ios') {
+                                            iosDownload('http://108.61.209.20/' + item.large_image)
+                                        } else {
+                                            requestPermission('http://108.61.209.20/' + item.large_image)
+                                        }
+                                    }}
                                 //clickHandler={() => { props.navigation.navigate('HotelDetail') }}
                                 />
                             )}

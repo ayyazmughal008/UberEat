@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     btnText: {
         color: "#ffff",
         fontSize: widthPercentageToDP(4),
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-Light",
     },
     bottomView: {
         width: "100%",

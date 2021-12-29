@@ -110,7 +110,9 @@ const Login = (props) => {
         dispatch(userLogin(email, password))
     }
     useEffect(() => {
-        askPermission()
+        if(Platform.OS === 'android'){
+            askPermission()
+        }
     }, [])
     const askPermission = async () => {
         try {

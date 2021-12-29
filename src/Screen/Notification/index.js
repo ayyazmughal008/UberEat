@@ -33,6 +33,7 @@ const Notification = (props) => {
                 containerStyle={{
                     backgroundColor: 'transparent',
                     borderBottomWidth: 0,
+                    paddingTop:0
                     //height: heightPercentageToDP(17)
                 }}
                 statusBarProps={{

@@ -86,7 +86,7 @@ const EditProfile = (props) => {
                 <Input
                     placeholder='Name'
                     placeholderTextColor={textBlack}
-                    inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                    inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                     leftIcon={
                         <FastImage
                             source={require('../../Images/Person.png')}
@@ -102,7 +102,7 @@ const EditProfile = (props) => {
                 <Input
                     placeholder='Phone no'
                     placeholderTextColor={textBlack}
-                    inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
+                    inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                     leftIcon={
                         <Ionicons
                             name='call-outline'

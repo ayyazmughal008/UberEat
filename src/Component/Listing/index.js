@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         borderRadius: widthPercentageToDP(3),
         alignItems: "center",
         marginRight: widthPercentageToDP(2),
+        marginLeft: widthPercentageToDP(2),
         //marginBottom: heightPercentageToDP(2),
         padding: 2,
         //alignSelf: "center",

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import { darkBlue, lightGrey, offWhite, textBlack } from '../../Colors'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
             width: 0,
             height: 3
         },
-        shadowRadius: 5,
+        shadowRadius: Platform.OS == 'ios' ? 3 : 5,
         shadowOpacity: 1.0,
-        elevation: 4
+        elevation: Platform.OS == 'ios' ? 2 : 4,
     },
     img: {
         width: "100%",

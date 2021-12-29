@@ -42,7 +42,7 @@ const Notification = (props) => {
                             />
 
                             <Text style={[styles.name, {
-                                fontFamily: "Obvia-Regular",
+                                fontFamily: "Montserrat-SemiBold",
                                 padding: widthPercentageToDP(4),
                                 marginRight: widthPercentageToDP(5)
                             }]}>

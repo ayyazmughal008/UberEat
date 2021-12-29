@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { white, darkBlue, lightBlue, textBlack, lightGrey, black, offWhite } from '../Colors'
 
@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
         color: black,
         fontFamily: "Montserrat-Medium",
         paddingLeft: widthPercentageToDP(5),
+        paddingTop: Platform.OS === 'ios' ? heightPercentageToDP(2) : 0
     },
     forgetPassTxt: {
         fontSize: widthPercentageToDP(4.5),

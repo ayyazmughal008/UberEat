@@ -1,6 +1,6 @@
 import React from 'react'
 import { Header } from 'react-native-elements'
-import { Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity, Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, white } from '../../Colors'
@@ -74,7 +74,8 @@ const MyHeader = (props) => {
             }
             containerStyle={{
                 backgroundColor: white,
-                borderBottomWidth: 0
+                borderBottomWidth: 0,
+                paddingTop: 0
             }}
             statusBarProps={{
                 backgroundColor: white
