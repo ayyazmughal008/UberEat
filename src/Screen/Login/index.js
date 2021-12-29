@@ -227,7 +227,7 @@ const Login = (props) => {
                     />
                 }
 
-                {isAnimate &&
+                {/* {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
                         <FastImage
                             source={require('../../Images/splash.jpg')}
@@ -262,7 +262,7 @@ const Login = (props) => {
                             </View>
                         </FastImage>
                     </Modal>
-                }
+                } */}
             </View>
         )
     } else {
@@ -285,7 +285,7 @@ const Login = (props) => {
                     dotStyle={{ backgroundColor: "#cccccc" }}
                     activeDotStyle={{ backgroundColor: lightBlue }}
                 />
-                {isAnimate &&
+                {/* {isAnimate &&
                     <Modal visible={isAnimate} animationType="none" transparent={true}>
                         <FastImage
                             source={require('../../Images/splash.jpg')}
@@ -320,7 +320,7 @@ const Login = (props) => {
                             </View>
                         </FastImage>
                     </Modal>
-                }
+                } */}
             </View>
 
         )

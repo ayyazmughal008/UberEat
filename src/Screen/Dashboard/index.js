@@ -868,7 +868,7 @@ const Dashboard = (props) => {
                     </View>
                 </Modal>
             }
-            {isAnimate &&
+            {/* {isAnimate &&
                 <Modal visible={isAnimate} animationType="none" transparent={true}>
                     <FastImage
                         source={require('../../Images/splash.jpg')}
@@ -903,7 +903,7 @@ const Dashboard = (props) => {
                         </View>
                     </FastImage>
                 </Modal>
-            }
+            } */}
         </SafeAreaView>
     )
 }
