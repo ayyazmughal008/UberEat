@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white, gold3 } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image'
-import { Input, Header } from 'react-native-elements';
+import { Input, Header, SearchBar } from 'react-native-elements';
 import { data } from './data'
 import Rececnt from '../../Component/Recent'
 import Trending from '../../Component/Trending'
@@ -17,12 +17,19 @@ import DatePicker from 'react-native-date-picker'
 import { RadioButton } from 'react-native-paper';
 import { findPlaceFromLatLng } from './google.service'
 import geolocation from 'react-native-geolocation-service'
-import { getCountryName, getAllRestaurant, getRecentData, getSocialData } from '../../Redux/action'
+import {
+    getCountryName,
+    getAllRestaurant,
+    getRecentData,
+    getSocialData,
+    clearAllSearches
+} from '../../Redux/action'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import RNFetchBlob from 'rn-fetch-blob'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 const Dashboard = (props) => {
     const dispatch = useDispatch()
@@ -33,6 +40,7 @@ const Dashboard = (props) => {
     const [isHide, setHide] = useState(false)
     const [isPopUp, setPopUp] = useState(false)
     const [date, setDate] = useState(new Date())
+    const [date2, setDate2] = useState('')
     const [formatedDate, setFormatedDate] = useState('')
     const [countryModal, setCountryModal] = useState(false)
     const [cityModal, setCityModal] = useState(false)
@@ -50,6 +58,10 @@ const Dashboard = (props) => {
     const [recentResponse, setRecent] = useState('')
     const [socialResponse, setSocial] = useState('')
     const [isAnimate, setAnimate] = useState(true)
+    const [countryList2, setCountryList2] = useState([])
+    const [countryText, setCountryText] = useState("")
+    const [cityList2, setCityList2] = useState([])
+    const [cityText, setCityText] = useState("")
 
     useEffect(() => {
         getCurrentLocation()
@@ -57,6 +69,12 @@ const Dashboard = (props) => {
         recentDataApi()
         socialDataApi()
     }, [])
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            recentDataApi()
+        });
+        return unsubscribe;
+    }, []);
 
     useEffect(() => {
         if (region.latitude && region.longitude) {
@@ -65,10 +83,9 @@ const Dashboard = (props) => {
     }, [region])
     useEffect(() => {
         setFormatedDate(moment(date).format('DD MMM'))
-        console.log(formatedDate)
     }, [date, formatedDate])
     useEffect(() => {
-        console.log(JSON.stringify(response))
+        //console.log(JSON.stringify(response))
     }, [response])
     useEffect(() => {
         setTimeout(() => {
@@ -98,7 +115,9 @@ const Dashboard = (props) => {
         }
     };
     const getCurrentLocation = async () => {
-        await geolocation.requestAuthorization('whenInUse')
+        if (Platform.OS === 'ios') {
+            await geolocation.requestAuthorization('whenInUse')
+        }
         geolocation.getCurrentPosition(
             (position) => {
                 //console.log('updated ==>', position)
@@ -133,7 +152,7 @@ const Dashboard = (props) => {
             .then(res => res.json())
             .then(json => {
                 setLoading(false)
-                console.log(json)
+                //console.log(json)
                 if (json.error == false) {
                     setCityList(json.data)
                     setCityModal(true)
@@ -260,13 +279,43 @@ const Dashboard = (props) => {
             console.warn(err);
         }
     }
+    const searchFilterFunction = text => {
+        let temList = countryData;
+        const newData = temList.filter(item => {
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        //setCountryList(data => ([data, ...newData]));
+        setCountryList2(newData)
+        setCountryText(text)
+    };
+    const searchCityFilterFunction = text => {
+        let temList = cityList;
+        const newData = temList.filter(item => {
+            const itemData = item ? item.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        //setCountryList(data => ([data, ...newData]));
+        setCityList2(newData)
+        setCityText(text)
+    };
+    const deleteSearch = async () => {
+        setLoading(true)
+        const result = await clearAllSearches(login.data.id)
+        await setLoading(false)
+        if (result.status == 200) {
+            recentDataApi()
+        }
+    }
 
 
 
 
     return (
-        <SafeAreaView 
-        style={styles.container}>
+        <SafeAreaView
+            style={styles.container}>
             <Headers
                 userImg={require('../../Images/profile.png')}
                 title={"MYHOOKAH"}
@@ -400,11 +449,26 @@ const Dashboard = (props) => {
                         </Animatable.View>
 
                     }
-                    <Text style={[styles.searchTxt, {
-                        color: darkBlue
-                    }]}>
-                        {"Recent Search"}
-                    </Text>
+                    <View style={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between", marginTop: heightPercentageToDP(2) }}>
+                        <Text style={[styles.searchTxt, {
+                            color: darkBlue,
+                            marginTop: 0
+                        }]}>
+                            {"Recent Search"}
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => deleteSearch()}
+                        >
+                            <Text style={[styles.greetingTxt, {
+                                marginTop: 0,
+                                color: darkBlue,
+                                fontFamily: "Montserrat-SemiBold",
+                            }]}>
+                                {"Clear all"}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
                     {!recentResponse || !recentResponse.data.length ?
                         <View />
                         : <FlatList
@@ -456,11 +520,56 @@ const Dashboard = (props) => {
                                         {"Date, Time and Persons"}
                                     </Text>
                                     <View style={styles.line2} />
-                                    <DatePicker
+                                    {/* <DatePicker
                                         mode="date"
                                         androidVariant="iosClone"
                                         date={date}
                                         onDateChange={date => setDate(date)}
+                                    /> */}
+                                    <Calendar
+                                        onDayPress={day => {
+                                            setDate(day.dateString),
+                                                setDate2({ [day.dateString]: { selected: true, selectedColor: gold3 } })
+                                        }}
+                                        // Handler which gets executed on day long press. Default = undefined
+                                        onDayLongPress={day => {
+                                            console.log('selected day', day);
+                                        }}
+                                        // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+                                        monthFormat={'yyyy MM'}
+                                        // Handler which gets executed when visible month changes in calendar. Default = undefined
+                                        onMonthChange={month => {
+                                            console.log('month changed', month);
+                                        }}
+                                        theme={{
+                                            backgroundColor: '#ffffff',
+                                            calendarBackground: '#ffffff',
+                                            textSectionTitleColor: '#b6c1cd',
+                                            textSectionTitleDisabledColor: '#d9e1e8',
+                                            selectedDayBackgroundColor: '#00adf5',
+                                            selectedDayTextColor: '#000',
+                                            todayTextColor: '#00adf5',
+                                            dayTextColor: '#2d4150',
+                                            textDisabledColor: '#d9e1e8',
+                                            dotColor: '#00adf5',
+                                            selectedDotColor: '#ffffff',
+                                            arrowColor: 'orange',
+                                            disabledArrowColor: '#d9e1e8',
+                                            monthTextColor: 'blue',
+                                            indicatorColor: 'blue',
+                                            textDayFontFamily: 'monospace',
+                                            textMonthFontFamily: 'monospace',
+                                            textDayHeaderFontFamily: 'monospace',
+                                            textDayFontWeight: '300',
+                                            textMonthFontWeight: 'bold',
+                                            textDayHeaderFontWeight: '300',
+                                            textDayFontSize: 16,
+                                            textMonthFontSize: 16,
+                                            textDayHeaderFontSize: 16
+                                        }}
+                                        markedDates={date2}
+                                        hideExtraDays={true}
+                                        enableSwipeMonths={true}
                                     />
                                     <View style={styles.line2} />
                                     <View style={[styles.row3, {
@@ -474,7 +583,7 @@ const Dashboard = (props) => {
                                                 status={checked === 'first' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('first')}
                                                 color={darkBlue}
-                                                uncheckedColor= {darkBlue}
+                                                uncheckedColor={darkBlue}
                                             />
                                             <Text style={[styles.smallTxt, {
                                                 fontFamily: "Montserrat-Medium",
@@ -572,10 +681,13 @@ const Dashboard = (props) => {
                                         </View>
                                     </View>
                                     <TouchableOpacity
-                                        onPress={() => setPopUp(false)}
+                                        onPress={() => {
+                                            //console.log(date)
+                                            setPopUp(false)
+                                        }}
                                         style={[styles.btn, {
                                             position: "absolute",
-                                            bottom: "4%"
+                                            bottom: "2%"
                                         }]}>
                                         <Text style={styles.btnTxt}>
                                             {"Select"}
@@ -695,14 +807,26 @@ const Dashboard = (props) => {
                                 borderBottomColor: black,
                                 height: heightPercentageToDP(7)
                             }]}>
-                                <FastImage
+                                {/* <FastImage
                                     source={require('../../Images/Location.png')}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={styles.vectorIcon}
                                 />
                                 <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
                                     {country}
-                                </Text>
+                                </Text> */}
+                                <SearchBar
+                                    placeholder="Search country..."
+                                    lightTheme
+                                    round
+                                    value={countryText}
+                                    onChangeText={text => searchFilterFunction(text)}
+                                    autoCorrect={false}
+                                    inputContainerStyle={{ backgroundColor: white }}
+                                    inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
+                                    containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
+                                //style={{}}
+                                />
                             </View>
                             <View style={[styles.row5, {
                                 borderBottomWidth: widthPercentageToDP(0.2),
@@ -730,7 +854,7 @@ const Dashboard = (props) => {
                             {!countryData || !countryData.length ?
                                 <View />
                                 : <FlatList
-                                    data={countryData}
+                                    data={!countryText ? countryData : countryList2}
                                     showsVerticalScrollIndicator={false}
                                     contentContainerStyle={{ flexGrow: 1 }}
                                     style={{ marginTop: heightPercentageToDP(2), }}
@@ -808,14 +932,26 @@ const Dashboard = (props) => {
                                 borderBottomColor: black,
                                 height: heightPercentageToDP(7)
                             }]}>
-                                <FastImage
+                                {/* <FastImage
                                     source={require('../../Images/Location.png')}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={styles.vectorIcon}
                                 />
                                 <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
                                     {city}
-                                </Text>
+                                </Text> */}
+                                <SearchBar
+                                    placeholder="Search city..."
+                                    lightTheme
+                                    round
+                                    value={cityText}
+                                    onChangeText={text => searchCityFilterFunction(text)}
+                                    autoCorrect={false}
+                                    inputContainerStyle={{ backgroundColor: white }}
+                                    inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
+                                    containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
+                                //style={{}}
+                                />
                             </View>
                             <View style={[styles.row5, {
                                 borderBottomWidth: widthPercentageToDP(0.2),
@@ -843,7 +979,7 @@ const Dashboard = (props) => {
                             {!cityList || !cityList.length ?
                                 <View />
                                 : <FlatList
-                                    data={cityList}
+                                    data={!cityText ? cityList : cityList2}
                                     showsVerticalScrollIndicator={false}
                                     contentContainerStyle={{ flexGrow: 1 }}
                                     style={{ marginTop: heightPercentageToDP(2), }}
@@ -877,42 +1013,7 @@ const Dashboard = (props) => {
                     </View>
                 </Modal>
             }
-            {/* {isAnimate &&
-                <Modal visible={isAnimate} animationType="none" transparent={true}>
-                    <FastImage
-                        source={require('../../Images/splash.jpg')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                        <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
-                            <Animatable.Image
-                                source={require('../../Images/Goldenlogo.png')}
-                                resizeMode={FastImage.resizeMode.contain}
-                                style={{
-                                    width: widthPercentageToDP(50),
-                                    height: widthPercentageToDP(50)
-                                }}
-                                animation="slideOutDown"
-                                duration={3000}
-                            />
-                            <View
-                                style={{ height: heightPercentageToDP(27) }}
-                            />
-                            <Animatable.Text style={{
-                                fontSize: widthPercentageToDP(7),
-                                color: gold3,
-                                fontFamily: "Montserrat-Bold",
-                                textAlign: "center",
-                                marginTop: heightPercentageToDP(3)
-                            }}
-                                animation="slideOutUp"
-                                duration={3000}
-                            >
-                                {"MYHOOKAH"}
-                            </Animatable.Text>
-                        </View>
-                    </FastImage>
-                </Modal>
-            } */}
+
         </SafeAreaView>
     )
 }

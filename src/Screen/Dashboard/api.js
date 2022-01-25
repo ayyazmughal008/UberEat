@@ -1,4 +1,4 @@
-const mapToken = 'AIzaSyBc2sis4yijToE0FnCRHouavmVy9nNSg_k';
+const mapToken = 'AIzaSyDLzsRGQF1FIOQZgBWQv1EgMUoC2DZuMNg';
 //const mapToken = 'AIzaSyDLzsRGQF1FI0QZgBWQv1EgMUoC2DZuMNg';
 
 export const apis = {

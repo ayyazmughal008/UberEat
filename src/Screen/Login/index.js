@@ -72,7 +72,9 @@ const Login = (props) => {
                     style={styles.sliderImg}
                 />
                 <Text style={[styles.bigTxtBold, {
+                    textAlign:"center",
                     fontSize: widthPercentageToDP(6),
+                    padding: 5,
                     fontFamily: "Montserrat-Bold",
                 }]}>
                     {item.title}
@@ -287,42 +289,6 @@ const Login = (props) => {
                     dotStyle={{ backgroundColor: "#cccccc" }}
                     activeDotStyle={{ backgroundColor: lightBlue }}
                 />
-                {/* {isAnimate &&
-                    <Modal visible={isAnimate} animationType="none" transparent={true}>
-                        <FastImage
-                            source={require('../../Images/splash.jpg')}
-                            resizeMode={FastImage.resizeMode.cover}
-                            style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
-                            <View style={{ width: widthPercentageToDP(100), flex: 0, alignItems: "center" }}>
-                                <Animatable.Image
-                                    source={require('../../Images/Goldenlogo.png')}
-                                    resizeMode={FastImage.resizeMode.contain}
-                                    style={{
-                                        width: widthPercentageToDP(50),
-                                        height: widthPercentageToDP(50)
-                                    }}
-                                    animation="slideOutDown"
-                                    duration={3000}
-                                />
-                                <View
-                                    style={{ height: heightPercentageToDP(27) }}
-                                />
-                                <Animatable.Text style={{
-                                    fontSize: widthPercentageToDP(7),
-                                    color: gold3,
-                                    fontFamily: "Montserrat-Bold",
-                                    textAlign: "center",
-                                    marginTop: heightPercentageToDP(3)
-                                }}
-                                    animation="slideOutUp"
-                                    duration={3000}
-                                >
-                                    {"MYHOOKAH"}
-                                </Animatable.Text>
-                            </View>
-                        </FastImage>
-                    </Modal>
-                } */}
             </View>
 
         )

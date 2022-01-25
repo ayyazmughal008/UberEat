@@ -27,6 +27,7 @@ const baseUrl = 'http://108.61.209.20/api/',
     myBookings = 'my-bookings',
     userPassword = 'user-password',
     recentSearches = 'recent-searches',
+    clearSearch = 'clear-search',
     getSocials = 'get-socials',
     sendEmail = 'send-email',
     changePassword = 'change-password',
@@ -685,7 +686,7 @@ export const getRecentData = async (user_id) => {
         })
             .then(res => res.json())
             .then(json => {
-                console.log('recentSearches ===>', json)
+                //console.log('recentSearches ===>', json)
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
@@ -780,6 +781,38 @@ export const changeUserPassword = async (user_id, password) => {
             .then(res => res.json())
             .then(json => {
                 console.log('getSocials ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const clearAllSearches = async (user_id) => {
+    console.log(user_id)
+    let api
+    try {
+        api = await fetch(baseUrl + clearSearch, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('delete response ===>', json)
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {

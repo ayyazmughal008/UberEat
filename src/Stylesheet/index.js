@@ -310,7 +310,7 @@ export const styles = StyleSheet.create({
     },
     innerModal: {
         width: widthPercentageToDP(90),
-        height: heightPercentageToDP(70),
+        height: heightPercentageToDP(95),
         borderRadius: widthPercentageToDP(5),
         backgroundColor: white,
         alignItems: "center"
