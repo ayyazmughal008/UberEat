@@ -12,7 +12,9 @@ const Item = (props) => {
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.img}
             />
-            <Text style={styles.title}>
+            <Text 
+            numberOfLines={1}
+            style={styles.title}>
                 {props.title}
             </Text>
             <View style={styles.row}>

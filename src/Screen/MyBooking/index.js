@@ -89,7 +89,8 @@ const MyBooking = (props) => {
                                         response: item,
                                         showBtn: true,
                                         large_image: item.large_image,
-                                        small_image: item.small_image
+                                        small_image: item.small_image,
+                                        booking_id: item.id
                                     })
                                 } else {
                                     props.navigation.navigate('ConfirmBooking', {
@@ -97,7 +98,8 @@ const MyBooking = (props) => {
                                         response: item,
                                         showBtn: false,
                                         large_image: item.large_image,
-                                        small_image: item.small_image
+                                        small_image: item.small_image,
+                                        booking_id: item.id
                                     })
                                 }
 

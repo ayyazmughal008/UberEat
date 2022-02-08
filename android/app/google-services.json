@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "746299631706",
+    "project_id": "myhookah-app",
+    "storage_bucket": "myhookah-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746299631706:android:f3ef24d15768fea743d063",
+        "android_client_info": {
+          "package_name": "com.ubereat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746299631706-1f15vegsk9875vlft0hfb7q5bn61bifl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ13_mVoHoDk_-9tVN-bNu8hdZSNfDYQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746299631706-1f15vegsk9875vlft0hfb7q5bn61bifl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

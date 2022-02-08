@@ -30,11 +30,6 @@ export const NavStack2 = () => {
 
     return (
         <Stack.Navigator>
-            {/* <Stack.Screen
-                name="Rating"
-                component={Rating}
-                options={{ headerShown: false }}
-            /> */}
             <Stack.Screen
                 name="Dashboard"
                 component={Dashboard}
@@ -128,6 +123,11 @@ export const NavStack2 = () => {
             <Stack.Screen
                 name="ConfirmBooking"
                 component={ConfirmBooking}
+                options={{ headerShown: false }}
+            />
+             <Stack.Screen
+                name="Rating"
+                component={Rating}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

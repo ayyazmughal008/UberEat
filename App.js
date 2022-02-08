@@ -5,6 +5,7 @@ import MAINAPP from "./MainApp";
 import { Store, persistor } from "./src/Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import SplashScreen from 'react-native-splash-screen'
+import RemotePushController from  './src/Service/RemotePushController'
 
 export default class App extends React.Component {
 
@@ -18,6 +19,7 @@ export default class App extends React.Component {
         <Provider store={Store}>
           <PersistGate loading={null} persistor={persistor}>
             <MAINAPP />
+            <RemotePushController />
           </PersistGate>
         </Provider>
       </View>

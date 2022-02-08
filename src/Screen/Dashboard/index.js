@@ -22,7 +22,10 @@ import {
     getAllRestaurant,
     getRecentData,
     getSocialData,
-    clearAllSearches
+    clearAllSearches,
+    updateUserToken,
+    updateRecentSearch,
+    checkPopUps
 } from '../../Redux/action'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
@@ -35,12 +38,15 @@ const Dashboard = (props) => {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
     const AuthLoading = useSelector((state) => state.user.AuthLoading);
+    const token = useSelector((state) => state.user.token);
     const countryData = useSelector((state) => state.user.countryData);
     const [toggleValue, setToggleValue] = useState(1);
     const [isHide, setHide] = useState(false)
     const [isPopUp, setPopUp] = useState(false)
+    const [isPopUp2, setPopUp2] = useState(false)
     const [date, setDate] = useState(new Date())
     const [date2, setDate2] = useState('')
+    const [searchId, setId] = useState('')
     const [formatedDate, setFormatedDate] = useState('')
     const [countryModal, setCountryModal] = useState(false)
     const [cityModal, setCityModal] = useState(false)
@@ -59,15 +65,19 @@ const Dashboard = (props) => {
     const [socialResponse, setSocial] = useState('')
     const [isAnimate, setAnimate] = useState(true)
     const [countryList2, setCountryList2] = useState([])
+    const [countryList, setCountryList] = useState([{ name: "Spain" }])
     const [countryText, setCountryText] = useState("")
     const [cityList2, setCityList2] = useState([])
     const [cityText, setCityText] = useState("")
 
     useEffect(() => {
         getCurrentLocation()
-        dispatch(getCountryName())
+        //dispatch(getCountryName())
+        getCityName()
         recentDataApi()
         socialDataApi()
+        updateUserToken(login.data.id, token)
+        checkIsPopup()
     }, [])
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
@@ -84,14 +94,22 @@ const Dashboard = (props) => {
     useEffect(() => {
         setFormatedDate(moment(date).format('DD MMM'))
     }, [date, formatedDate])
-    useEffect(() => {
-        //console.log(JSON.stringify(response))
-    }, [response])
+
     useEffect(() => {
         setTimeout(() => {
             setAnimate(false)
         }, 5000);
     }, [])
+    const checkIsPopup = async () => {
+        if (login) {
+            const result = await checkPopUps(login.data.id)
+            if (result.popup === 'yes') {
+                props.navigation.navigate('Rating', {
+                    data: result.data
+                })
+            }
+        }
+    }
     const addCount = () => {
         setCounter(counter + 1)
     }
@@ -146,7 +164,7 @@ const Dashboard = (props) => {
                 "Content-type": "application/json",
             },
             body: JSON.stringify({
-                country: country
+                country: "Spain"
             })
         })
             .then(res => res.json())
@@ -155,7 +173,6 @@ const Dashboard = (props) => {
                 //console.log(json)
                 if (json.error == false) {
                     setCityList(json.data)
-                    setCityModal(true)
                 } else {
                     alert(json.error)
                 }
@@ -169,7 +186,7 @@ const Dashboard = (props) => {
         setLoading(true)
         const result = await getAllRestaurant(
             login.data.id,
-            country,
+            "Spain",
             city,
             moment(date).format('YYYY-MM-DD'),
             counter,
@@ -177,6 +194,21 @@ const Dashboard = (props) => {
                 : checked === 'second' ? "Pub" :
                     checked === 'third' ? "Restaurante" :
                         checked === 'fourth' ? "Noche" : ""
+        )
+        await setResponse(result)
+        await setLoading(false)
+        if (result.status == 200) {
+            props.navigation.navigate('HotelList', {
+                data: result
+            })
+        }
+    }
+    const updateSearchApi = async (id) => {
+        setLoading(true)
+        const result = await updateRecentSearch(
+            id,
+            login.data.id,
+            moment(date).format('YYYY-MM-DD'),
         )
         await setResponse(result)
         await setLoading(false)
@@ -338,7 +370,7 @@ const Dashboard = (props) => {
                     </Text>
                     <View style={styles.row5}>
                         <TouchableOpacity
-                            onPress={() => { setCountryModal(true) }}
+                            onPress={() => { setCityModal(true) }}
                         >
                             <FastImage
                                 source={require('../../Images/Location.png')}
@@ -447,7 +479,6 @@ const Dashboard = (props) => {
                                 </Text>
                             </TouchableOpacity>
                         </Animatable.View>
-
                     }
                     <View style={{ flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between", marginTop: heightPercentageToDP(2) }}>
                         <Text style={[styles.searchTxt, {
@@ -485,18 +516,103 @@ const Dashboard = (props) => {
                                 <Rececnt
                                     //dishImg={item.img}
                                     title={item.type}
-                                    date={item.search_date}
-                                    adult={item.search_date}
+                                    date={item.date}
+                                    city={item.city}
+                                    //adult={item.search_date}
                                     person={item.total_person}
                                     time={item.search_time}
                                     clickHandler={() => {
-                                        props.navigation.navigate('HotelList', {
-                                            data: item
-                                        })
+                                        setDate(item.date2),
+                                            setDate2({ [item.date2]: { selected: true, selectedColor: gold3 } }),
+                                            setId(item.id),
+                                            setPopUp2(true)
                                     }}
                                 />
                             )}
-                        />}
+                        />
+                    }
+                    {isPopUp2 &&
+                        <Modal
+                            transparent={true}
+                            visible={isPopUp2}
+                            animationType="slide"
+                            onRequestClose={() => console.log('close')}
+                        >
+                            <TouchableOpacity
+                                onPress={() => setPopUp2(false)}
+                                style={{
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    flex: 1,
+                                    backgroundColor: 'rgba(0,0,0,0.6)',
+                                    opacity: 1
+                                }}>
+                                <View style={[styles.innerModal, {
+                                    height: heightPercentageToDP(55)
+                                }]}>
+                                    <Calendar
+                                        onDayPress={day => {
+                                            setDate(day.dateString),
+                                                setDate2({ [day.dateString]: { selected: true, selectedColor: gold3 } })
+                                        }}
+                                        // Handler which gets executed on day long press. Default = undefined
+                                        onDayLongPress={day => {
+                                            console.log('selected day', day);
+                                        }}
+                                        // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+                                        monthFormat={'yyyy MM'}
+                                        // Handler which gets executed when visible month changes in calendar. Default = undefined
+                                        onMonthChange={month => {
+                                            console.log('month changed', month);
+                                        }}
+                                        theme={{
+                                            backgroundColor: '#ffffff',
+                                            calendarBackground: '#ffffff',
+                                            textSectionTitleColor: '#b6c1cd',
+                                            textSectionTitleDisabledColor: '#d9e1e8',
+                                            selectedDayBackgroundColor: '#00adf5',
+                                            selectedDayTextColor: '#000',
+                                            todayTextColor: '#00adf5',
+                                            dayTextColor: '#2d4150',
+                                            textDisabledColor: '#d9e1e8',
+                                            dotColor: '#00adf5',
+                                            selectedDotColor: '#ffffff',
+                                            arrowColor: 'orange',
+                                            disabledArrowColor: '#d9e1e8',
+                                            monthTextColor: 'blue',
+                                            indicatorColor: 'blue',
+                                            textDayFontFamily: 'monospace',
+                                            textMonthFontFamily: 'monospace',
+                                            textDayHeaderFontFamily: 'monospace',
+                                            textDayFontWeight: '300',
+                                            textMonthFontWeight: 'bold',
+                                            textDayHeaderFontWeight: '300',
+                                            textDayFontSize: 16,
+                                            textMonthFontSize: 16,
+                                            textDayHeaderFontSize: 16
+                                        }}
+                                        markedDates={date2}
+                                        hideExtraDays={true}
+                                        enableSwipeMonths={true}
+                                    />
+                                    <View style={styles.line2} />
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setPopUp2(false),
+                                                updateSearchApi(searchId)
+                                        }}
+                                        style={[styles.btn, {
+                                            position: "absolute",
+                                            bottom: "2%"
+                                        }]}>
+                                        <Text style={styles.btnTxt}>
+                                            {"Select"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableOpacity>
+                        </Modal>
+                    }
                     <View style={{ height: heightPercentageToDP(10) }} />
                     {isPopUp &&
                         <Modal
@@ -520,12 +636,6 @@ const Dashboard = (props) => {
                                         {"Date, Time and Persons"}
                                     </Text>
                                     <View style={styles.line2} />
-                                    {/* <DatePicker
-                                        mode="date"
-                                        androidVariant="iosClone"
-                                        date={date}
-                                        onDateChange={date => setDate(date)}
-                                    /> */}
                                     <Calendar
                                         onDayPress={day => {
                                             setDate(day.dateString),
@@ -807,15 +917,15 @@ const Dashboard = (props) => {
                                 borderBottomColor: black,
                                 height: heightPercentageToDP(7)
                             }]}>
-                                {/* <FastImage
+                                <FastImage
                                     source={require('../../Images/Location.png')}
                                     resizeMode={FastImage.resizeMode.contain}
                                     style={styles.vectorIcon}
                                 />
                                 <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
                                     {country}
-                                </Text> */}
-                                <SearchBar
+                                </Text>
+                                {/* <SearchBar
                                     placeholder="Search country..."
                                     lightTheme
                                     round
@@ -826,7 +936,7 @@ const Dashboard = (props) => {
                                     inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
                                     containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
                                 //style={{}}
-                                />
+                                /> */}
                             </View>
                             <View style={[styles.row5, {
                                 borderBottomWidth: widthPercentageToDP(0.2),
@@ -851,10 +961,10 @@ const Dashboard = (props) => {
                                 </Text>
                             </View>
 
-                            {!countryData || !countryData.length ?
+                            {!countryList || !countryList.length ?
                                 <View />
                                 : <FlatList
-                                    data={!countryText ? countryData : countryList2}
+                                    data={countryList}
                                     showsVerticalScrollIndicator={false}
                                     contentContainerStyle={{ flexGrow: 1 }}
                                     style={{ marginTop: heightPercentageToDP(2), }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, PermissionsAndroid, Platform, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, PermissionsAndroid, Platform, ActivityIndicator, ScrollView } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, gold1, gold2, gold3, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../Redux/action'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import LinearGradient from 'react-native-linear-gradient'
+import {version} from '../../../package.json'
 
 const Profile = (props) => {
     const dispatch = useDispatch()
@@ -84,229 +85,255 @@ const Profile = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.profileHeader}>
-                <Header
-                    leftComponent={
-                        <TouchableOpacity
-                            onPress={() => { props.navigation.goBack() }}>
-                            <MaterialIcons
-                                name="keyboard-arrow-left"
-                                color={white}
-                                size={35}
-                            />
-                        </TouchableOpacity>
-                    }
-                    centerComponent={{
-                        text: "MY PROFILE", style: {
-                            color: white,
-                            fontSize: widthPercentageToDP(4),
-                            fontFamily: "Montserrat-Bold",
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <View style={styles.profileHeader}>
+                    <Header
+                        leftComponent={
+                            <TouchableOpacity
+                                onPress={() => { props.navigation.goBack() }}>
+                                <MaterialIcons
+                                    name="keyboard-arrow-left"
+                                    color={white}
+                                    size={35}
+                                />
+                            </TouchableOpacity>
                         }
-                    }}
-                    containerStyle={{
-                        backgroundColor: 'transparent',
-                        borderBottomWidth: 0,
-                        height: heightPercentageToDP(17)
-                    }}
-                    statusBarProps={{
-                        backgroundColor: white
-                    }}
-                    barStyle="dark-content"
-                />
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={[gold1, gold2, gold3]}
-                    style={styles.profileRound}>
-                    {!login || !login.data.image ?
+                        centerComponent={{
+                            text: "MY PROFILE", style: {
+                                color: white,
+                                fontSize: widthPercentageToDP(4),
+                                fontFamily: "Montserrat-Bold",
+                            }
+                        }}
+                        containerStyle={{
+                            backgroundColor: 'transparent',
+                            borderBottomWidth: 0,
+                            height: heightPercentageToDP(17)
+                        }}
+                        statusBarProps={{
+                            backgroundColor: white
+                        }}
+                        barStyle="dark-content"
+                    />
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        colors={[gold1, gold2, gold3]}
+                        style={styles.profileRound}>
+                        {!login || !login.data.image ?
+                            <FastImage
+                                source={require('../../Images/profile.png')}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={styles.roundImg}
+                            />
+                            : <FastImage
+                                source={{ uri: 'http://108.61.209.20/' + login.data.image }}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={styles.roundImg}
+                            />
+                        }
+                        <Feather
+                            name="edit"
+                            color={darkBlue}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                bottom: "10%",
+                                right: "5%"
+                            }}
+                            onPress={() => setOption(true)}
+                        />
+                    </LinearGradient>
+                </View>
+                {/* name info */}
+                <Text style={styles.profileName}>
+                    {login.data.name}
+                </Text>
+                <Text style={styles.memberTxt}>
+                    {login.data.member_since}
+                </Text>
+                {/* profile options */}
+
+                <View style={styles.profileOptionView}>
+                    <TouchableOpacity
+                        onPress={() => props.navigation.navigate('PersonalInfo')}
+                        style={styles.blockView}>
                         <FastImage
-                            source={require('../../Images/profile.png')}
+                            source={require('../../Images/Group_5443.png')}
                             resizeMode={FastImage.resizeMode.cover}
-                            style={styles.roundImg}
+                            style={styles.vectorIcon}
                         />
-                        : <FastImage
-                            source={{ uri: 'http://108.61.209.20/' + login.data.image }}
+                        <Text style={styles.blockTxt}>
+                            {"Personal Info"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => props.navigation.navigate('MyBooking')}
+                        style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/Group_5434.png')}
                             resizeMode={FastImage.resizeMode.cover}
-                            style={styles.roundImg}
+                            style={styles.vectorIcon}
                         />
-                    }
-                    <Feather
-                        name="edit"
-                        color={darkBlue}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            bottom: "10%",
-                            right: "5%"
-                        }}
-                        onPress={() => setOption(true)}
-                    />
-                </LinearGradient>
-            </View>
-            {/* name info */}
-            <Text style={styles.profileName}>
-                {login.data.name}
-            </Text>
-            <Text style={styles.memberTxt}>
-                {login.data.member_since}
-            </Text>
-            {/* profile options */}
+                        <Text style={styles.blockTxt}>
+                            {"My Booking"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => props.navigation.navigate('Favourites')}
+                        style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/heart_blue.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={styles.blockTxt}>
+                            {"Favourites Restaurants"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
 
-            <View style={styles.profileOptionView}>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('PersonalInfo')}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Group_5443.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Personal Info"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('MyBooking')}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Group_5434.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"My Booking"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Favourites')}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/heart_blue.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Favourites Restaurants"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Group_5170.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Payment Method"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Language')}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Group_5436.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Change Language"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Settings')}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/settings.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Settings"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => dispatch(logOut())}
-                    style={styles.blockView}>
-                    <FastImage
-                        source={require('../../Images/Group_4090.png')}
-                        resizeMode={FastImage.resizeMode.cover}
-                        style={styles.vectorIcon}
-                    />
-                    <Text style={styles.blockTxt}>
-                        {"Logout"}
-                    </Text>
-                    <MaterialIcons
-                        name="keyboard-arrow-right"
-                        color={black}
-                        size={30}
-                        style={{
-                            position: "absolute",
-                            right: "0%",
-                            top: "25%"
-                        }}
-                    />
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/Group_5170.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={styles.blockTxt}>
+                            {"Payment Method"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => props.navigation.navigate('Language')}
+                        style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/Group_5436.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={styles.blockTxt}>
+                            {"Change Language"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => props.navigation.navigate('Settings')}
+                        style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/settings.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={styles.blockTxt}>
+                            {"Settings"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => dispatch(logOut())}
+                        style={styles.blockView}>
+                        <FastImage
+                            source={require('../../Images/Group_4090.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        />
+                        <Text style={styles.blockTxt}>
+                            {"Logout"}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        disabled={true}
+                        //onPress={() => dispatch(logOut())}
+                        style={styles.blockView}>
+                        {/* <FastImage
+                            source={require('../../Images/Group_4090.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        /> */}
+                        {/* <Text style={styles.blockTxt}>
+                            {""}
+                        </Text> */}
+                        <Text style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%",
+                                fontSize:widthPercentageToDP(5),
+                                fontWeight:"bold",
+                                color: darkBlue
+                            }}
+                        >
+                            {"Version: "}{version}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
             {pickerOption &&
                 <Picker
                     isDialogOpen={pickerOption}

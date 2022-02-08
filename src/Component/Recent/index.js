@@ -16,6 +16,16 @@ const Recent = (props) => {
             /> */}
             <View style={styles.row}>
                 <FastImage
+                    source={require('../../Images/Location.png')}
+                    resizeMode={FastImage.resizeMode.cover}
+                    style={styles.vector}
+                />
+                <Text style={styles.title}>
+                    {!props.city ? "" : props.city}
+                </Text>
+            </View>
+            <View style={styles.row}>
+                <FastImage
                     source={require('../../Images/table2.png')}
                     resizeMode={FastImage.resizeMode.cover}
                     style={styles.vector}
@@ -67,7 +77,7 @@ const Recent = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: widthPercentageToDP(42),
-        height: heightPercentageToDP(20),
+        height: heightPercentageToDP(24),
         backgroundColor: offWhite,
         borderRadius: widthPercentageToDP(3),
         //alignItems: "center",

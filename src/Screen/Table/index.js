@@ -31,7 +31,7 @@ const Table = (props) => {
 
     const getTimesApi = async () => {
         setLoading(true)
-        const result = await getTimes(rest_id)
+        const result = await getTimes(rest_id,date)
         await setResponse(result)
         await setLoading(false)
     }

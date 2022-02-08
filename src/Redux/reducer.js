@@ -8,7 +8,8 @@ import {
   MAKE_FAV,
   POPUP,
   ERROR_MESSAGE,
-  OTP
+  OTP,
+  TOKEN
 } from "./action";
 
 const initialUserState = {
@@ -19,7 +20,8 @@ const initialUserState = {
   makeFav: "",
   popUp: false,
   errorMessage: "",
-  otpData: ""
+  otpData: "",
+  token:""
 };
 
 const userReducer = (state = initialUserState, action) => {
@@ -74,6 +76,12 @@ const userReducer = (state = initialUserState, action) => {
     return {
       ...state,
       makeFav: action.payload.makeFav
+    };
+  }
+  if (action.type === TOKEN) {
+    return {
+      ...state,
+      token: action.payload.token
     };
   }
   return state;

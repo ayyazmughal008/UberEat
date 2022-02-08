@@ -1,5 +1,6 @@
 package com.ubereat;
 import android.os.Bundle;
+import android.content.Intent;
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
 
@@ -12,6 +13,10 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "UberEat";
+  }
+  @Override
+  public void onNewIntent(Intent intent) {
+      super.onNewIntent(intent);
   }
 
   @Override

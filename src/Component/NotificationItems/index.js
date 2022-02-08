@@ -31,12 +31,12 @@ const Notification = (props) => {
                 <View />
                 : props.data.map((item, index) => {
                     return (
-                        <TouchableOpacity
-                            onPress={props.clickHandler}
+                        <View
+                            //onPress={props.clickHandler}
                             key={"unique" + index}
                             style={styles.header}>
                             <FastImage
-                                source={item.image}
+                                source={{ uri: 'http://108.61.209.20/' + item.image }}
                                 resizeMode={FastImage.resizeMode.cover}
                                 style={styles.contactImg}
                             />
@@ -48,7 +48,7 @@ const Notification = (props) => {
                             }]}>
                                 {item.detail}
                             </Text>
-                        </TouchableOpacity>
+                        </View>
                     )
                 })
             }

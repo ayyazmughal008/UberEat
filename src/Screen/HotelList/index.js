@@ -1,25 +1,67 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, SafeAreaView, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from 'react-native'
 import { styles } from '../../Stylesheet'
+//import PropTypes from "prop-types";
 import Header from '../../Component/Header'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white } from '../../Colors'
-import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image'
 import Toggle from '../../Component/Toggle'
 import Listing from '../../Component/Listing'
 import { mapStyle } from './mapStyle'
 import { data } from './data'
+import { makeUserFavourite } from '../../Redux/action'
 import StarRating from 'react-native-star-rating';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const HotelList = (props) => {
+    const dispatch = useDispatch();
+    const makeFav = useSelector((state) => state.user.makeFav);
+    const login = useSelector((state) => state.user.login);
+    const AuthLoading = useSelector((state) => state.user.AuthLoading);
     const [toggleValue, setToggleValue] = useState(1);
     const [isPopUp, setPopUp] = useState(false)
     const [response, setResponse] = useState(false)
+    const [hotelId, setId] = useState("")
     const result = props.route.params.data
+    const mapRef = useRef();
+
+
+    // Call fitToSuppliedMarkers() method on the MapView after markers get updated
+    useEffect(() => {
+        if (mapRef.current)
+            setTimeout(() => {
+                // list of _id's must same that has been provided to the identifier props of the Marker
+                mapRef.current.fitToSuppliedMarkers(result.map.map(({ _id }) => _id), false);
+            }, 1000);
+    }, []);
+    useEffect(() => {
+        if (toggleValue == 2)
+            setTimeout(() => {
+                // list of _id's must same that has been provided to the identifier props of the Marker
+                mapRef.current.fitToSuppliedMarkers(result.map.map(({ _id }) => _id), false);
+            }, 1000);
+    }, [toggleValue])
+    useEffect(() => {
+        if (isPopUp) {
+            setTimeout(() => {
+                // list of _id's must same that has been provided to the identifier props of the Marker
+                mapRef.current.fitToSuppliedMarkers(result.map.map(({ _id }) => _id), false);
+            }, 1000)
+        } else {
+            if (mapRef.current)
+                setTimeout(() => {
+                    // list of _id's must same that has been provided to the identifier props of the Marker
+                    mapRef.current.fitToSuppliedMarkers(result.map.map(({ _id }) => _id), false);
+                }, 1000)
+        }
+
+    }, [isPopUp])
+
+
     return (
         <View style={styles.container}>
             <View style={StyleSheet.absoluteFillObject}>
@@ -100,9 +142,10 @@ const HotelList = (props) => {
                                         rating={item.averageRating}
                                     />
                                 )}
-                            />}
+                            />
+                        }
 
-                        {!result.listing.lenght ?
+                        {!result.listing.length ?
                             <View />
                             : <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: heightPercentageToDP(3) }}>
                                 <Text style={[styles.findTxt, {
@@ -121,7 +164,7 @@ const HotelList = (props) => {
                                     {"See More"}
                                 </Text>
                             </View>}
-                        {!result.listing.lenght ?
+                        {!result.listing.length ?
                             <View />
                             : <FlatList
                                 data={result.listing}
@@ -153,14 +196,14 @@ const HotelList = (props) => {
                         <View style={{ marginTop: heightPercentageToDP(2) }} />
                     </View>
                     : <MapView
+                        ref={mapRef}
                         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                         style={StyleSheet.absoluteFillObject}
                         region={{
                             latitude: 41.055787854765626,
                             longitude: -2.541948949818237,
-                            latitudeDelta: 5.0193,
-                            longitudeDelta: 5.0194
-                            ,
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.0121,
                             //latitudeDelta: 30.1922,
                             //longitudeDelta: 30.1421,
                         }}
@@ -171,14 +214,17 @@ const HotelList = (props) => {
                             : result.map.map((item, index) => {
                                 return (
                                     <Marker
-                                        key={"unique" + index}
+                                        key={item._id}
+                                        identifier={item._id}
+                                        //key={"unique" + index}
                                         coordinate={{
                                             latitude: parseFloat(item.latitude),
                                             longitude: parseFloat(item.longitude),
                                         }}
                                         image={require('../../Images/MapLation.png')}
                                         onPress={() => {
-                                            setPopUp(true),
+                                            setId(item.id),
+                                                setPopUp(true),
                                                 setResponse(item)
                                         }}
                                     />
@@ -200,43 +246,92 @@ const HotelList = (props) => {
                                 </TouchableOpacity>
                                 <View style={{ flexDirection: "row", alignItems: "center", width: "100%", height: "100%", marginTop: 10 }}>
                                     <View style={{ width: "50%", height: "100%", alignItems: "center" }}>
-                                        <FastImage
-                                            source={{ uri: "http://108.61.209.20/" + response.large_image }}
-                                            resizeMode={FastImage.resizeMode.cover}
-                                            style={{
-                                                width: "95%",
-                                                height: "50%"
-                                            }}
-                                        />
-                                        <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(2) }}>
+                                        <Text
+                                            onPress={() =>
+                                            //console.log(response)
+                                            {
+                                                setPopUp(false);
+                                                props.navigation.navigate('HotelDetail', {
+                                                    contacts: response.contact,
+                                                    menu: response.menu,
+                                                    name: response.name,
+                                                    country: response.country,
+                                                    city: response.city,
+                                                    rating: response.averageRating,
+                                                    id: response.id,
+                                                    large_image: response.large_image,
+                                                    small_image: response.small_image,
+                                                    total_person: result.total_person,
+                                                    date: result.date,
+                                                })
+                                            }
+                                            }
+                                            style={[styles.greetingTxt, {
+                                                marginTop: 0,
+                                                textAlign: "center",
+                                                fontSize: widthPercentageToDP(4.6),
+                                                fontFamily: "Montserrat-SemiBold",
+                                                padding: 2
+                                            }]}>
+                                            {response.name}
+                                        </Text>
+                                        <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(0.5), marginBottom: heightPercentageToDP(0.5) }}>
                                             <StarRating
                                                 disabled={false}
                                                 maxStars={5}
                                                 emptyStarColor={lightGrey}
                                                 fullStarColor={darkBlue}
                                                 rating={response.averageRating}
-                                                starSize={30}
-                                                containerStyle={{ width: "40%", marginLeft: 10 }}
+                                                starSize={25}
+                                                containerStyle={{ width: "30%", marginLeft: 10 }}
                                             //selectedStar={(rating) => setStars(rating)}
                                             />
                                         </View>
-                                        <Text style={[styles.greetingTxt, {
-                                            marginTop: heightPercentageToDP(1),
-                                            textAlign: "center",
-                                            fontSize: widthPercentageToDP(5)
-                                        }]}>
+                                        <FastImage
+                                            source={{ uri: "http://108.61.209.20/" + response.large_image }}
+                                            resizeMode={FastImage.resizeMode.cover}
+                                            style={{
+                                                width: "95%",
+                                                height: "40%"
+                                            }}
+                                        />
+                                        <Text
+                                            style={[styles.greetingTxt, {
+                                                marginTop: heightPercentageToDP(1),
+                                                textAlign: "center",
+                                                fontSize: widthPercentageToDP(5)
+                                            }]}>
                                             {response.city + ', ' + response.country}
                                         </Text>
                                     </View>
                                     <View style={{ width: "50%", flex: 1, alignItems: "center", }}>
-                                        <Text style={[styles.greetingTxt, {
-                                            marginTop: 0,
-                                            textAlign: "center",
-                                            fontSize: widthPercentageToDP(5),
-                                            fontFamily: "Montserrat-SemiBold"
-                                        }]}>
-                                            {response.name}
-                                        </Text>
+                                        <View style={{ width: "100%", height: heightPercentageToDP(5), flexDirection: "row-reverse" }}>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    dispatch(makeUserFavourite(
+                                                        login.data.id,
+                                                        hotelId
+                                                    ))
+                                                }
+                                            >
+                                                <FastImage
+                                                    source={
+                                                        response.is_favourite === 'yes' ?
+                                                            require('../../Images/heart.png')
+                                                            : makeFav === 'Marked' ?
+                                                                require('../../Images/heart.png')
+                                                                : makeFav === 'UnMarked' ?
+                                                                    require('../../Images/heart_blue.png')
+                                                                    : require('../../Images/heart_blue.png')}
+                                                    resizeMode={FastImage.resizeMode.cover}
+                                                    style={[styles.vectorIcon, {
+                                                        width: widthPercentageToDP(10),
+                                                        height: widthPercentageToDP(10),
+                                                        marginRight: widthPercentageToDP(2)
+                                                    }]}
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
                                         <FlatList
                                             data={response.available_times}
                                             showsVerticalScrollIndicator={false}

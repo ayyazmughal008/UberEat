@@ -5,8 +5,9 @@ import FastImage from 'react-native-fast-image'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, white } from '../../Colors'
-import { getUseraddUserItem, userCheckOut } from '../../Redux/action'
+import { getUseraddUserItem, userCheckOut, confirmComing } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
 const OverView = (props) => {
@@ -18,23 +19,11 @@ const OverView = (props) => {
     const showBtn = props.route.params.showBtn
     const large_image = props.route.params.large_image
     const small_image = props.route.params.small_image
+    const booking_id = props.route.params.booking_id
 
-    const checkoutApi = async () => {
+    const confirmApi = async () => {
         setLoading(true)
-        console.log(
-            login.data.id,
-            rest_id,
-            total_person,
-            date,
-            senTime
-        )
-        const result = await userCheckOut(
-            login.data.id,
-            rest_id,
-            total_person,
-            date,
-            senTime
-        )
+        const result = await confirmComing(booking_id)
         await setLoading(false)
         if (result.status == 200) {
             console.log(result)
@@ -43,6 +32,10 @@ const OverView = (props) => {
             })
         }
     }
+
+    useEffect(() => {
+        console.log(response.is_feedback)
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -117,6 +110,31 @@ const OverView = (props) => {
                             {response.booking_time}
                         </Text>
                     </View>
+                    <View style={styles.row}>
+                        <Icon
+                            name='approval'
+                            color={darkBlue}
+                            size={30}
+                        />
+                        <Text style={styles.mediumText}>
+                            {"Status"}
+                        </Text>
+                        <Text style={[styles.price, {
+                            position: "absolute",
+                            right: "0%"
+                        }]}>
+                            {response.status}
+                        </Text>
+                    </View>
+                    {response.status === 'cancel' &&
+                        <Text style={[styles.mediumText, {
+                            textAlign: "left",
+                            // fontFamily: "Montserrat-SemiBold",
+                            fontSize: widthPercentageToDP(4.5),
+                            marginTop: heightPercentageToDP(2)
+                        }]}>
+                            {"Reason: "}{response.reason}
+                        </Text>}
                     <Text style={[styles.findTxt, {
                         textAlign: "left",
                         fontFamily: "Montserrat-SemiBold",
@@ -125,6 +143,7 @@ const OverView = (props) => {
                     }]}>
                         {"Menu"}
                     </Text>
+
                     {!response ?
                         <View />
                         : !response.items.length ?
@@ -164,7 +183,6 @@ const OverView = (props) => {
                             {response.total_price}
                         </Text>
                     </View>
-
                     {!showBtn ?
                         <View
                             style={{
@@ -173,9 +191,7 @@ const OverView = (props) => {
                         />
                         : <TouchableOpacity
                             onPress={() => {
-                                props.navigation.navigate('Congratulation', {
-                                    type: type
-                                })
+                                confirmApi()
                             }}
                             style={[styles.btn, {
                                 marginBottom: heightPercentageToDP(2)
@@ -184,7 +200,8 @@ const OverView = (props) => {
                             <Text style={styles.btnTxt}>
                                 {type === 'checking' ? "I'M COMING" : "Checkout"}
                             </Text>
-                        </TouchableOpacity>}
+                        </TouchableOpacity>
+                    }
                 </View>
                 {isLoading &&
                     <ActivityIndicator
@@ -194,6 +211,35 @@ const OverView = (props) => {
                     />
                 }
             </KeyboardAwareScrollView>
+            {response.status === 'approve' ?
+                response.is_feedback === 'no' ?
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.navigation.navigate('Rating', {
+                                data: response
+                            })
+                        }}
+                        style={{
+                            width: widthPercentageToDP(20),
+                            height: widthPercentageToDP(20),
+                            borderRadius: widthPercentageToDP(20) / 2,
+                            backgroundColor: darkBlue,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "absolute",
+                            bottom: "2%",
+                            right: "3%",
+                            zIndex: 3
+                        }}>
+                        <Icon
+                            name='feedback'
+                            color={white}
+                            size={30}
+                        />
+                    </TouchableOpacity>
+                    : <View />
+                : <View />
+            }
         </View>
     )
 }

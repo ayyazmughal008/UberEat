@@ -49,9 +49,12 @@ const HotelDetail = (props) => {
         setMenu(tempArr)
     }, [])
 
-    useEffect(() => {
-        console.log('live updated value ==> ', counter)
-    }, [counter])
+    // useEffect(() => {
+    //     dispatch(makeUserFavourite(login.data.id, id))
+    // }, [])
+    // useEffect(()=>{
+    //     console.log('is favorite', makeFav)
+    // },[makeFav])
 
     const _updateCounter = (index, type) => {
         if (type === 'plus') {

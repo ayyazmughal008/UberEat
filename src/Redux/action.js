@@ -8,6 +8,7 @@ export const LOGIN_DATA = "LOGIN_DATA";
 export const COUNTRY_NAME = "COUNTRY_NAME";
 export const MAKE_FAV = "MAKE_FAV";
 export const OTP = "OTP";
+export const TOKEN = "TOKEN";
 
 
 const baseUrl = 'http://108.61.209.20/api/',
@@ -31,12 +32,29 @@ const baseUrl = 'http://108.61.209.20/api/',
     getSocials = 'get-socials',
     sendEmail = 'send-email',
     changePassword = 'change-password',
+    submitToken = 'submit-token',
+    getNotifications = 'get-notifications',
+    clearNotification = 'clear',
+    getResturantsWithId = 'get-resturants-with-id',
+    coming = 'coming',
+    postReview = 'post-review',
+    checkPopup = 'check-popup',
     register = 'register';
 const country_url = "https://countriesnow.space/api/v0.1/countries/positions"
 
 export const dispatchFunc = () => {
     return dispatch => {
         dispatch({ type: POPUP, payload: false })
+    }
+}
+export const saveToken = (value) => {
+    return dispatch => {
+        dispatch({
+            type: TOKEN,
+            payload: {
+                token: value
+            }
+        })
     }
 }
 export const dispatchFuncOn = () => {
@@ -469,7 +487,7 @@ export const makeUserFavourite = (user_id, resturant_id) => {
             })
     };
 }
-export const getTimes = async (resturant_id) => {
+export const getTimes = async (resturant_id, date) => {
     let api
     try {
         api = await fetch(baseUrl + getAvailableTimes, {
@@ -480,6 +498,7 @@ export const getTimes = async (resturant_id) => {
             },
             body: JSON.stringify({
                 resturant_id: resturant_id,
+                date: date
             })
         })
             .then(res => res.json())
@@ -813,6 +832,231 @@ export const clearAllSearches = async (user_id) => {
             .then(res => res.json())
             .then(json => {
                 console.log('delete response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const updateUserToken = async (user_id, fcm) => {
+    let api
+    try {
+        api = await fetch(baseUrl + submitToken, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                fcm: fcm,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('token updated response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getUserNotification = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + getNotifications, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const deleteNotification = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + clearNotification, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const confirmComing = async (booking_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + coming, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                booking_id: booking_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const updateRecentSearch = async (recentSearchId, user_id, date) => {
+    console.log(recentSearchId, user_id, date)
+    let api
+    try {
+        api = await fetch(baseUrl + getResturantsWithId, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                recentSearchId: recentSearchId,
+                user_id: user_id,
+                date: date
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const updateUserFeedback = async (user_id, resturant_id, booking_id, stars, comment) => {
+    let api
+    try {
+        api = await fetch(baseUrl + postReview, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                resturant_id: resturant_id,
+                booking_id: booking_id,
+                stars: stars,
+                comment: comment
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const checkPopUps = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + checkPopup, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('Notification response ===>', json)
                 if (json.status == 200) {
                     return json
                 } else if (json.status == 401) {
