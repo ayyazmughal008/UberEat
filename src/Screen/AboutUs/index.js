@@ -7,7 +7,7 @@ import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
 import { userAboutUs, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
-
+import Strings from '../../Translation'
 
 const Settings = (props) => {
     const dispatch = useDispatch()
@@ -46,7 +46,7 @@ const Settings = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "ABOUT US", style: {
+                    text: Strings.ABOUT_US, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",

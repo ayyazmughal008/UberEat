@@ -7,6 +7,7 @@ import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
 import { userPrivacyPolicy, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
+import Strings from '../../Translation'
 
 
 const PrivacyPolicy = (props) => {
@@ -46,7 +47,7 @@ const PrivacyPolicy = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "PRIVACY POLICY", style: {
+                    text: Strings.PRIVACY_POLICY, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",

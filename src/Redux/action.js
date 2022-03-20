@@ -9,6 +9,7 @@ export const COUNTRY_NAME = "COUNTRY_NAME";
 export const MAKE_FAV = "MAKE_FAV";
 export const OTP = "OTP";
 export const TOKEN = "TOKEN";
+export const LANGUAGE = "LANGUAGE";
 
 
 const baseUrl = 'http://108.61.209.20/api/',
@@ -37,8 +38,16 @@ const baseUrl = 'http://108.61.209.20/api/',
     clearNotification = 'clear',
     getResturantsWithId = 'get-resturants-with-id',
     coming = 'coming',
+    applyPromo = 'apply-promo',
     postReview = 'post-review',
     checkPopup = 'check-popup',
+    getRanks = 'get-ranks',
+    invite = 'invite',
+    removeItem = 'remove-item',
+    updateItem = 'update-item',
+    getRanksResturants = 'get-ranks-resturants',
+    getProvincesCities = 'get-provinces-cities',
+    comingButton = 'coming-button',
     register = 'register';
 const country_url = "https://countriesnow.space/api/v0.1/countries/positions"
 
@@ -47,6 +56,17 @@ export const dispatchFunc = () => {
         dispatch({ type: POPUP, payload: false })
     }
 }
+export const setUserLanguage = (value) => {
+    return dispatch => {
+        dispatch({
+            type: LANGUAGE,
+            payload: {
+                language: value
+            }
+        })
+    }
+}
+
 export const saveToken = (value) => {
     return dispatch => {
         dispatch({
@@ -72,7 +92,6 @@ export const dispatchErrorMessage = (value) => {
         })
     }
 }
-
 export const logOut = () => {
     return dispatch => {
         dispatch({ type: LOG_OUT })
@@ -375,6 +394,7 @@ export const getAllRestaurant = async (user_id, country, city, date, total_perso
     return api
 }
 export const addUserItem = async (user_id, item_id, resturant_id, quantity) => {
+    console.log(user_id, item_id, resturant_id, quantity)
     let api
     try {
         api = await fetch(baseUrl + addItem, {
@@ -848,6 +868,7 @@ export const clearAllSearches = async (user_id) => {
     return api
 }
 export const updateUserToken = async (user_id, fcm) => {
+    console.log('--------->',fcm)
     let api
     try {
         api = await fetch(baseUrl + submitToken, {
@@ -1066,6 +1087,264 @@ export const checkPopUps = async (user_id) => {
             })
             .catch(error => {
                 console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getRanksData = async (user_id, resturantsIds) => {
+    console.log(resturantsIds)
+    let api
+    try {
+        api = await fetch(baseUrl + getRanks, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                resturantsIds: resturantsIds
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('updated ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    //Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const applyCoupanCode = async (user_id, promo) => {
+    let api
+    try {
+        api = await fetch(baseUrl + applyPromo, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                promo: promo
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const inviteFriends = async (user_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + invite, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getAllCities = async () => {
+    let api
+    try {
+        api = await fetch(baseUrl + getProvincesCities, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+export const getCitiesResturants = async (user_id, cities) => {
+    let api
+    try {
+        api = await fetch(baseUrl + getRanksResturants, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                cities: cities
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+
+export const deleteItems = async (user_id, order_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + removeItem, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                order_id: order_id
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+
+export const updateUserItem = async (user_id, item_id, resturant_id, quantity, order_id) => {
+    console.log(user_id, item_id, resturant_id, quantity, order_id)
+    let api
+    try {
+        api = await fetch(baseUrl + updateItem, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                order_id: order_id,
+                item_id: item_id,
+                resturant_id: resturant_id,
+                quantity: quantity,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("response error ===>", error)
+            })
+    } catch (error) {
+        console.log('my error' + error.message);
+    }
+    return api
+}
+
+export const checkComingBtn = async (booking_id) => {
+    let api
+    try {
+        api = await fetch(baseUrl + comingButton, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                booking_id: booking_id,
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('ranks response ===>', json)
+                if (json.status == 200) {
+                    return json
+                } else if (json.status == 401) {
+                    Alert.alert("", json.message)
+                    return json
+                }
+            })
+            .catch(error => {
+                console.log("ranks error ===>", error)
             })
     } catch (error) {
         console.log('my error' + error.message);

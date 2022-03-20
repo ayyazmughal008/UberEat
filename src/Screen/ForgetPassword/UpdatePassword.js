@@ -9,6 +9,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserPassword } from '../../Redux/action'
+import Strings from '../../Translation'
 
 const Settings = (props) => {
     const dispatch = useDispatch()
@@ -63,7 +64,7 @@ const Settings = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "CHANGE PASSWORD", style: {
+                    text: Strings.CHANGE_PASSWORD, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -98,7 +99,7 @@ const Settings = (props) => {
                     //style = {styles.inputTxt}
                     /> */}
                     <Input
-                        placeholder='New Password'
+                        placeholder={Strings.New_Password}
                         placeholderTextColor={textBlack}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         leftIcon={
@@ -114,7 +115,7 @@ const Settings = (props) => {
                     //style = {styles.inputTxt}
                     />
                     <Input
-                        placeholder='Confirm New Password'
+                        placeholder={Strings.Confirm_New_Password}
                         placeholderTextColor={textBlack}
                         inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                         leftIcon={
@@ -137,7 +138,7 @@ const Settings = (props) => {
                         }]}
                     >
                         <Text style={[styles.btnTxt, {}]}>
-                            {"Done"}
+                            {Strings.Done}
                         </Text>
                     </TouchableOpacity>
                 </View>

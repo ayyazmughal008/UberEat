@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Modal, Image, Alert, ActivityIndicator, Platform, ScrollView, PermissionsAndroid } from 'react-native'
 import { styles } from '../../Stylesheet'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { black, darkBlue, lightBlue, lightGrey, white,gold3 } from '../../Colors'
+import { black, darkBlue, lightBlue, lightGrey, white, gold3 } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { isFirstTime } from '../../Redux/action'
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -13,6 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { userLogin } from '../../Redux/action'
 import { KeyboardAwareView } from 'react-native-keyboard-aware-view'
+import Strings from '../../Translation'
 
 const Login = (props) => {
     const dispatch = useDispatch()
@@ -72,7 +73,7 @@ const Login = (props) => {
                     style={styles.sliderImg}
                 />
                 <Text style={[styles.bigTxtBold, {
-                    textAlign:"center",
+                    textAlign: "center",
                     fontSize: widthPercentageToDP(6),
                     padding: 5,
                     fontFamily: "Montserrat-Bold",
@@ -112,7 +113,7 @@ const Login = (props) => {
         dispatch(userLogin(email, password))
     }
     useEffect(() => {
-        if(Platform.OS === 'android'){
+        if (Platform.OS === 'android') {
             askPermission()
         }
     }, [])
@@ -182,7 +183,7 @@ const Login = (props) => {
                             style={styles.bottomLoginView}>
                             <View style={styles.inputView}>
                                 <TextInput
-                                    placeholder="Email"
+                                    placeholder={Strings.Email}
                                     placeholderTextColor={lightGrey}
                                     style={styles.inputTxt}
                                     onChangeText={(text) => setEMail(text)}
@@ -190,7 +191,7 @@ const Login = (props) => {
                             </View>
                             <View style={styles.inputView}>
                                 <TextInput
-                                    placeholder="Password"
+                                    placeholder={Strings.Password}
                                     placeholderTextColor={lightGrey}
                                     style={styles.inputTxt}
                                     secureTextEntry={true}
@@ -200,7 +201,7 @@ const Login = (props) => {
                             <Text
                                 onPress={() => props.navigation.navigate('ForgetPassword')}
                                 style={[styles.forgetPassTxt, { textAlign: "right" }]}>
-                                {"Forgot Password?"}
+                                {Strings.Forgot_Password}
                             </Text>
 
                             <TouchableOpacity
@@ -208,15 +209,15 @@ const Login = (props) => {
                                 style={styles.btn}
                             >
                                 <Text style={[styles.btnTxt, {}]}>
-                                    {"LOGIN"}
+                                    {Strings.LOGIN}
                                 </Text>
                             </TouchableOpacity>
                             <Text style={styles.smallTxt}>
-                                {"Don't have an account? "}
+                                {Strings.no_account}
                                 <Text
                                     onPress={() => props.navigation.navigate('Signup')}
                                     style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
-                                    {"Sign Up"}
+                                    {Strings.Sign_Up}
                                 </Text>
                             </Text>
                         </Animatable.View>

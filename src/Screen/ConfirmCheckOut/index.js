@@ -8,7 +8,7 @@ import { black, darkBlue, lightGrey, white } from '../../Colors'
 import { getUseraddUserItem, userCheckOut, confirmComing } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
+import Strings from '../../Translation'
 
 const OverView = (props) => {
     const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const OverView = (props) => {
                         fontSize: widthPercentageToDP(5),
                         marginTop: heightPercentageToDP(5)
                     }]}>
-                        {"Overview"}
+                        {Strings.Overview}
                     </Text>
                     <View style={styles.row}>
                         <FastImage
@@ -69,7 +69,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Total Person"}
+                            {Strings.Total_Person}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -85,7 +85,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Date"}
+                            {Strings.Date}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -101,7 +101,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Booking Time"}
+                            {Strings.Booking_Time}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -117,7 +117,7 @@ const OverView = (props) => {
                             size={30}
                         />
                         <Text style={styles.mediumText}>
-                            {"Status"}
+                            {Strings.Status}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -133,15 +133,16 @@ const OverView = (props) => {
                             fontSize: widthPercentageToDP(4.5),
                             marginTop: heightPercentageToDP(2)
                         }]}>
-                            {"Reason: "}{response.reason}
-                        </Text>}
+                            {Strings.Reason}{response.reason}
+                        </Text>
+                    }
                     <Text style={[styles.findTxt, {
                         textAlign: "left",
                         fontFamily: "Montserrat-SemiBold",
                         fontSize: widthPercentageToDP(5),
                         marginTop: heightPercentageToDP(5)
                     }]}>
-                        {"Menu"}
+                        {Strings.Menu}
                     </Text>
 
                     {!response ?
@@ -174,7 +175,7 @@ const OverView = (props) => {
                         <Text style={[styles.priceTxt, {
                             fontSize: widthPercentageToDP(5)
                         }]}>
-                            {"Total Price"}
+                            {Strings.Total_Price}
                         </Text>
                         <Text style={[styles.price, {
                             fontSize: widthPercentageToDP(5),
@@ -198,7 +199,7 @@ const OverView = (props) => {
                             }]}
                         >
                             <Text style={styles.btnTxt}>
-                                {type === 'checking' ? "I'M COMING" : "Checkout"}
+                                {type === 'checking' ? Strings.COMING : Strings.Checkou}
                             </Text>
                         </TouchableOpacity>
                     }

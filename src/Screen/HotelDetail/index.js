@@ -10,9 +10,10 @@ import { black, darkBlue, lightGrey, white } from '../../Colors'
 import Toggle from '../../Component/Toggle'
 import Items from '../../Component/Items'
 import Review from '../../Component/Review'
-import Fontisto from 'react-native-vector-icons/Fontisto'
-import { addUserItem, getUseraddUserItem, makeUserFavourite } from '../../Redux/action'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import { addUserItem, getUseraddUserItem, makeUserFavourite, deleteItems, updateUserItem } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 const HotelDetail = (props) => {
     const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const HotelDetail = (props) => {
     const [response, setResponse] = useState('')
     const [isFav, setFav] = useState('')
     const [counter, setCounter, counterRef] = useState(1)
+    const [itemId, setItemId, itemIdRef] = useState('')
+    const [quantity, setQuantity, quantityRef] = useState('')
+
     const contacts = props.route.params.contacts
     const [menu, setMenu] = useState(props.route.params.menu)
     const name = props.route.params.name
@@ -93,19 +97,25 @@ const HotelDetail = (props) => {
         }
     }
 
-    const getAddUserItemApi = async () => {
+    const removeItems = async (orderId, item_id, quantity) => {
         setLoading(true)
-        const result = await getUseraddUserItem(login.data.id, id)
+        const result = await deleteItems(login.data.id, orderId)
         await setLoading(false)
         if (result.status == 200) {
-            props.navigation.navigate('Table', {
-                data: result,
-                large_image: large_image,
-                small_image: small_image,
-                rest_id: id
-            })
+            updateApi(item_id, id, quantity)
         }
     }
+
+    const updateApi = async () => {
+        setLoading(true)
+        const result = await getUseraddUserItem(login.data.id, id)
+        await setResponse(result)
+        await setLoading(false)
+        if (!result.items_array.length) {
+            setPop(false)
+        }
+    }
+
 
 
 
@@ -173,8 +183,8 @@ const HotelDetail = (props) => {
                     <Toggle
                         selectionMode={1}
                         roundCorner={true}
-                        option1={'Menu'}
-                        option2={'Contact'}
+                        option1={Strings.Menu}
+                        option2={Strings.Contact}
                         onSelectSwitch={(newState) => setToggleValue(newState)}
                         selectionColor={darkBlue}
                     />
@@ -187,7 +197,7 @@ const HotelDetail = (props) => {
                             fontSize: widthPercentageToDP(5),
                             marginTop: heightPercentageToDP(5)
                         }]}>
-                            {"Categories"}
+                            {Strings.Categories}
                         </Text>
                         <FlatList
                             data={menu}
@@ -236,7 +246,7 @@ const HotelDetail = (props) => {
                             fontSize: widthPercentageToDP(5),
                             marginTop: heightPercentageToDP(5)
                         }]}>
-                            {"Items"}
+                            {Strings.Items}
                         </Text>
                         <FlatList
                             data={menu[activeIndex].associated_items}
@@ -249,7 +259,9 @@ const HotelDetail = (props) => {
                                     dishImg={'http://108.61.209.20/' + item.image}
                                     title={item.name}
                                     clickHandler={() => {
-                                        addItemApi(item.id, id, item.quantity)
+                                        setItemId(item.id);
+                                        setQuantity(item.quantity);
+                                        addItemApi(item.id, id, item.quantity);
                                         //setPop(true)
                                     }}
                                     price={item.price}
@@ -288,15 +300,38 @@ const HotelDetail = (props) => {
                                                 keyExtractor={(item, index) => 'key' + index}
                                                 renderItem={({ item, index }) => (
                                                     <View style={styles.row2}>
-                                                        <Text style={styles.priceTxt}>
-                                                            {item.item}
-                                                        </Text>
-                                                        <Text style={styles.price}>
-                                                            {item.price}
-                                                        </Text>
+                                                        <View style={{
+                                                            flexDirection: "row",
+                                                            alignItems: "center",
+                                                            width: "85%",
+                                                            justifyContent: "space-between"
+                                                        }}>
+                                                            <Text style={styles.priceTxt}>
+                                                                {item.item}
+                                                            </Text>
+                                                            <Text style={styles.price}>
+                                                                {item.price}
+                                                            </Text>
+                                                        </View>
+                                                        <TouchableOpacity
+                                                            activeOpacity={0.6}
+                                                            onPress={() => {
+                                                                removeItems(
+                                                                    item.order_id,
+                                                                    itemIdRef.current,
+                                                                    quantityRef.current
+                                                                )
+                                                            }}>
+                                                            <AntDesign
+                                                                name="delete"
+                                                                color={darkBlue}
+                                                                size={25}
+                                                            />
+                                                        </TouchableOpacity>
                                                     </View>
                                                 )}
-                                            />}
+                                            />
+                                        }
                                         <View style={{
                                             width: "100%",
                                             height: heightPercentageToDP(15),
@@ -309,7 +344,7 @@ const HotelDetail = (props) => {
                                                 <Text style={[styles.priceTxt, {
                                                     fontSize: widthPercentageToDP(5)
                                                 }]}>
-                                                    {"Total Price"}
+                                                    {Strings.Total_Price}
                                                 </Text>
                                                 <Text style={[styles.price, {
                                                     fontSize: widthPercentageToDP(5),
@@ -334,7 +369,7 @@ const HotelDetail = (props) => {
                                                     marginTop: heightPercentageToDP(2)
                                                 }]}>
                                                 <Text style={styles.btnTxt}>
-                                                    {"Book Now"}
+                                                    {Strings.Book_Now}
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
@@ -358,7 +393,7 @@ const HotelDetail = (props) => {
                                 marginBottom: heightPercentageToDP(2)
                             }]}>
                             <Text style={styles.btnTxt}>
-                                {"Book Now"}
+                                {Strings.Book_Now}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -406,7 +441,7 @@ const HotelDetail = (props) => {
                             </Text>
                         </View>
                         <Text style={styles.title}>
-                            {"About Us"}
+                            {Strings.about_us}
                         </Text>
                         <Text style={[styles.mediumText, {
                             marginLeft: 0,
@@ -417,7 +452,7 @@ const HotelDetail = (props) => {
                         <Text style={[styles.title, {
                             marginBottom: heightPercentageToDP(1)
                         }]}>
-                            {"Reviews"}
+                            {Strings.Reviews}
                         </Text>
 
                         {!contacts.reviews.length ?

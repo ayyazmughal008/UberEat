@@ -12,33 +12,34 @@ const Item = (props) => {
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.img}
             />
-            <Text 
-            numberOfLines={1}
-            style={styles.title}>
+            <Text
+                numberOfLines={1}
+                style={styles.title}>
                 {props.title}
             </Text>
             <View style={styles.row}>
+                <TouchableOpacity
+                    onPress={props.minusClick}
+                    style={styles.circle}>
+                    <Text style={[styles.operator, {
+                        fontSize: widthPercentageToDP(5)
+                    }]}>
+                        {"-"}
+                    </Text>
+                </TouchableOpacity>
+
+                <Text style={[styles.operator, { marginLeft: 5, marginRight: 5, color: black }]}>
+                    {props.quantity}
+                </Text>
                 <TouchableOpacity
                     onPress={props.plusClick}
                     style={[styles.circle, {
                         marginLeft: widthPercentageToDP(2)
                     }]}>
                     <Text style={[styles.operator, {
-                        fontSize: widthPercentageToDP(4.7)
+                        fontSize: widthPercentageToDP(5)
                     }]}>
                         {"+"}
-                    </Text>
-                </TouchableOpacity>
-                <Text style={[styles.operator, { marginLeft: 5, marginRight: 5, color: black }]}>
-                    {props.quantity}
-                </Text>
-                <TouchableOpacity
-                    onPress={props.minusClick}
-                    style={styles.circle}>
-                    <Text style={[styles.operator, {
-                        fontSize: widthPercentageToDP(4.7)
-                    }]}>
-                        {"-"}
                     </Text>
                 </TouchableOpacity>
                 <Text style={[styles.operator, { marginLeft: 7, color: black }]}>

@@ -12,10 +12,12 @@ import FastImage from 'react-native-fast-image'
 import { gold3 } from './src/Colors'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import messaging from '@react-native-firebase/messaging';
+import Strings from './src/Translation'
 
 export default function App(props) {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
+    const language = useSelector((state) => state.user.language);
     const [isAnimate, setAnimate] = useState(true)
 
     // useEffect(() => {
@@ -30,6 +32,18 @@ export default function App(props) {
     useEffect(() => {
         updateData();
     }, [])
+
+    useEffect(() => {
+        if (language) {
+            if (language === 'en') {
+                Strings.setLanguage('en')
+            } else if (language === 'es') {
+                Strings.setLanguage('es')
+            }
+        }
+    }, [])
+
+
     const updateData = async () => {
         const authStatus = await messaging().requestPermission();
         const enabled =

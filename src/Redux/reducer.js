@@ -9,7 +9,8 @@ import {
   POPUP,
   ERROR_MESSAGE,
   OTP,
-  TOKEN
+  TOKEN,
+  LANGUAGE
 } from "./action";
 
 const initialUserState = {
@@ -21,7 +22,8 @@ const initialUserState = {
   popUp: false,
   errorMessage: "",
   otpData: "",
-  token:""
+  token: "",
+  language: ""
 };
 
 const userReducer = (state = initialUserState, action) => {
@@ -82,6 +84,12 @@ const userReducer = (state = initialUserState, action) => {
     return {
       ...state,
       token: action.payload.token
+    };
+  }
+  if (action.type === LANGUAGE) {
+    return {
+      ...state,
+      language: action.payload.language
     };
   }
   return state;

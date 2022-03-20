@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View, SafeAreaView, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native'
 import { styles } from '../../Stylesheet'
 import Headers from '../../Component/Header'
+import useState from 'react-usestateref'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white, gold3 } from '../../Colors'
+import { black, darkBlue, lightBlue, lightGrey, offWhite, textBlack, white, gold3, darkBlue2 } from '../../Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image'
 import { Input, Header, SearchBar } from 'react-native-elements';
@@ -25,14 +26,19 @@ import {
     clearAllSearches,
     updateUserToken,
     updateRecentSearch,
-    checkPopUps
+    checkPopUps,
+    getRanksData,
+    getAllCities,
+    getCitiesResturants
 } from '../../Redux/action'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 import moment from 'moment'
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import RNFetchBlob from 'rn-fetch-blob'
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import Strings from '../../Translation'
 
 const Dashboard = (props) => {
     const dispatch = useDispatch()
@@ -62,16 +68,36 @@ const Dashboard = (props) => {
     const [isLoading, setLoading] = useState(false)
     const [response, setResponse] = useState('')
     const [recentResponse, setRecent] = useState('')
-    const [socialResponse, setSocial] = useState('')
+    const [socialResponse, setSocial] = useState([])
     const [isAnimate, setAnimate] = useState(true)
     const [countryList2, setCountryList2] = useState([])
     const [countryList, setCountryList] = useState([{ name: "Spain" }])
     const [countryText, setCountryText] = useState("")
     const [cityList2, setCityList2] = useState([])
     const [cityText, setCityText] = useState("")
+    // new states
+    const [cities, setCities, counterRef2] = useState([])
+    const [citiesText, setCitiesText] = useState("")
+    const [citiesResponse, setCitiesResponse] = useState([])
+    const [citiesResponse2, setCitiesResponse2] = useState([])
+    const [citiesPopup, setCitiesPopup] = useState(false)
+    // new states for selected cities
+    const [selectedCitiesText, setSelectedCitiesText] = useState("")
+    const [selectedCitiesResponse, setSelectedCitiesResponse, counterRef] = useState([])
+    const [selectedCitiesResponse2, setSelectedCitiesResponse2] = useState([])
+    const [selectedCitiesPopup, setSelectedCitiesPopup] = useState(false)
+    const [isActive, setIsActive] = useState(false)
+    // new states for resturants
+    const [resturants, setResturants, counterRef3] = useState([])
+    const [resturantsText, setResturantsText] = useState("")
+    const [resturantsResponse, setResturantsResponse] = useState([])
+    const [resturantsResponse2, setResturantsResponse2] = useState([])
+    const [resturantsPopup, setResturantsPopup] = useState(false)
+    const [isActive2, setIsActive2] = useState(false)
 
     useEffect(() => {
         getCurrentLocation()
+        citiesApi()
         //dispatch(getCountryName())
         getCityName()
         recentDataApi()
@@ -100,6 +126,12 @@ const Dashboard = (props) => {
             setAnimate(false)
         }, 5000);
     }, [])
+    const citiesApi = async () => {
+        setLoading(true)
+        const result = await getAllCities()
+        await setCitiesResponse(result.data)
+        await setLoading(false)
+    }
     const checkIsPopup = async () => {
         if (login) {
             const result = await checkPopUps(login.data.id)
@@ -227,10 +259,18 @@ const Dashboard = (props) => {
     }
     const socialDataApi = async () => {
         setLoading(true)
-        const result = await getSocialData(login.data.id)
-        await setSocial(result)
+        const result = await getRanksData(login.data.id, counterRef3.current)
+        await setSocial(result.data)
         await setLoading(false)
-
+    }
+    const rankRastuDataApi = async () => {
+        setLoading(true)
+        const result = await getCitiesResturants(login.data.id, cities)
+        await setResturantsResponse(result.data)
+        await setLoading(false)
+        if (result.status == 200) {
+            setResturantsPopup(true)
+        }
     }
     const iosDownload = (fileUrl) => {
         setLoading(true)
@@ -312,15 +352,26 @@ const Dashboard = (props) => {
         }
     }
     const searchFilterFunction = text => {
-        let temList = countryData;
+        let temList = citiesResponse;
         const newData = temList.filter(item => {
             const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
             const textData = text.toUpperCase();
             return itemData.indexOf(textData) > -1;
         });
         //setCountryList(data => ([data, ...newData]));
-        setCountryList2(newData)
-        setCountryText(text)
+        setCitiesResponse2(newData)
+        setCitiesText(text)
+    };
+    const searchSelectedFilterFunction = text => {
+        let temList = selectedCitiesResponse;
+        const newData = temList.filter(item => {
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        //setCountryList(data => ([data, ...newData]));
+        setSelectedCitiesResponse2(newData)
+        setSelectedCitiesText(text)
     };
     const searchCityFilterFunction = text => {
         let temList = cityList;
@@ -341,6 +392,111 @@ const Dashboard = (props) => {
             recentDataApi()
         }
     }
+    // new functions for filters
+
+    const _removeItem = (value) => {
+        const temArr = [...counterRef2.current]
+        const index = temArr.indexOf(value);
+        if (index > -1) {
+            temArr.splice(index, 1);
+        }
+        setCities(temArr)
+    }
+    const _checkBoxClick = (name) => {
+        let myData = [...counterRef.current]
+        let temArr = [...counterRef2.current]
+        for (let i = 0; i < myData.length; i++) {
+            if (myData[i].name === name) {
+                if (!myData[i].isActive) {
+                    myData[i].isActive = true
+                    temArr.push(myData[i].name)
+                    setCities(temArr)
+                } else {
+                    myData[i].isActive = false
+                    _removeItem(myData[i].name)
+                }
+            }
+        }
+        setSelectedCitiesResponse(myData)
+    }
+    const _selectAll = () => {
+        let myData = [...counterRef.current]
+        let temArr = [...counterRef2.current]
+        if (isActive) {
+            for (let i = 0; i < myData.length; i++) {
+                myData[i].isActive = false
+            }
+            setCities([])
+            setSelectedCitiesResponse(myData)
+            setIsActive(false)
+        } else {
+            for (let i = 0; i < myData.length; i++) {
+                myData[i].isActive = true
+                temArr.push(myData[i].name)
+                setCities(temArr)
+            }
+            setSelectedCitiesResponse(myData)
+            setIsActive(true)
+        }
+    }
+
+    // new functions for filters
+    const _removeItem2 = (value) => {
+        const temArr = [...counterRef3.current]
+        const index = temArr.indexOf(value);
+        if (index > -1) {
+            temArr.splice(index, 1);
+        }
+        setResturants(temArr)
+    }
+    const _checkBoxClick2 = (name) => {
+        let myData = [...resturantsResponse]
+        let temArr = [...counterRef3.current]
+        for (let i = 0; i < myData.length; i++) {
+            if (myData[i].name === name) {
+                if (!myData[i].isActive) {
+                    myData[i].isActive = true
+                    temArr.push(myData[i].id)
+                    setResturants(temArr)
+                } else {
+                    myData[i].isActive = false
+                    _removeItem2(myData[i].name)
+                }
+            }
+        }
+        setResturantsResponse(myData)
+    }
+    const _selectAll2 = () => {
+        let myData = [...resturantsResponse]
+        let temArr = [...counterRef3.current]
+        if (isActive2) {
+            for (let i = 0; i < myData.length; i++) {
+                myData[i].isActive = false
+            }
+            setResturants([])
+            setResturantsResponse(myData)
+            setIsActive2(false)
+        } else {
+            for (let i = 0; i < myData.length; i++) {
+                myData[i].isActive = true
+                temArr.push(myData[i].id)
+                setResturants(temArr)
+            }
+            setResturantsResponse(myData)
+            setIsActive2(true)
+        }
+    }
+    const searchResturantFilterFunction = text => {
+        let temList = resturantsResponse;
+        const newData = temList.filter(item => {
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        //setCountryList(data => ([data, ...newData]));
+        setResturantsResponse2(newData)
+        setResturantsText(text)
+    };
 
 
 
@@ -361,14 +517,14 @@ const Dashboard = (props) => {
             {toggleValue == 1 ?
                 <View style={styles.dashboardMainView}>
                     <Text style={styles.greetingTxt}>
-                        {"Hello "}{login.data.name}
+                        {Strings.Hello}{login.data.name}
                     </Text>
                     <Text style={[styles.findTxt, {
                         color: darkBlue
                     }]}>
-                        {"Find Your Restaurant"}
+                        {Strings.Find_Your_Restaurant}
                     </Text>
-                    <View style={styles.row5}>
+                    {/* <View style={styles.row5}>
                         <TouchableOpacity
                             onPress={() => { setCityModal(true) }}
                         >
@@ -381,9 +537,17 @@ const Dashboard = (props) => {
                         <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3) }]}>
                             {city + ', ' + country}
                         </Text>
-                    </View>
+                    </View> */}
                     <TouchableOpacity
-                        onPress={() => setHide(!isHide)}
+                        onPress={() => {
+                            if (!isHide) {
+                                setCityModal(true),
+                                    setHide(!isHide)
+                            } else {
+                                setHide(!isHide)
+                            }
+
+                        }}
                         style={[styles.inputView, {
                             width: widthPercentageToDP(90),
                             marginTop: heightPercentageToDP(3),
@@ -432,10 +596,10 @@ const Dashboard = (props) => {
                                     marginLeft: widthPercentageToDP(3),
                                     color: lightGrey
                                 }]}>
-                                    {checked === 'first' ? "Bar"
-                                        : checked === 'second' ? "Pub" :
-                                            checked === 'third' ? "Restaurante" :
-                                                checked === 'fourth' ? "Noche" : ""}
+                                    {checked === 'first' ? Strings.Bar
+                                        : checked === 'second' ? Strings.Pub :
+                                            checked === 'third' ? Strings.Restaurante :
+                                                checked === 'fourth' ? Strings.Noche : ""}
                                     <Text style={[styles.greetingTxt, {
                                         marginTop: 0,
                                         marginLeft: widthPercentageToDP(3),
@@ -464,7 +628,7 @@ const Dashboard = (props) => {
                                     marginLeft: widthPercentageToDP(3),
                                     color: lightGrey
                                 }]}>
-                                    {counter}{" person"}
+                                    {counter}{Strings.person}
                                 </Text>
                             </View>
                             <TouchableOpacity
@@ -475,7 +639,7 @@ const Dashboard = (props) => {
                                 style={[styles.btn2]}
                             >
                                 <Text style={[styles.btnTxt, {}]}>
-                                    {"Search"}
+                                    {Strings.Search}
                                 </Text>
                             </TouchableOpacity>
                         </Animatable.View>
@@ -485,7 +649,7 @@ const Dashboard = (props) => {
                             color: darkBlue,
                             marginTop: 0
                         }]}>
-                            {"Recent Search"}
+                            {Strings.Recent_Search}
                         </Text>
                         <TouchableOpacity
                             onPress={() => deleteSearch()}
@@ -495,7 +659,7 @@ const Dashboard = (props) => {
                                 color: darkBlue,
                                 fontFamily: "Montserrat-SemiBold",
                             }]}>
-                                {"Clear all"}
+                                {Strings.Clear_all}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -606,7 +770,7 @@ const Dashboard = (props) => {
                                             bottom: "2%"
                                         }]}>
                                         <Text style={styles.btnTxt}>
-                                            {"Select"}
+                                            {Strings.Select}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -633,7 +797,7 @@ const Dashboard = (props) => {
                                         textAlign: "center",
                                         fontSize: widthPercentageToDP(6)
                                     }]}>
-                                        {"Date, Time and Persons"}
+                                        {Strings.Date_Time_and_Persons}
                                     </Text>
                                     <View style={styles.line2} />
                                     <Calendar
@@ -701,7 +865,7 @@ const Dashboard = (props) => {
                                                 marginLeft: widthPercentageToDP(2),
                                                 marginTop: 0
                                             }]}>
-                                                {"Bar"}
+                                                {Strings.Bar}
                                             </Text>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
@@ -717,7 +881,7 @@ const Dashboard = (props) => {
                                                 marginLeft: widthPercentageToDP(2),
                                                 marginTop: 0
                                             }]}>
-                                                {"Pub"}
+                                                {Strings.Pub}
                                             </Text>
                                         </View>
                                     </View>
@@ -739,7 +903,7 @@ const Dashboard = (props) => {
                                                 marginLeft: widthPercentageToDP(2),
                                                 marginTop: 0
                                             }]}>
-                                                {"Restaurante"}
+                                                {Strings.Restaurante}
                                             </Text>
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center", width: "50%", }}>
@@ -755,7 +919,7 @@ const Dashboard = (props) => {
                                                 marginLeft: widthPercentageToDP(2),
                                                 marginTop: 0
                                             }]}>
-                                                {"Noche"}
+                                                {Strings.Noche}
                                             </Text>
                                         </View>
                                     </View>
@@ -765,7 +929,7 @@ const Dashboard = (props) => {
                                             fontFamily: "Montserrat-Medium",
                                             fontSize: widthPercentageToDP(4.5)
                                         }]}>
-                                            {"Total Persons :"}
+                                            {Strings.Total_Person}
                                         </Text>
                                         <View style={styles.row4}>
                                             <TouchableOpacity
@@ -800,7 +964,7 @@ const Dashboard = (props) => {
                                             bottom: "2%"
                                         }]}>
                                         <Text style={styles.btnTxt}>
-                                            {"Select"}
+                                            {Strings.Select}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -810,40 +974,46 @@ const Dashboard = (props) => {
 
                 </View>
                 : <View style={styles.dashboardMainView}>
-                    <Text style={[styles.findTxt, {
-                        marginTop: heightPercentageToDP(2)
-                    }]}>
-                        {"Trending"}
-                    </Text>
-                    <Text style={[styles.greetingTxt, {
-                        color: black,
-                        fontFamily: "Montserrat-SemiBold",
-                        marginTop: heightPercentageToDP(1)
-                    }]}>
-                        {"Recent Posts"}
-                    </Text>
-                    {!socialResponse || !socialResponse.data.length ?
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: "100%",
+                        marginTop: heightPercentageToDP(2),
+                        justifyContent: "space-between"
+                    }}>
+                        <Text style={styles.findTxt}>
+                            {Strings.Trending}
+                        </Text>
+                        <TouchableOpacity onPress={() => {
+                            setIsActive(false),
+                                setIsActive2(false),
+                                setCities([]),
+                                setCitiesPopup(true)
+                        }}>
+                            <FastImage
+                                source={require('../../Images/filter.jpg')}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={{
+                                    width: widthPercentageToDP(15),
+                                    height: widthPercentageToDP(15)
+                                }}
+                                tintColor={black}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+                    {!socialResponse || !socialResponse.length ?
                         <View />
                         : <FlatList
-                            data={socialResponse.data}
+                            data={socialResponse}
                             showsVerticalScrollIndicator={false}
                             style={{ marginTop: heightPercentageToDP(2), }}
                             keyExtractor={(item, index) => 'key' + index}
                             renderItem={({ item, index }) => (
                                 <Trending
-                                    dishImg={'http://108.61.209.20/' + item.large_image}
                                     title={item.name}
-                                    date={item.date}
-                                    name={item.person_name}
-                                    profile={'http://108.61.209.20/' + item.small_image}
-                                    downloadClick={() => {
-                                        if (Platform.OS === 'ios') {
-                                            iosDownload('http://108.61.209.20/' + item.large_image)
-                                        } else {
-                                            requestPermission('http://108.61.209.20/' + item.large_image)
-                                        }
-                                    }}
-                                //clickHandler={() => { props.navigation.navigate('HotelDetail') }}
+                                    images={item.images}
+                                    rank={item.rank}
                                 />
                             )}
                         />}
@@ -854,8 +1024,8 @@ const Dashboard = (props) => {
                 <CustomSwitch
                     selectionMode={1}
                     roundCorner={true}
-                    option1={'Search'}
-                    option2={'Social'}
+                    option1={Strings.Search}
+                    option2={Strings.Social}
                     onSelectSwitch={(newState) => setToggleValue(newState)}
                     selectionColor={darkBlue}
                 />
@@ -894,7 +1064,7 @@ const Dashboard = (props) => {
                                 </TouchableOpacity>
                             }
                             centerComponent={{
-                                text: "Select Location", style: {
+                                text: Strings.Select_Location, style: {
                                     color: black,
                                     fontSize: widthPercentageToDP(4),
                                     fontFamily: "Montserrat-Bold",
@@ -957,7 +1127,7 @@ const Dashboard = (props) => {
                                     />
                                 </TouchableOpacity>
                                 <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3), color: lightBlue }]}>
-                                    {"Use current location"}
+                                    {Strings.Use_current_location}
                                 </Text>
                             </View>
 
@@ -1019,7 +1189,7 @@ const Dashboard = (props) => {
                                 </TouchableOpacity>
                             }
                             centerComponent={{
-                                text: "Select Location", style: {
+                                text: Strings.Select_Location, style: {
                                     color: black,
                                     fontSize: widthPercentageToDP(4),
                                     fontFamily: "Montserrat-Bold",
@@ -1051,7 +1221,7 @@ const Dashboard = (props) => {
                                     {city}
                                 </Text> */}
                                 <SearchBar
-                                    placeholder="Search city..."
+                                    placeholder={Strings.search_city}
                                     lightTheme
                                     round
                                     value={cityText}
@@ -1082,7 +1252,7 @@ const Dashboard = (props) => {
                                     />
                                 </TouchableOpacity>
                                 <Text style={[styles.greetingTxt, { marginTop: 0, marginLeft: widthPercentageToDP(3), color: lightBlue }]}>
-                                    {"Use current location"}
+                                    {Strings.Use_current_location}
                                 </Text>
                             </View>
 
@@ -1123,8 +1293,401 @@ const Dashboard = (props) => {
                     </View>
                 </Modal>
             }
+            {citiesPopup &&
+                <Modal
+                    transparent={true}
+                    visible={citiesPopup}
+                    animationType="slide"
+                    onRequestClose={() => console.log('close')}
+                >
+                    <View style={{ flex: 1, backgroundColor: white }}>
+                        <Header
+                            leftComponent={
+                                <TouchableOpacity
+                                    onPress={() => { setCitiesPopup(false) }}>
+                                    <MaterialIcons
+                                        name="close"
+                                        color={black}
+                                        size={35}
+                                    />
+                                </TouchableOpacity>
+                            }
+                            centerComponent={{
+                                text: Strings.Filtration, style: {
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                    marginTop: 5
+                                }
+                            }}
+                            containerStyle={{
+                                backgroundColor: 'transparent',
+                                borderBottomWidth: 0,
+                                //height: heightPercentageToDP(17)
+                            }}
+                            statusBarProps={{
+                                backgroundColor: white
+                            }}
+                            barStyle="dark-content"
+                        />
+                        <View style={styles.dashboardMainView}>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7)
+                            }]}>
+                                <SearchBar
+                                    placeholder={Strings.Search_comunidad}
+                                    lightTheme
+                                    round
+                                    value={citiesText}
+                                    onChangeText={text => searchFilterFunction(text)}
+                                    autoCorrect={false}
+                                    inputContainerStyle={{ backgroundColor: white }}
+                                    inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
+                                    containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
+                                //style={{}}
+                                />
+                            </View>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7)
+                            }]}>
+                                <Text style={{
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                }}>
+                                    {Strings.Comunidad_autonoma}
+                                </Text>
+                            </View>
 
-        </SafeAreaView>
+                            {!citiesResponse || !citiesResponse.length ?
+                                <View />
+                                : <FlatList
+                                    data={!citiesText ? citiesResponse : citiesResponse2}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={{ flexGrow: 1 }}
+                                    style={{ marginTop: heightPercentageToDP(2), }}
+                                    keyExtractor={(item, index) => 'key' + index}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setCitiesPopup(false),
+                                                    setSelectedCitiesResponse(item.cities),
+                                                    setSelectedCitiesPopup(true)
+                                            }}
+                                            style={[styles.blockView, {
+                                                justifyContent: "space-between"
+                                            }]}>
+                                            <Text style={[styles.blockTxt, {
+                                                marginLeft: 0,
+                                                textAlign: "left"
+                                            }]}>
+                                                {item.name}
+                                            </Text>
+                                            <MaterialIcons
+                                                name="keyboard-arrow-right"
+                                                color={black}
+                                                size={30}
+                                            />
+                                        </TouchableOpacity>
+                                    )}
+                                />
+                            }
+
+                        </View>
+                    </View>
+                </Modal>
+            }
+            {selectedCitiesPopup &&
+                <Modal
+                    transparent={true}
+                    visible={selectedCitiesPopup}
+                    animationType="slide"
+                    onRequestClose={() => console.log('close')}
+                >
+                    <View style={{ flex: 1, backgroundColor: white }}>
+                        <Header
+                            leftComponent={
+                                <TouchableOpacity
+                                    onPress={() => { setSelectedCitiesPopup(false) }}>
+                                    <MaterialIcons
+                                        name="close"
+                                        color={black}
+                                        size={35}
+                                    />
+                                </TouchableOpacity>
+                            }
+                            centerComponent={{
+                                text: Strings.Filtration, style: {
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                    marginTop: 5
+                                }
+                            }}
+                            containerStyle={{
+                                backgroundColor: 'transparent',
+                                borderBottomWidth: 0,
+                                //height: heightPercentageToDP(17)
+                            }}
+                            statusBarProps={{
+                                backgroundColor: white
+                            }}
+                            barStyle="dark-content"
+                        />
+                        <View style={styles.dashboardMainView}>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7)
+                            }]}>
+                                <SearchBar
+                                    placeholder={Strings.Search_comunidad}
+                                    lightTheme
+                                    round
+                                    value={selectedCitiesText}
+                                    onChangeText={text => searchSelectedFilterFunction(text)}
+                                    autoCorrect={false}
+                                    inputContainerStyle={{ backgroundColor: white }}
+                                    inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
+                                    containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
+                                //style={{}}
+                                />
+                            </View>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7),
+                                justifyContent: "space-between"
+                            }]}>
+                                <Text style={{
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                }}>
+                                    {Strings.Choose_City}
+                                </Text>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <Text style={{
+                                        color: black,
+                                        fontSize: widthPercentageToDP(4),
+                                        fontFamily: "Montserrat-Bold",
+                                        marginRight: widthPercentageToDP(3)
+                                    }}>
+                                        {Strings.Select_All}
+                                    </Text>
+                                    <Fontisto
+                                        name={!isActive ?
+                                            'checkbox-passive'
+                                            : 'checkbox-active'}
+                                        color={black}
+                                        size={25}
+                                        onPress={() => { _selectAll() }}
+                                    />
+                                </View>
+
+                            </View>
+
+                            {!selectedCitiesResponse || !selectedCitiesResponse.length ?
+                                <View />
+                                : <FlatList
+                                    data={!selectedCitiesText ? selectedCitiesResponse : selectedCitiesResponse2}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={{ flexGrow: 1 }}
+                                    style={{ marginTop: heightPercentageToDP(2), }}
+                                    keyExtractor={(item, index) => 'key' + index}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity
+                                            onPress={() => { }}
+                                            style={[styles.blockView, {
+                                                justifyContent: "space-between"
+                                            }]}>
+                                            <Text style={[styles.blockTxt, {
+                                                marginLeft: 0,
+                                                textAlign: "left"
+                                            }]}>
+                                                {item.name}
+                                            </Text>
+                                            <Fontisto
+                                                name={!item.isActive ?
+                                                    'checkbox-passive'
+                                                    : 'checkbox-active'}
+                                                color={black}
+                                                size={25}
+                                                onPress={() => { _checkBoxClick(item.name) }}
+                                            />
+                                        </TouchableOpacity>
+                                    )}
+                                />
+                            }
+                            <View style={{ height: heightPercentageToDP(10) }} />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setSelectedCitiesPopup(false),
+                                        rankRastuDataApi()
+                                    // socialDataApi(),
+                                    // citiesApi()
+                                }}
+                                style={[styles.btn, {
+                                    position: "absolute",
+                                    bottom: "1%",
+                                    zIndex: 3
+                                }]}>
+                                <Text style={styles.btnTxt}>
+                                    {Strings.Done}
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                </Modal>
+            }
+            {resturantsPopup &&
+                <Modal
+                    transparent={true}
+                    visible={resturantsPopup}
+                    animationType="slide"
+                    onRequestClose={() => console.log('close')}
+                >
+                    <View style={{ flex: 1, backgroundColor: white }}>
+                        <Header
+                            leftComponent={
+                                <TouchableOpacity
+                                    onPress={() => { setResturantsPopup(false) }}>
+                                    <MaterialIcons
+                                        name="close"
+                                        color={black}
+                                        size={35}
+                                    />
+                                </TouchableOpacity>
+                            }
+                            centerComponent={{
+                                text: Strings.Filtration, style: {
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                    marginTop: 5
+                                }
+                            }}
+                            containerStyle={{
+                                backgroundColor: 'transparent',
+                                borderBottomWidth: 0,
+                                //height: heightPercentageToDP(17)
+                            }}
+                            statusBarProps={{
+                                backgroundColor: white
+                            }}
+                            barStyle="dark-content"
+                        />
+                        <View style={styles.dashboardMainView}>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7)
+                            }]}>
+                                <SearchBar
+                                    placeholder={Strings.Search_Resturants}
+                                    lightTheme
+                                    round
+                                    value={resturantsText}
+                                    onChangeText={text => searchResturantFilterFunction(text)}
+                                    autoCorrect={false}
+                                    inputContainerStyle={{ backgroundColor: white }}
+                                    inputStyle={{ fontSize: widthPercentageToDP(5), color: black }}
+                                    containerStyle={{ width: widthPercentageToDP(95), backgroundColor: white }}
+                                //style={{}}
+                                />
+                            </View>
+                            <View style={[styles.row5, {
+                                borderBottomWidth: widthPercentageToDP(0.2),
+                                borderBottomColor: black,
+                                height: heightPercentageToDP(7),
+                                justifyContent: "space-between"
+                            }]}>
+                                <Text style={{
+                                    color: black,
+                                    fontSize: widthPercentageToDP(5),
+                                    fontFamily: "Montserrat-Bold",
+                                }}>
+                                    {Strings.Choose_Resturants}
+                                </Text>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <Text style={{
+                                        color: black,
+                                        fontSize: widthPercentageToDP(4),
+                                        fontFamily: "Montserrat-Bold",
+                                        marginRight: widthPercentageToDP(3)
+                                    }}>
+                                        {Strings.Select_All}
+                                    </Text>
+                                    <Fontisto
+                                        name={!isActive2 ?
+                                            'checkbox-passive'
+                                            : 'checkbox-active'}
+                                        color={black}
+                                        size={25}
+                                        onPress={() => { _selectAll2() }}
+                                    />
+                                </View>
+
+                            </View>
+
+                            {!resturantsResponse || !resturantsResponse.length ?
+                                <View />
+                                : <FlatList
+                                    data={!resturantsText ? resturantsResponse : resturantsResponse2}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={{ flexGrow: 1 }}
+                                    style={{ marginTop: heightPercentageToDP(2), }}
+                                    keyExtractor={(item, index) => 'key' + index}
+                                    renderItem={({ item }) => (
+                                        <View style={[styles.blockView, {
+                                            justifyContent: "space-between"
+                                        }]}>
+                                            <Text style={[styles.blockTxt, {
+                                                marginLeft: 0,
+                                                textAlign: "left"
+                                            }]}>
+                                                {item.name}
+                                            </Text>
+                                            <Fontisto
+                                                name={!item.isActive ?
+                                                    'checkbox-passive'
+                                                    : 'checkbox-active'}
+                                                color={black}
+                                                size={25}
+                                                onPress={() => { _checkBoxClick2(item.name) }}
+                                            />
+                                        </View>
+                                    )}
+                                />
+                            }
+                            <View style={{ height: heightPercentageToDP(10) }} />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setResturantsPopup(false),
+                                        socialDataApi(),
+                                        citiesApi()
+                                }}
+                                style={[styles.btn, {
+                                    position: "absolute",
+                                    bottom: "1%",
+                                    zIndex: 3
+                                }]}>
+                                <Text style={styles.btnTxt}>
+                                    {Strings.Done}
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                </Modal>
+            }
+
+        </SafeAreaView >
     )
 }
 

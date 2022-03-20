@@ -10,6 +10,7 @@ import { Header } from 'react-native-elements'
 import { getUserNotification, deleteNotification } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Strings from '../../Translation'
 
 const Notification = (props) => {
     const login = useSelector((state) => state.user.login);
@@ -50,7 +51,7 @@ const Notification = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "NOTIFICATIONS", style: {
+                    text: Strings.NOTIFICATIONS, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",

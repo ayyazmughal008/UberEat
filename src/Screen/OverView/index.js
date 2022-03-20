@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, FlatList, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Modal, ActivityIndicator, TextInput, Alert } from 'react-native'
 import { styles } from '../../Stylesheet'
 import FastImage from 'react-native-fast-image'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, white } from '../../Colors'
-import { getUseraddUserItem, userCheckOut } from '../../Redux/action'
+import { getUseraddUserItem, userCheckOut, applyCoupanCode } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 
 const OverView = (props) => {
@@ -14,6 +15,7 @@ const OverView = (props) => {
     const login = useSelector((state) => state.user.login);
     const [isLoading, setLoading] = useState(false)
     const [response, setResponse] = useState('')
+    const [code, setCode] = useState('')
     const type = props.route.params.type
     const total_person = props.route.params.total_person
     const date = props.route.params.date
@@ -32,6 +34,14 @@ const OverView = (props) => {
         const result = await getUseraddUserItem(login.data.id, rest_id)
         await setResponse(result)
         await setLoading(false)
+    }
+    const coupanApi = async () => {
+        setLoading(true)
+        const result = await applyCoupanCode(login.data.id,code)
+        await setLoading(false)
+        if (result.status == 200) {
+            getAddUserItemApi()
+        }
     }
     const checkoutApi = async () => {
         setLoading(true)
@@ -81,7 +91,7 @@ const OverView = (props) => {
                         fontSize: widthPercentageToDP(5),
                         marginTop: heightPercentageToDP(5)
                     }]}>
-                        {"Overview"}
+                        {Strings.Overview}
                     </Text>
                     <View style={styles.row}>
                         <FastImage
@@ -90,7 +100,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Total Person"}
+                            {Strings.Total_Person}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -106,7 +116,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Date"}
+                            {Strings.Date}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -122,7 +132,7 @@ const OverView = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.mediumText}>
-                            {"Booking Time"}
+                            {Strings.Booking_Time}
                         </Text>
                         <Text style={[styles.price, {
                             position: "absolute",
@@ -131,13 +141,70 @@ const OverView = (props) => {
                             {time}
                         </Text>
                     </View>
+
+                    <View style={{
+                        width: "100%",
+                        height: heightPercentageToDP(8),
+                        flexDirection: "row",
+                        alignItems: "center",
+                        //backgroundColor: "red",
+                        marginTop: heightPercentageToDP(2)
+                    }}>
+                        <TextInput
+                            style={{
+                                width: "65%",
+                                height: "100%",
+                                //backgroundColor: "yellow",
+                                fontSize: widthPercentageToDP(4),
+                                fontFamily: "Montserrat-Medium",
+                                color: darkBlue,
+                                borderWidth: widthPercentageToDP(0.1),
+                                borderColor: darkBlue,
+                                paddingLeft: 5
+                            }}
+                            onChangeText={text => setCode(text)}
+                            placeholder={Strings.Enter_discount_code}
+                            placeholderTextColor={darkBlue}
+                            keyboardType="email-address"
+                        />
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (!code) {
+                                    Alert.alert("", "Please enter a valid code")
+                                } else {
+                                    coupanApi()
+                                }
+                            }}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "3%",
+                                zIndex: 3,
+                                backgroundColor: darkBlue,
+                                height: "90%",
+                                width: "30%",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                borderRadius: widthPercentageToDP(3)
+                            }}>
+                            <Text style={[styles.price, {
+                                color: white,
+                                textAlign: "center"
+                            }]}>
+                                {Strings.Apply}
+                            </Text>
+                        </TouchableOpacity>
+
+                    </View>
+
+
                     <Text style={[styles.findTxt, {
                         textAlign: "left",
                         fontFamily: "Montserrat-SemiBold",
                         fontSize: widthPercentageToDP(5),
                         marginTop: heightPercentageToDP(5)
                     }]}>
-                        {"Menu"}
+                        {Strings.Menu}
                     </Text>
                     {!response ?
                         <View />
@@ -159,7 +226,7 @@ const OverView = (props) => {
                                     color: lightGrey,
                                     marginTop: heightPercentageToDP(1)
                                 }]}>
-                                    {"No Menu Item Selected"}
+                                    {Strings.No_Menu_Item_Selected}
                                 </Text>
                             </View>
                             : <FlatList
@@ -190,7 +257,7 @@ const OverView = (props) => {
                             <Text style={[styles.priceTxt, {
                                 fontSize: widthPercentageToDP(5)
                             }]}>
-                                {"Total Price"}
+                                {Strings.Total_Price}
                             </Text>
                             <Text style={[styles.price, {
                                 fontSize: widthPercentageToDP(5),
@@ -211,7 +278,7 @@ const OverView = (props) => {
                         }]}
                     >
                         <Text style={styles.btnTxt}>
-                            {type === 'checking' ? "I'M COMING" : "Checkout"}
+                            {type === 'checking' ? Strings.COMING : Strings.Checkou}
                         </Text>
                     </TouchableOpacity>
                 </View>

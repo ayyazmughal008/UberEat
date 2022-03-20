@@ -9,18 +9,22 @@ import { Header } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import Picker from '../../Component/Picker'
 import ImagePicker from 'react-native-image-crop-picker';
-import { uploadUserImage } from '../../Redux/action'
+import { uploadUserImage, inviteFriends } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Share from 'react-native-share';
 import { logOut } from '../../Redux/action'
-import Fontisto from 'react-native-vector-icons/Fontisto'
+import Entypo from 'react-native-vector-icons/Entypo'
 import LinearGradient from 'react-native-linear-gradient'
-import {version} from '../../../package.json'
+import { version } from '../../../package.json'
+import Strings from '../../Translation'
 
 const Profile = (props) => {
     const dispatch = useDispatch()
     const login = useSelector((state) => state.user.login);
     const AuthLoading = useSelector((state) => state.user.AuthLoading);
     const [pickerOption, setOption] = useState(false)
+    const [isLoading, setLoading] = useState(false)
+    const [response, setResponse] = useState("")
 
     const requestCameraPermission = async () => {
         try {
@@ -82,6 +86,28 @@ const Profile = (props) => {
     const toggleOption = () => {
         setOption(!pickerOption)
     }
+    const shareVideo = async (code) => {
+        const shareOptions = {
+            title: 'Myhookah',
+            message: `Hi, install Myhookah app, apply this code ${code} and get discount`,
+            failOnCancel: false,
+        };
+        try {
+            const ShareResponse = await Share.open(shareOptions);
+            console.log(ShareResponse)
+        } catch (error) {
+            console.log('Error =>', error);
+        }
+    };
+
+    const getCode = async () => {
+        setLoading(true)
+        const result = await inviteFriends(login.data.id)
+        await setLoading(false)
+        if(result.status == 200){
+            shareVideo(result.data)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -99,7 +125,7 @@ const Profile = (props) => {
                             </TouchableOpacity>
                         }
                         centerComponent={{
-                            text: "MY PROFILE", style: {
+                            text: Strings.MY_PROFILE, style: {
                                 color: white,
                                 fontSize: widthPercentageToDP(4),
                                 fontFamily: "Montserrat-Bold",
@@ -164,7 +190,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Personal Info"}
+                            {Strings.Personal_Info}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -186,7 +212,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"My Booking"}
+                            {Strings.My_Booking}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -208,7 +234,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Favourites Restaurants"}
+                            {Strings.Favorite_Restaurants}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -229,7 +255,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Payment Method"}
+                            {Strings.Payment_Method}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -251,7 +277,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Change Language"}
+                            {Strings.Change_Language}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -273,7 +299,35 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Settings"}
+                            {Strings.Settings}
+                        </Text>
+                        <MaterialIcons
+                            name="keyboard-arrow-right"
+                            color={black}
+                            size={30}
+                            style={{
+                                position: "absolute",
+                                right: "0%",
+                                top: "25%"
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { getCode() }}
+                        style={styles.blockView}>
+                        <Entypo
+                            name="share"
+                            color={darkBlue}
+                            size={30}
+                            style={styles.vectorIcon}
+                        />
+                        {/* <FastImage
+                            source={require('../../Images/settings.png')}
+                            resizeMode={FastImage.resizeMode.cover}
+                            style={styles.vectorIcon}
+                        /> */}
+                        <Text style={styles.blockTxt}>
+                            {Strings.Invite_Friends}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -295,7 +349,7 @@ const Profile = (props) => {
                             style={styles.vectorIcon}
                         />
                         <Text style={styles.blockTxt}>
-                            {"Logout"}
+                            {Strings.Logout}
                         </Text>
                         <MaterialIcons
                             name="keyboard-arrow-right"
@@ -321,13 +375,13 @@ const Profile = (props) => {
                             {""}
                         </Text> */}
                         <Text style={{
-                                position: "absolute",
-                                right: "0%",
-                                top: "25%",
-                                fontSize:widthPercentageToDP(5),
-                                fontWeight:"bold",
-                                color: darkBlue
-                            }}
+                            position: "absolute",
+                            right: "0%",
+                            top: "25%",
+                            fontSize: widthPercentageToDP(5),
+                            fontWeight: "bold",
+                            color: darkBlue
+                        }}
                         >
                             {"Version: "}{version}
                         </Text>
@@ -357,11 +411,18 @@ const Profile = (props) => {
                                 _onLunchGallery()
                         }
                     }}
-                    title={"Please choose an image from Camera OR Gallery "}
+                    title={Strings.choose_camera}
                     closeBox={() => toggleOption()}
                 />
             }
             {AuthLoading &&
+                <ActivityIndicator
+                    size="large"
+                    color={darkBlue}
+                    style={styles.loading}
+                />
+            }
+            {isLoading &&
                 <ActivityIndicator
                     size="large"
                     color={darkBlue}

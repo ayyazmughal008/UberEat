@@ -5,6 +5,7 @@ import { black, darkBlue, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
 import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Strings from '../../Translation'
 
 
 const Settings = (props) => {
@@ -25,7 +26,7 @@ const Settings = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "SETTINGS", style: {
+                    text: Strings.SETTINGS, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -49,7 +50,7 @@ const Settings = (props) => {
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
-                        {"Notifications"}
+                        {Strings.Notifications}
                     </Text>
                     <Switch
                         value={checked}
@@ -64,7 +65,7 @@ const Settings = (props) => {
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
-                        {"Change Password"}
+                        {Strings.Change_Password}
                     </Text>
                     <MaterialIcons
                         name="keyboard-arrow-right"
@@ -80,7 +81,7 @@ const Settings = (props) => {
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
-                        {"Privacy Policy"}
+                        {Strings.Privacy_Policy}
                     </Text>
                     <MaterialIcons
                         name="keyboard-arrow-right"
@@ -96,7 +97,7 @@ const Settings = (props) => {
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
-                        {"Terms & Conditions"}
+                        {Strings.Terms_Conditions}
                     </Text>
                     <MaterialIcons
                         name="keyboard-arrow-right"
@@ -112,7 +113,7 @@ const Settings = (props) => {
                     <Text style={[styles.blockTxt, {
                         marginLeft: 0
                     }]}>
-                        {"About Us"}
+                        {Strings.About_Us}
                     </Text>
                     <MaterialIcons
                         name="keyboard-arrow-right"

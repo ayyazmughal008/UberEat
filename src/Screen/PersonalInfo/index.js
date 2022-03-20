@@ -11,6 +11,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import FastImage from 'react-native-fast-image'
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 const PersonalInfo = (props) => {
     const dispatch = useDispatch()
@@ -30,7 +31,7 @@ const PersonalInfo = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "PERSONAL INFO", style: {
+                    text: Strings.PERSONAL_INFO, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -114,7 +115,7 @@ const PersonalInfo = (props) => {
                 }]}
             >
                 <Text style={[styles.btnTxt, {}]}>
-                    {"Edit Info"}
+                    {Strings.Edit_Info}
                 </Text>
             </TouchableOpacity>
 

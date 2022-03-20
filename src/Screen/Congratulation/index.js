@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, white } from '../../Colors'
 import { CommonActions } from '@react-navigation/native';
-
+import Strings from '../../Translation'
 
 const Congratulation = (props) => {
     const type = props.route.params.type
@@ -45,7 +45,7 @@ const Congratulation = (props) => {
                 fontSize: widthPercentageToDP(6),
                 fontFamily: "Montserrat-Bold",
             }]}>
-                {type === 'checking' ? "We're Waiting" : "Congratulation"}
+                {type === 'checking' ? Strings.waiting : Strings.Congratulation}
             </Text>
             <Text style={[styles.smallTxt, {
                 paddingLeft: widthPercentageToDP(3),
@@ -53,7 +53,10 @@ const Congratulation = (props) => {
                 fontFamily: "Montserrat-SemiBold",
                 fontSize: widthPercentageToDP(5.5)
             }]}>
-                {type === 'checking' ? "Thank you for notifying us. Your table and table will be ready before you come" : "Thank you for the reservation, Enjoy you time"}
+                {type === 'checking' ?
+                    Strings.thank_you
+                    : Strings.enjoy
+                }
             </Text>
             <TouchableOpacity
                 onPress={() => {
@@ -65,7 +68,7 @@ const Congratulation = (props) => {
                 }]}
             >
                 <Text style={styles.btnTxt}>
-                    {"Continue"}
+                    {Strings.Continue}
                 </Text>
             </TouchableOpacity>
         </View>

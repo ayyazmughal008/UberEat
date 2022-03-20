@@ -5,9 +5,16 @@ import { black, darkBlue, white } from '../../Colors'
 import { styles } from '../../Stylesheet'
 import { Header } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import Strings from '../../Translation'
+import RNRestart from 'react-native-restart'
+import { useDispatch } from 'react-redux'
+import { setUserLanguage } from '../../Redux/action'
 
 
 const PersonalInfo = (props) => {
+
+    const dispatch = useDispatch()
+
     return (
         <View style={styles.container}>
             <Header
@@ -22,7 +29,7 @@ const PersonalInfo = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "CHANGE LANGUAGE", style: {
+                    text: Strings.CHANGE_LANGUAGE, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -40,21 +47,33 @@ const PersonalInfo = (props) => {
             />
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <TouchableOpacity
+                    onPress={() => {
+                        dispatch(setUserLanguage('en'))
+                        setTimeout(() => {
+                            RNRestart.Restart()
+                        }, 50)
+                    }}
                     style={[styles.btn, {
                         marginTop: heightPercentageToDP(4)
                     }]}
                 >
                     <Text style={[styles.btnTxt, {}]}>
-                        {"English"}
+                        {Strings.English}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={() => {
+                        dispatch(setUserLanguage('es'))
+                        setTimeout(() => {
+                            RNRestart.Restart()
+                        }, 50)
+                    }}
                     style={[styles.btn, {
                         marginTop: heightPercentageToDP(4)
                     }]}
                 >
                     <Text style={[styles.btnTxt, {}]}>
-                        {"Spanish"}
+                        {Strings.Spanish}
                     </Text>
                 </TouchableOpacity>
             </View>

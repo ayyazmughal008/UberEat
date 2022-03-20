@@ -7,6 +7,7 @@ import { Header, Switch } from 'react-native-elements'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
 import { userTermsCondition, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
+import Strings from '../../Translation'
 
 
 const Settings = (props) => {
@@ -46,7 +47,7 @@ const Settings = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "TERM & CONDITIONS", style: {
+                    text: Strings.TERM_CONDITIONS, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",

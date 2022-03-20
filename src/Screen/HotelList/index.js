@@ -15,6 +15,7 @@ import StarRating from 'react-native-star-rating';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 
 const HotelList = (props) => {
@@ -69,8 +70,8 @@ const HotelList = (props) => {
                     <Toggle
                         selectionMode={1}
                         roundCorner={true}
-                        option1={'Listing'}
-                        option2={'Map'}
+                        option1={Strings.Listing}
+                        option2={Strings.Map}
                         onSelectSwitch={(newState) => setToggleValue(newState)}
                         selectionColor={darkBlue}
                     />
@@ -80,7 +81,7 @@ const HotelList = (props) => {
                         <Header
                             isBack={true}
                             leftClick={() => props.navigation.goBack()}
-                            title={"SEARCH RESULT"}
+                            title={Strings.SEARCH_RESULT}
                             iconName={"notifications-outline"}
                         />
                         <View style={{ marginTop: heightPercentageToDP(10) }} />
@@ -101,7 +102,7 @@ const HotelList = (props) => {
                                     fontFamily: "Montserrat-SemiBold",
                                     fontSize: widthPercentageToDP(4.5),
                                 }]}>
-                                    {"Favorite Restaurants"}
+                                    {Strings.Favorite_Restaurants}
                                 </Text>
                                 <Text style={[styles.findTxt, {
                                     textAlign: "left",
@@ -109,7 +110,7 @@ const HotelList = (props) => {
                                     fontSize: widthPercentageToDP(4),
                                     color: darkBlue
                                 }]}>
-                                    {"See More"}
+                                    {Strings.See_More}
                                 </Text>
                             </View>
                         }
@@ -153,7 +154,7 @@ const HotelList = (props) => {
                                     fontFamily: "Montserrat-SemiBold",
                                     fontSize: widthPercentageToDP(4.5),
                                 }]}>
-                                    {"Popular Restaurants"}
+                                    {Strings.Popular_Restaurants}
                                 </Text>
                                 <Text style={[styles.findTxt, {
                                     textAlign: "left",
@@ -161,7 +162,7 @@ const HotelList = (props) => {
                                     fontSize: widthPercentageToDP(4),
                                     color: darkBlue
                                 }]}>
-                                    {"See More"}
+                                    {Strings.See_More}
                                 </Text>
                             </View>}
                         {!result.listing.length ?
@@ -240,39 +241,40 @@ const HotelList = (props) => {
                         onRequestClose={() => console.log('close')}
                     >
                         <View style={{ flex: 1, alignItems: "center" }}>
-                            <View style={styles.modalBottom2}>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() =>
+                                //console.log(response)
+                                {
+                                    setPopUp(false);
+                                    props.navigation.navigate('HotelDetail', {
+                                        contacts: response.contact,
+                                        menu: response.menu,
+                                        name: response.name,
+                                        country: response.country,
+                                        city: response.city,
+                                        rating: response.averageRating,
+                                        id: response.id,
+                                        large_image: response.large_image,
+                                        small_image: response.small_image,
+                                        total_person: result.total_person,
+                                        date: result.date,
+                                    })
+                                }
+                                }
+                                style={styles.modalBottom2}>
                                 <TouchableOpacity onPress={() => setPopUp(false)} >
                                     <View style={styles.line} />
                                 </TouchableOpacity>
                                 <View style={{ flexDirection: "row", alignItems: "center", width: "100%", height: "100%", marginTop: 10 }}>
                                     <View style={{ width: "50%", height: "100%", alignItems: "center" }}>
-                                        <Text
-                                            onPress={() =>
-                                            //console.log(response)
-                                            {
-                                                setPopUp(false);
-                                                props.navigation.navigate('HotelDetail', {
-                                                    contacts: response.contact,
-                                                    menu: response.menu,
-                                                    name: response.name,
-                                                    country: response.country,
-                                                    city: response.city,
-                                                    rating: response.averageRating,
-                                                    id: response.id,
-                                                    large_image: response.large_image,
-                                                    small_image: response.small_image,
-                                                    total_person: result.total_person,
-                                                    date: result.date,
-                                                })
-                                            }
-                                            }
-                                            style={[styles.greetingTxt, {
-                                                marginTop: 0,
-                                                textAlign: "center",
-                                                fontSize: widthPercentageToDP(4.6),
-                                                fontFamily: "Montserrat-SemiBold",
-                                                padding: 2
-                                            }]}>
+                                        <Text style={[styles.greetingTxt, {
+                                            marginTop: 0,
+                                            textAlign: "center",
+                                            fontSize: widthPercentageToDP(4.6),
+                                            fontFamily: "Montserrat-SemiBold",
+                                            padding: 2
+                                        }]}>
                                             {response.name}
                                         </Text>
                                         <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(0.5), marginBottom: heightPercentageToDP(0.5) }}>
@@ -295,12 +297,11 @@ const HotelList = (props) => {
                                                 height: "40%"
                                             }}
                                         />
-                                        <Text
-                                            style={[styles.greetingTxt, {
-                                                marginTop: heightPercentageToDP(1),
-                                                textAlign: "center",
-                                                fontSize: widthPercentageToDP(5)
-                                            }]}>
+                                        <Text style={[styles.greetingTxt, {
+                                            marginTop: heightPercentageToDP(1),
+                                            textAlign: "center",
+                                            fontSize: widthPercentageToDP(5)
+                                        }]}>
                                             {response.city + ', ' + response.country}
                                         </Text>
                                     </View>
@@ -361,7 +362,7 @@ const HotelList = (props) => {
                                                             fontSize: widthPercentageToDP(3.8),
                                                             fontFamily: "Montserrat-Medium"
                                                         }]}>
-                                                            {'Available'}
+                                                            {Strings.Available}
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -370,7 +371,7 @@ const HotelList = (props) => {
                                         <View style={{ marginTop: heightPercentageToDP(5) }} />
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </Modal>
                 }

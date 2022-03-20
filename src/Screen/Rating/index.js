@@ -9,6 +9,7 @@ import { updateUserFeedback } from '../../Redux/action'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { black, darkBlue, lightGrey, white } from '../../Colors'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Strings from '../../Translation'
 
 
 const Rating = (props) => {
@@ -56,7 +57,7 @@ const Rating = (props) => {
                     fontFamily: "Montserrat-SemiBold",
                     textAlign: "center"
                 }}>
-                    {"Your opinion matter to us"}
+                    {Strings.Your_opinion_matter_to_us}
                 </Text>
 
                 <Text style={{
@@ -66,7 +67,7 @@ const Rating = (props) => {
                     fontFamily: "Montserrat-Bold",
                     textAlign: "center"
                 }}>
-                    {"Rate & Review"}
+                    {Strings.Rate_Review}
                 </Text>
                 <Text style={{
                     fontSize: widthPercentageToDP(4.5),
@@ -75,7 +76,7 @@ const Rating = (props) => {
                     fontFamily: "Montserrat-Medium",
                     textAlign: "center"
                 }}>
-                    {"share your experience to help others"}
+                    {Strings.share_your_experience_to_help_others}
                 </Text>
                 <View style={{ alignSelf: "center", marginTop: heightPercentageToDP(2) }}>
                     <StarRating
@@ -91,7 +92,7 @@ const Rating = (props) => {
                 </View>
 
                 <TextInput
-                    placeholder='Your comments'
+                    placeholder={Strings.Your_comments}
                     placeholderTextColor={lightGrey}
                     value={comment}
                     onChangeText={text => setComment(text)}
@@ -117,7 +118,7 @@ const Rating = (props) => {
                         //marginBottom: heightPercentageToDP(2)
                     }]}>
                     <Text style={styles.btnTxt}>
-                        {"Rate Now"}
+                        {Strings.Rate_Now}
                     </Text>
                 </TouchableOpacity>
                 <Text
@@ -129,7 +130,7 @@ const Rating = (props) => {
                         fontFamily: "Montserrat-Medium",
                         textAlign: "center"
                     }}>
-                    {"May be later"}
+                    {Strings.May_be_later}
                 </Text>
             </KeyboardAwareScrollView>
             {loading &&

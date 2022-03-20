@@ -7,6 +7,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { black, darkBlue, lightGrey, white } from '../../Colors'
 import { getTimes, userCheckOut } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 
 
@@ -78,7 +79,7 @@ const Table = (props) => {
                         fontSize: widthPercentageToDP(5),
                         marginTop: heightPercentageToDP(3)
                     }]}>
-                        {"Select Available Table"}
+                        {Strings.Select_Available_Table}
                     </Text>
 
                     {!response || !response.data.length ?
@@ -141,7 +142,7 @@ const Table = (props) => {
                             marginBottom: heightPercentageToDP(2)
                         }]}>
                         <Text style={styles.btnTxt}>
-                            {"Next"}
+                            {Strings.Next}
                         </Text>
                     </TouchableOpacity>
                 </View>

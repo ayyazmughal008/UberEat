@@ -17,6 +17,7 @@ import {
 } from 'react-native-confirmation-code-field';
 const CELL_COUNT = 6;
 import useState from 'react-usestateref'
+import Strings from '../../Translation'
 
 const Settings = (params) => {
     const dispatch = useDispatch()
@@ -75,7 +76,7 @@ const Settings = (params) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "FORGOT PASSWORD", style: {
+                    text: Strings.FORGOT_PASSWORD, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -96,7 +97,7 @@ const Settings = (params) => {
                 <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center", marginTop: heightPercentageToDP(10) }}>
                         <Input
-                            placeholder='Enter Email'
+                            placeholder={Strings.Enter_Email}
                             placeholderTextColor={textBlack}
                             inputStyle={[styles.inputTxt, { paddingLeft: 0 }]}
                             leftIcon={
@@ -120,7 +121,7 @@ const Settings = (params) => {
                             marginBottom: heightPercentageToDP(1),
                             textAlign: "center"
                         }}>
-                            {"we'll send you a OTP on your registered email address"}
+                            {Strings.send_otp}
                         </Text>
                         <TouchableOpacity
                             onPress={() => _onSubmit()}
@@ -129,7 +130,7 @@ const Settings = (params) => {
                             }]}
                         >
                             <Text style={[styles.btnTxt, {}]}>
-                                {"Done"}
+                            {Strings.Done}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -150,7 +151,7 @@ const Settings = (params) => {
                         marginBottom: heightPercentageToDP(5),
                         textAlign: "center"
                     }}>
-                        {"Enter OTP"}
+                       {Strings.Enter_OTP}
                     </Text>
                     <CodeField
                         ref={ref}
@@ -178,7 +179,7 @@ const Settings = (params) => {
                         }]}
                     >
                         <Text style={[styles.btnTxt, {}]}>
-                            {"Done"}
+                        {Strings.Done}
                         </Text>
                     </TouchableOpacity>
                 </View>

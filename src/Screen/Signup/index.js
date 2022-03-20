@@ -9,7 +9,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import FastImage from 'react-native-fast-image'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { userRegister, dispatchFunc, dispatchFuncOn, dispatchErrorMessage } from '../../Redux/action'
-
+import Strings from '../../Translation'
 
 const Signup = (props) => {
     const dispatch = useDispatch()
@@ -91,48 +91,48 @@ const Signup = (props) => {
                 </View>
                 <View style={{ flex: 0, width: widthPercentageToDP(90), alignSelf: "center", }}>
                     <Text style={styles.bigTxtBold}>
-                        {"Sign Up"}
+                        {Strings.Sign_Up}
                     </Text>
                     <Text style={styles.TxtLight}>
-                        {"Let's get started"}
+                        {Strings.Let_get}
                     </Text>
                     <Input
-                        placeholder='Name'
+                        placeholder={Strings.Name}
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                         onChangeText={(text) => setName(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(2), borderBottomColor: black, }}
                     //style = {styles.inputTxt}
                     />
                     <Input
-                        placeholder='Email'
+                        placeholder={Strings.Email}
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0,paddingTop:0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                         onChangeText={(text) => setEMail(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
-                        placeholder='Phone Number'
+                        placeholder={Strings.Phone_Number}
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                         onChangeText={(text) => setPhone(text)}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
-                        placeholder='Password'
+                        placeholder={Strings.Password}
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
                     //style = {styles.inputTxt}
                     />
                     <Input
-                        placeholder='Confirm Password'
+                        placeholder={Strings.Confirm_Password}
                         placeholderTextColor={lightGrey}
-                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop:0 }]}
+                        inputStyle={[styles.inputTxt, { paddingLeft: 0, paddingTop: 0 }]}
                         onChangeText={(text) => setConPassword(text)}
                         secureTextEntry={true}
                         containerStyle={{ marginTop: heightPercentageToDP(0), borderBottomColor: black }}
@@ -149,7 +149,7 @@ const Signup = (props) => {
                             onPress={() => setChecked(!isChecked)}
                         />
                         <Text style={[styles.smallTxt, { paddingLeft: widthPercentageToDP(3), marginTop: 0 }]}>
-                            {"I agree to the term & conditions"}
+                            {Strings.term_conditions}
                         </Text>
                     </View>
 
@@ -161,17 +161,17 @@ const Signup = (props) => {
                         }]}
                     >
                         <Text style={[styles.btnTxt, { fontWeight: "bold" }]}>
-                            {"SIGN UP"}
+                            {Strings.SIGN_UP}
                         </Text>
                     </TouchableOpacity>
                     <Text style={[styles.smallTxt, {
                         marginBottom: heightPercentageToDP(5)
                     }]}>
-                        {"Already have an account? "}
+                        {Strings.Already_have_an_account}
                         <Text
                             onPress={() => props.navigation.navigate('Login')}
                             style={[styles.smallTxt, { color: lightBlue, marginTop: 0, fontFamily: "Montserrat-Medium" }]}>
-                            {"Sign In"}
+                            {Strings.Sign_In}
                         </Text>
                     </Text>
                 </View>

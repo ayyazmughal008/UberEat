@@ -9,8 +9,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Toggle from '../../Component/Toggle'
 import { data } from './data'
 import Booking from '../../Component/Booking'
-import { getBookings } from '../../Redux/action'
+import { getBookings, checkComingBtn } from '../../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
+import Strings from '../../Translation'
 
 const MyBooking = (props) => {
     const dispatch = useDispatch();
@@ -30,6 +31,22 @@ const MyBooking = (props) => {
         await setLoading(false)
     }
 
+    const comingBtnApi = async (b_id, large_image, small_image,item) => {
+        setLoading(true)
+        const result = await checkComingBtn(b_id)
+        await setLoading(false)
+        if (result.status == 200) {
+            props.navigation.navigate('ConfirmBooking', {
+                type: 'checking',
+                response: item,
+                showBtn: result.data === 'yes' ? true : false,
+                large_image: large_image,
+                small_image: small_image,
+                booking_id: b_id
+            })
+        }
+    }
+
 
 
     return (
@@ -46,7 +63,7 @@ const MyBooking = (props) => {
                     </TouchableOpacity>
                 }
                 centerComponent={{
-                    text: "MY BOOKINGS", style: {
+                    text: Strings.MY_BOOKINGS, style: {
                         color: black,
                         fontSize: widthPercentageToDP(4),
                         fontFamily: "Montserrat-Bold",
@@ -66,8 +83,8 @@ const MyBooking = (props) => {
                 <Toggle
                     selectionMode={1}
                     roundCorner={true}
-                    option1={'Upcoming'}
-                    option2={'Previous'}
+                    option1={Strings.Upcoming}
+                    option2={Strings.Previous}
                     onSelectSwitch={(newState) => setToggleValue(newState)}
                     selectionColor={darkBlue}
                 />
@@ -84,14 +101,12 @@ const MyBooking = (props) => {
                         <Booking
                             clickHandler={() => {
                                 if (toggleValue == 1) {
-                                    props.navigation.navigate('ConfirmBooking', {
-                                        type: 'checking',
-                                        response: item,
-                                        showBtn: true,
-                                        large_image: item.large_image,
-                                        small_image: item.small_image,
-                                        booking_id: item.id
-                                    })
+                                    comingBtnApi(
+                                        item.id,
+                                        item.large_image,
+                                        item.small_image,
+                                        item
+                                    )
                                 } else {
                                     props.navigation.navigate('ConfirmBooking', {
                                         type: 'checking',
